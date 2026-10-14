@@ -117,7 +117,7 @@
         <mat-card class="ticket-card">
           <div class="ticket-top">
             <div>
-              <span class="ticket-number">Заявка #{{ticket.id}}</span>
+              <span class="ticket-number">Ticket #{{ticket.id}}</span>
               <h3>Todo Title</h3>
             </div>
             <span class="status new">{{ticket.status}}</span>
@@ -140,8 +140,7 @@
     <!-- Bottom section -->
     <section class="all-tickets">
       <div class="section-title">
-        <h2>Overall tickets</h2>
-        <span>{{tickets().length}}</span>
+        <h2>Overall tickets: {{tickets().length}}</h2>
       </div>
 
       <section class="all-tickets">

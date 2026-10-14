@@ -278,7 +278,7 @@
 .section-title {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px;
   margin-bottom: 16px;
 
   h2 {
@@ -288,7 +288,8 @@
   }
 
   span {
-    font-size: 13px;
+    font-size: 20px;
+    font-weight: 600;
     color: var(--mat-sys-on-surface-variant);
   }
 }
