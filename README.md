@@ -28,5 +28,4 @@ npm start
 
 ## Примечания
 
-- Адреса API заданы в `src/app/services/*.ts` (`apiUrl`). Если backend работает на другом порту, поменяй их там.
-- В backend должен быть включён CORS для `http://localhost:4200`, иначе браузер заблокирует запросы.
+- Адреса API заданы в `src/app/services/*.ts` (`apiUrl`). Если backend работает на другом порту, поменяй их там
