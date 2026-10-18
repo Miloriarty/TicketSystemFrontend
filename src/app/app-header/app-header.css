@@ -1,0 +1,54 @@
+/* =========================
+HEADER
+========================= */
+
+.page-header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  background-color: var(--mat-sys-surface-container);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.header-item {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px;
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    color: var(--mat-sys-primary);
+  }
+
+  &.active {
+    color: var(--mat-sys-primary);
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 20px;
+      right: 20px;
+      height: 3px;
+      border-radius: 3px 3px 0 0;
+      background-color: var(--mat-sys-primary);
+    }
+  }
+}

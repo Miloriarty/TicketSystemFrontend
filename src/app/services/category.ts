@@ -9,6 +9,10 @@ export interface Category {
   ticketsId: Array<number>
 }
 
+export interface CategoryRequest {
+  name: string;
+}
+
 
 @Service()
 export class CategoryService {
@@ -17,5 +21,13 @@ export class CategoryService {
 
   public getCategories() : Observable<Category[]> {
     return this.client.get<Category[]>(this.apiUrl);
+  }
+
+  public createCategory(cat: CategoryRequest): Observable<Category> {
+    return this.client.post<Category>(this.apiUrl, cat);
+  }
+
+  public updateCategory(cat: CategoryRequest): Observable<Category> {
+    return this.client.put<Category>(this.apiUrl, cat);
   }
 }

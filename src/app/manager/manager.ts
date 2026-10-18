@@ -17,6 +17,7 @@ import {CategoryService, Category} from '../services/category';
 import {EmployeeService, Employee} from '../services/employee';
 import {TicketService, Ticket, TicketRequest} from '../services/ticket';
 import {DatePipe} from '@angular/common';
+import {AppHeader} from '../app-header/app-header';
 
 
 @Component({
@@ -36,6 +37,7 @@ import {DatePipe} from '@angular/common';
     MatSelect,
     MatOption,
     DatePipe,
+    AppHeader,
   ],
   standalone: true,
   selector: 'app-manager',
@@ -102,7 +104,7 @@ export class ManagerComponent {
         this.selectedEmployees.set([]);
       },
       error: error => {
-        console.error('Failed to create ticket', error);
+        console.error('Failed to create ticket: ', error);
       }
     });
   }
