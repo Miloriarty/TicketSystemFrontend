@@ -44,7 +44,7 @@ import {AppHeader} from '../app-header/app-header';
   styleUrl: './admin.css',
   templateUrl: './admin.html',
 })
-export class AdminComponent { // todo delete action
+export class AdminComponent { // todo delete action, validation
   categoryService = inject(CategoryService);
   employeeService = inject(EmployeeService);
   ticketService = inject(TicketService);

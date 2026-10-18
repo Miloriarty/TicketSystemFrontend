@@ -146,7 +146,7 @@
         <!-- Add category -->
         <div class="add-category">
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <mat-label>New category</mat-label>
+<!--            <mat-label>New category</mat-label>-->
             <input matInput
                    [ngModel]="createCategoryField()"
                    (ngModelChange)="onCrateCategoryFieldChange($event)"
@@ -212,9 +212,9 @@
           <div class="employee-meta">
             <span>
               <mat-icon>schedule</mat-icon>
-              {{ employee.startDate | date:'dd.MM.yy, HH:mm' }}
+              {{ employee.startDate | date:'dd.MM.yy' }}
             </span>
-            <span>Start date: {{ employee.startDate | date:'dd.MM.yy' }}</span>
+<!--            <span>Start date: {{ employee.startDate | date:'dd.MM.yy' }}</span>-->
           </div>
 
           @if (employee.categoriesId.length > 0) {
