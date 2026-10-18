@@ -1,59 +1,32 @@
 # PracticeProjectAngular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.1.
+Фронтенд системы заявок (tickets) на Angular + Angular Material.
 
-## Development server
+- **Manager** (`/manager`): создание заявок, выбор категорий и сотрудников
+- **Admin** (`/admin`): управление сотрудниками и категориями
+- **Services** (`/services`): все сервисы для работы с backend
+## Требования
+- Node.js и npm
+- .NET SDK (для backend)
 
-To start a local development server, run:
+## Запуск
 
-```bash
-ng serve
-```
+### 1. Backend
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Backend написан на .NET и лежит в отдельном репозитории: `https://github.com/Miloriarty/TicketSystem`.
+Запусти его по инструкции из его README. Фронтенд ожидает API по адресу
+`http://localhost:5042/api`.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 2. Frontend
 
 ```bash
-ng generate --help
+npm install
+npm start
 ```
 
-## Building
+Приложение будет доступно на http://localhost:4200.
 
-To build the project run:
+## Примечания
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Адреса API заданы в `src/app/services/*.ts` (`apiUrl`). Если backend работает на другом порту, поменяй их там.
+- В backend должен быть включён CORS для `http://localhost:4200`, иначе браузер заблокирует запросы.

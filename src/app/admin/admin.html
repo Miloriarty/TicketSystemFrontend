@@ -10,7 +10,9 @@
     <mat-card class="employee-create-card">
       <mat-card-header>
         <div mat-card-avatar class="card-icon">
-          <mat-icon fontSet="material-symbols-outlined">{{ editingEmployeeId() === null ? 'person_add' : 'person_edit'}}</mat-icon>
+          <mat-icon fontSet="material-symbols-outlined">
+            {{ editingEmployeeId() === null ? 'person_add' : 'person_edit'}}
+          </mat-icon>
         </div>
         <mat-card-title>
           {{ editingEmployeeId() === null ? 'Add employee' : 'Edit employee'}}
