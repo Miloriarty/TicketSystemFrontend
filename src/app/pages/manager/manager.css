@@ -102,19 +102,14 @@
 
 .ticket-card {
   padding: 24px;
+  gap: 16px;
+  overflow-wrap: anywhere;
 
   h3 {
     margin: 0;
     font-size: 18px;
     font-weight: 600;
     color: var(--mat-sys-on-surface);
-  }
-
-  p {
-    margin: 18px 0;
-    line-height: 1.5;
-    font-size: 14px;
-    color: var(--mat-sys-on-surface-variant);
   }
 }
 
@@ -134,14 +129,23 @@
   color: var(--mat-sys-primary);
 }
 
-/* =========================
-   Bottom tickets
-   ========================= */
+.ticket-info {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+
+  h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
 
 .ticket-bottom {
   display: flex;
   align-items: center;
   gap: 20px;
+  margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--mat-sys-outline-variant);
   font-size: 12px;

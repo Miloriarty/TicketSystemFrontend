@@ -40,7 +40,7 @@ npm start
 
 ## Будущие правки
 - [ ] (all) сделать удаление элементов
-- [ ] (manager page) одинаковый размер `create card` и `tickets`
+- [ ] (manager page) одинаковый размер `create card` и `right tickets`
 - [ ] (admin page) поправить оступы от `icon` до `card title`
 - [ ] (admin page) поправить `field` в `create category card`
 - [ ] (employees page) добавить в css `status cancelled`

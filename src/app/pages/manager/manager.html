@@ -98,7 +98,7 @@
     @for (ticket of tickets().slice(0, 3); track ticket.id) {
       <mat-card class="ticket-card">
         <div class="ticket-top">
-          <div>
+          <div class="ticket-info">
             <span class="ticket-number">Ticket #{{ticket.id}}</span>
             <h3>Todo Title</h3>
           </div>
@@ -131,7 +131,7 @@
       @for (ticket of tickets().slice(3); track ticket.id) {
         <mat-card class="ticket-card">
           <div class="ticket-top">
-            <div>
+            <div class="ticket-info">
               <span class="ticket-number">Заявка #{{ticket.id}}</span>
               <h3>Todo Title</h3> <!-- todo title -->
             </div>
@@ -139,7 +139,7 @@
               {{ ticket.status }}
             </div>
           </div>
-          <p>{{ticket.description}}</p>
+          <span class="ticket-description">{{ ticket.description }}</span>
           <div class="ticket-bottom">
           <span>
             <mat-icon>schedule</mat-icon>
