@@ -213,6 +213,16 @@
   color: var(--mat-sys-primary);
 }
 
+.ticket-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
 /* =========================
    STATUS BADGES (M3 Containers)
    ========================= */
@@ -273,6 +283,12 @@
 .all-tickets {
   grid-column: 1 / -1;
   margin-top: 8px;
+}
+
+.tickets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .section-title {

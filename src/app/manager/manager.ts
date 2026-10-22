@@ -15,8 +15,8 @@ import {
 import {MatOption, MatSelect} from '@angular/material/select';
 import {CategoryService, Category} from '../services/category';
 import {EmployeeService, Employee} from '../services/employee';
-import {TicketService, Ticket, TicketRequest} from '../services/ticket';
-import {DatePipe} from '@angular/common';
+import {TicketService, Ticket, TicketRequest, TicketStatus} from '../services/ticket';
+import {DatePipe, NgClass} from '@angular/common';
 import {AppHeader} from '../app-header/app-header';
 
 
@@ -38,6 +38,7 @@ import {AppHeader} from '../app-header/app-header';
     MatOption,
     DatePipe,
     AppHeader,
+    NgClass,
   ],
   standalone: true,
   selector: 'app-manager',
@@ -76,6 +77,13 @@ export class ManagerComponent {
     })
   }
 
+  protected readonly statusClass: Record<TicketStatus, string> = {
+    [TicketStatus.New]: 'new',
+    [TicketStatus.InProgress]: 'progress',
+    [TicketStatus.Cancelled]: 'cancelled',
+    [TicketStatus.Completed]: 'completed',
+  };
+
   protected onCategoriesChange(categories: Category[]) {
     this.selectedCategories.set(categories);
   }
@@ -89,7 +97,7 @@ export class ManagerComponent {
   protected createTicket() {
     const ticket: TicketRequest = {
       description: this.description(),
-      status: "New",
+      status: TicketStatus.New,
       employeesId: this.selectedEmployees().map(e => e.id),
       categoriesId: this.selectedCategories().map(c => c.id)
     }
@@ -140,4 +148,6 @@ export class ManagerComponent {
   protected allCategories() {
     return this.categoryService.getCategories()
   }
+
+  protected readonly TicketStatus = TicketStatus;
 }

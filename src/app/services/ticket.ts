@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 export interface Ticket {
   id: number;
   description: string;
-  status: string;
+  status: TicketStatus;
   createdAt: Date;
   employeesId: Array<number>;
   categoriesId: Array<number>;
@@ -13,9 +13,16 @@ export interface Ticket {
 
 export interface TicketRequest {
   description: string;
-  status: string;
+  status: TicketStatus;
   employeesId: Array<number>;
   categoriesId: Array<number>;
+}
+
+export enum TicketStatus {
+  New = "New",
+  InProgress = "progress",
+  Cancelled = "Cancelled",
+  Completed = "Completed",
 }
 
 @Service()
@@ -29,5 +36,9 @@ export class TicketService {
 
   public createTicket(ticket: TicketRequest): Observable<Ticket> {
     return this.client.post<Ticket>(this.apiUrl, ticket);
+  }
+
+  public updateTicket(id: number, ticket: TicketRequest): Observable<Ticket> {
+    return this.client.put<Ticket>(`${this.apiUrl}/${id}`, ticket);
   }
 }

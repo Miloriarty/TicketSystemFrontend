@@ -105,9 +105,11 @@
               <span class="ticket-number">Ticket #{{ticket.id}}</span>
               <h3>Todo Title</h3>
             </div>
-            <span class="status new">{{ticket.status}}</span>
+            <div class="status" [ngClass]="statusClass[ticket.status]">
+              {{ ticket.status }}
+            </div>
           </div>
-          <p>{{ticket.description}}</p>
+          <span class="ticket-description">{{ ticket.description }}</span>
           <div class="ticket-bottom">
             <span>
               <mat-icon>schedule</mat-icon>
@@ -128,7 +130,7 @@
         <h2>Overall tickets: {{tickets().length}}</h2>
       </div>
 
-      <section class="all-tickets">
+      <div class="tickets-grid">
         @for (ticket of tickets().slice(3); track ticket.id) {
           <mat-card class="ticket-card">
             <div class="ticket-top">
@@ -136,7 +138,9 @@
                 <span class="ticket-number">Заявка #{{ticket.id}}</span>
                 <h3>Todo Title</h3>
               </div>
-              <span class="status new">{{ticket.status}}</span>
+              <div class="status" [ngClass]="statusClass[ticket.status]">
+                {{ ticket.status }}
+              </div>
             </div>
             <p>{{ticket.description}}</p>
             <div class="ticket-bottom">
@@ -151,7 +155,7 @@
             </div>
           </mat-card>
         }
-      </section>
+      </div>
     </section>
   </main>
 </div>
