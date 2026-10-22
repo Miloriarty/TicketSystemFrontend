@@ -1,0 +1,222 @@
+<!-- Content -->
+<main class="content">
+
+  <!-- Employee create card -->
+  <mat-card class="employee-create-card">
+    <mat-card-header>
+      <div mat-card-avatar class="card-icon">
+        <mat-icon fontSet="material-symbols-outlined">
+          {{ editingEmployeeId() === null ? 'person_add' : 'person_edit'}}
+        </mat-icon>
+      </div>
+      <mat-card-title>
+        {{ editingEmployeeId() === null ? 'Add employee' : 'Edit employee'}}
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Full name</mat-label>
+        <input matInput
+               [ngModel]="fullName()"
+               (ngModelChange)="fullName.set($event)"
+               placeholder="Enter employee's full name"
+               >
+      </mat-form-field>
+
+        <mat-form-field appearance="outline" style="flex: 50">
+          <mat-label>Position</mat-label>
+          <input matInput
+                 [ngModel]="position()"
+                 (ngModelChange)="position.set($event)"
+                 placeholder="Enter employee's position"
+          >
+        </mat-form-field>
+
+          <div style="display: flex; flex-direction: row; gap: 4px">
+
+            <!--Categories-->
+            <mat-form-field appearance="outline" style="flex: 50">
+              <mat-label>Categories</mat-label>
+              <mat-select
+                  multiple
+                  [ngModel]="selectedCategories()"
+                  (ngModelChange)="onCategoriesChange($event)"
+                  placeholder="Choose categories"
+              >
+                @for (cat of categories(); track cat.id) {
+                  <mat-option [value]="cat">
+                    {{ cat.name }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Roles -->
+            <mat-form-field appearance="outline" style="flex: 50">
+              <mat-label>Role</mat-label>
+              <mat-select
+                          [ngModel]="selectedRole()"
+                          (ngModelChange)="onRolesChange($event)"
+                          placeholder="Choose role"
+              >
+                @for (role of roles(); track role.id) {
+                  <mat-option [value]="role">
+                    {{role.name}}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+    </mat-card-content>
+
+    <!-- Button -->
+    <mat-card-actions>
+      <button matButton="outlined"
+              class="cancel-button"
+              [disabled]="!canCancelEmployee()"
+              (click)="clearEmployeeForm(); editingEmployeeId.set(null)"
+              >
+        <mat-icon>cancel</mat-icon>
+        Cancel
+      </button>
+      <button mat-flat-button
+              class="create-button"
+              [disabled]="!canCreateEmployee()"
+              (click)="createEmployee()">
+        <mat-icon>{{ editingEmployeeId() === null ? 'add' : 'edit' }}</mat-icon>
+        {{ editingEmployeeId() === null ? 'Add employee' : 'Edit employee' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+
+  <!--  Categories Card  -->
+  <mat-card class="category-create-card">
+    <mat-card-header>
+      <div mat-card-avatar class="card-icon">
+        <mat-icon>create_new_folder</mat-icon>
+      </div>
+      <mat-card-title>Create category</mat-card-title>
+
+      <!-- Search -->
+      <mat-form-field class="header-search"
+                      appearance="outline"
+                      subscriptSizing="dynamic"
+      >
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput
+               [ngModel]="searchCategory()"
+               (ngModelChange)="onSearchCategoryChange($event)"
+               placeholder="Search categories"
+        >
+      </mat-form-field>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Categories -->
+      <ul class="category-list">
+        @for (cat of filteredCategories(); track cat.id) {
+        <li class="category-row">
+          <span class="category-name">{{ cat.name }}</span>
+
+          <div class="row-actions">
+            <button mat-icon-button
+                    (click)="editCategory(cat)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button
+                    class="delete-button"
+                    (click)="deleteCategory(cat)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </li>
+        } @empty {
+        <li class="category-empty">No categories found</li>
+        }
+      </ul>
+
+      <!-- Add category -->
+      <div class="add-category">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <!-- <mat-label>New category</mat-label>-->
+          <input matInput
+                 [ngModel]="createCategoryField()"
+                 (ngModelChange)="onCrateCategoryFieldChange($event)"
+                 placeholder="Enter category name">
+        </mat-form-field>
+
+        <button matButton="outlined"
+                class="cancel-button"
+                [disabled]="!(createCategoryField().length > 0)"
+                (click)="clearCategoryForm(); editingCategoryId.set(null)"
+        >
+          <mat-icon>cancel</mat-icon>
+          Cancel
+        </button>
+        <button mat-flat-button
+                class="create-button"
+                [disabled]="!canCreateCategory()"
+                (click)="createCategory()"
+        >
+          <mat-icon>{{ editingCategoryId() === null ? 'add' : 'edit'}}</mat-icon>
+          {{ editingCategoryId() === null ? 'Add category' : 'Edit category'}}
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- All employees -->
+  <section class="all-employee">
+    <div class="section-title">
+      <h2>All employees</h2>
+      <span>{{ employees().length }}</span>
+    </div>
+
+    <div class="employee-grid">
+      @for (employee of employees(); track employee.id) {
+      <mat-card class="employee-card">
+
+        <div class="employee-top">
+          <div class="employee-identity">
+            <div class="card-icon">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div class="employee-info">
+              <h3>{{ employee.fullName }}</h3>
+              <span class="employee-position">{{ employee.position }}</span>
+            </div>
+          </div>
+
+          <div class="employee-actions">
+            <button mat-icon-button
+                    (click)="editEmployee(employee)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="delete-button"
+                    (click)="deleteEmployee(employee.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="employee-meta">
+          <span>
+            <mat-icon>schedule</mat-icon>
+            {{ employee.startDate | date:'dd.MM.yy' }}
+          </span>
+        </div>
+
+        @if (employee.categoriesId.length > 0) {
+        <div class="chips">
+          @for (name of (employee.categoriesId | namesByIds: categories() : 'name'); track name) {
+            <span class="chip">{{ name }}</span>
+          }
+            </div>
+        }
+      </mat-card>
+      }
+    </div>
+  </section>
+</main>

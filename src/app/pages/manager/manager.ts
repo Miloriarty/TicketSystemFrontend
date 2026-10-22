@@ -13,11 +13,14 @@ import {
   MatCardTitle
 } from '@angular/material/card';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {CategoryService, Category} from '../services/category';
-import {EmployeeService, Employee} from '../services/employee';
-import {TicketService, Ticket, TicketRequest, TicketStatus} from '../services/ticket';
+import {CategoryService} from '../../core/services/category';
+import {EmployeeService} from '../../core/services/employee';
+import {TicketService} from '../../core/services/ticket';
+import {Category} from '../../core/models/category';
+import {Employee} from '../../core/models/employee';
+import {Ticket, TicketRequest, TicketStatus, TICKET_STATUS_CLASS} from '../../core/models/ticket';
 import {DatePipe, NgClass} from '@angular/common';
-import {AppHeader} from '../app-header/app-header';
+import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids';
 
 
 @Component({
@@ -37,8 +40,8 @@ import {AppHeader} from '../app-header/app-header';
     MatSelect,
     MatOption,
     DatePipe,
-    AppHeader,
     NgClass,
+    NamesByIdsPipe,
   ],
   standalone: true,
   selector: 'app-manager',
@@ -77,12 +80,7 @@ export class ManagerComponent {
     })
   }
 
-  protected readonly statusClass: Record<TicketStatus, string> = {
-    [TicketStatus.New]: 'new',
-    [TicketStatus.InProgress]: 'progress',
-    [TicketStatus.Cancelled]: 'cancelled',
-    [TicketStatus.Completed]: 'completed',
-  };
+  protected readonly statusClass = TICKET_STATUS_CLASS;
 
   protected onCategoriesChange(categories: Category[]) {
     this.selectedCategories.set(categories);
@@ -131,22 +129,6 @@ export class ManagerComponent {
     if (categoriesId.length === 0) return false;
 
     return categoriesId.every(c => employeeCategoriesId.has(c));
-  }
-
-  protected getCategoryNames(categoriesId: number[]): string[] {
-    return categoriesId
-        .map(id => this.categories().find(c => c.id === id)?.name)
-        .filter(name => name !== undefined);
-  }
-
-  protected getEmployeeNames(employeesId: number[]): string[] {
-    return employeesId
-      .map(id => this.employees().find(e => e.id === id)?.fullName)
-      .filter(name => name !== undefined);
-  }
-
-  protected allCategories() {
-    return this.categoryService.getCategories()
   }
 
   protected readonly TicketStatus = TicketStatus;

@@ -1,32 +1,7 @@
-.page {
-  min-height: 100vh;
-  background-color: var(--mat-sys-background);
-  color: var(--mat-sys-on-background);
-}
-
 .content {
   width: min(1200px, calc(100% - 48px));
   margin: 0 auto;
   padding: 44px 0 80px;
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 16px;
-
-  h2 {
-    margin: 0;
-    font-size: 22px;
-    color: var(--mat-sys-on-background);
-  }
-
-  span {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--mat-sys-on-surface-variant);
-  }
 }
 
 .tickets-grid {
@@ -82,16 +57,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-}
-
-.ticket-description {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  overflow: hidden;
-  font-size: 13px;
-  color: var(--mat-sys-on-surface-variant);
 }
 
 .ticket-actions {
@@ -154,25 +119,6 @@
 }
 
 .status {
-  flex-shrink: 0;
-  padding: 6px 11px;
-  border-radius: 8px;
-  font-size: 11px;
   font-weight: 500;
   align-self: flex-start;
-
-  &.new {
-    color: var(--mat-sys-on-primary-container);
-    background-color: var(--mat-sys-primary-container);
-  }
-
-  &.progress {
-    color: var(--mat-sys-on-secondary-container);
-    background-color: var(--mat-sys-secondary-container);
-  }
-
-  &.completed {
-    color: var(--mat-sys-on-tertiary-container);
-    background-color: var(--mat-sys-tertiary-container);
-  }
 }

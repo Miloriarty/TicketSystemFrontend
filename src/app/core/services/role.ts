@@ -1,18 +1,13 @@
 import {inject, Service} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-
-
-export interface Role {
-  id: number;
-  name: string;
-  employeesId: Array<number>
-}
+import {API_URL} from '../api';
+import {Role} from '../models/role';
 
 @Service()
 export class RoleService {
   private readonly client = inject<HttpClient>(HttpClient);
-  private readonly apiUrl = "http://localhost:5042/api/roles";
+  private readonly apiUrl = `${API_URL}/roles`;
 
   public getRoles() : Observable<Role[]> {
     return this.client.get<Role[]>(this.apiUrl)

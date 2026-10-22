@@ -1,0 +1,157 @@
+<!-- Content -->
+<main class="content">
+
+  <!-- Create card -->
+  <mat-card class="ticket-create-card">
+    <mat-card-header>
+      <div mat-card-avatar class="card-icon">
+        <mat-icon>add_task</mat-icon>
+      </div>
+      <mat-card-title>New ticket</mat-card-title>
+      <mat-card-subtitle>Create ticket</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput
+               [ngModel]="title()"
+               (ngModelChange)="title.set($event)"
+               placeholder="Enter title"
+        >
+      </mat-form-field>
+
+      <!-- Description -->
+      <mat-form-field appearance="outline">
+        <mat-label>Problem desc</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          [ngModel]="description()"
+          (ngModelChange)="description.set($event)"
+          placeholder="Enter problem..."
+        ></textarea>
+      </mat-form-field>
+
+      <!--Categories-->
+      <mat-form-field appearance="outline">
+        <mat-label>Categories</mat-label>
+        <mat-select
+          multiple
+          [ngModel]="selectedCategories()"
+          (ngModelChange)="onCategoriesChange($event)"
+          placeholder="Choose category"
+        >
+          @for (cat of categories(); track cat.id) {
+            <mat-option [value]="cat">
+              {{ cat.name }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Employees -->
+      <mat-form-field appearance="outline">
+        <mat-label>Employees</mat-label>
+        <mat-select
+          multiple
+          [ngModel]="selectedEmployees()"
+          (ngModelChange)="onEmployeesChange($event)"
+          placeholder="Choose employee"
+          [disabled]="!categorySelected()"
+          >
+          @for (employee of employees(); track employee.id) {
+            <mat-option [value]="employee">
+              <span>{{employee.fullName}}</span>
+              <small style="margin: 12px">
+                {{(employee.categoriesId | namesByIds: categories() : 'name')}}
+              </small>
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      @if (selectedCategories().length > 0 && !isAllCategoriesCovered()) {
+        <div class="validation-warning">
+          <mat-icon>warning</mat-icon>
+          <span>Not all categories covered</span>
+        </div>
+      }
+    </mat-card-content>
+
+    <!-- Button -->
+    <mat-card-actions>
+      <button
+        mat-flat-button
+        class="create-button"
+        [disabled]="!canCreateTicket()"
+        (click)="createTicket()"
+      >
+        <mat-icon>add</mat-icon>
+        Create ticket
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Right section -->
+  <section class="tickets">
+    @for (ticket of tickets().slice(0, 3); track ticket.id) {
+      <mat-card class="ticket-card">
+        <div class="ticket-top">
+          <div>
+            <span class="ticket-number">Ticket #{{ticket.id}}</span>
+            <h3>Todo Title</h3>
+          </div>
+          <div class="status" [ngClass]="statusClass[ticket.status]">
+            {{ ticket.status }}
+          </div>
+        </div>
+        <span class="ticket-description">{{ ticket.description }}</span>
+        <div class="ticket-bottom">
+          <span>
+            <mat-icon>schedule</mat-icon>
+            {{ticket.createdAt | date:'dd.MM.yy, HH.mm'}}
+          </span>
+          <span>
+            <mat-icon>person</mat-icon>
+            {{(ticket.employeesId | namesByIds: employees() : 'fullName').join(", ")}}
+          </span>
+        </div>
+      </mat-card>
+    }
+  </section>
+
+  <!-- Bottom section -->
+  <section class="all-tickets">
+    <div class="section-title">
+      <h2>Overall tickets: {{tickets().length}}</h2>
+    </div>
+
+    <div class="tickets-grid">
+      @for (ticket of tickets().slice(3); track ticket.id) {
+        <mat-card class="ticket-card">
+          <div class="ticket-top">
+            <div>
+              <span class="ticket-number">Заявка #{{ticket.id}}</span>
+              <h3>Todo Title</h3> <!-- todo title -->
+            </div>
+            <div class="status" [ngClass]="statusClass[ticket.status]">
+              {{ ticket.status }}
+            </div>
+          </div>
+          <p>{{ticket.description}}</p>
+          <div class="ticket-bottom">
+          <span>
+            <mat-icon>schedule</mat-icon>
+            {{ticket.createdAt | date:'dd.MM.yy, HH.mm'}}
+          </span>
+            <span>
+            <mat-icon>person</mat-icon>
+              {{(ticket.employeesId | namesByIds: employees() : 'fullName').join(", ")}}
+          </span>
+          </div>
+        </mat-card>
+      }
+    </div>
+  </section>
+</main>

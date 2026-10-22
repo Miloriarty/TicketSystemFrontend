@@ -13,12 +13,16 @@ import {
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
-import {Category, CategoryRequest, CategoryService} from '../services/category';
-import {Employee, EmployeeRequest, EmployeeService} from '../services/employee';
-import {Ticket, TicketService} from '../services/ticket';
-import {Role, RoleService} from '../services/role';
+import {CategoryService} from '../../core/services/category';
+import {EmployeeService} from '../../core/services/employee';
+import {TicketService} from '../../core/services/ticket';
+import {RoleService} from '../../core/services/role';
+import {Category, CategoryRequest} from '../../core/models/category';
+import {Employee, EmployeeRequest} from '../../core/models/employee';
+import {Ticket} from '../../core/models/ticket';
+import {Role} from '../../core/models/role';
 import {DatePipe} from '@angular/common';
-import {AppHeader} from '../app-header/app-header';
+import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids';
 
 @Component({
   imports: [
@@ -38,7 +42,7 @@ import {AppHeader} from '../app-header/app-header';
     MatCardAvatar,
     MatIconButton,
     DatePipe,
-    AppHeader
+    NamesByIdsPipe
   ],
   selector: 'app-admin',
   styleUrl: './admin.css',
@@ -157,18 +161,6 @@ export class AdminComponent { // todo delete action, validation
 
   protected onSearchCategoryChange(text: string) {
     this.searchCategory.set(text);
-  }
-
-  protected getCategoryNames(categoriesId: number[]): string[] {
-    return categoriesId
-      .map(id => this.categories().find(c => c.id === id)?.name)
-      .filter(name => name !== undefined);
-  }
-
-  protected getEmployeeNames(employeesId: number[]): string[] {
-    return employeesId
-      .map(id => this.employees().find(e => e.id === id)?.fullName)
-      .filter(name => name !== undefined);
   }
 
   protected editCategory(cat: Category) {

@@ -1,28 +1,13 @@
 import {inject, Service} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-
-export interface Employee {
-  id: number;
-  fullName: string;
-  position: string;
-  startDate: Date;
-  roleId: number;
-  categoriesId: Array<number>;
-  ticketsId: Array<number>;
-}
-
-export interface EmployeeRequest {
-  fullName: string;
-  position: string;
-  roleId: number;
-  categoriesId: Array<number>;
-}
+import {API_URL} from '../api';
+import {Employee, EmployeeRequest} from '../models/employee';
 
 @Service()
 export class EmployeeService {
   private readonly client = inject<HttpClient>(HttpClient);
-  private readonly apiUrl = "http://localhost:5042/api/employees";
+  private readonly apiUrl = `${API_URL}/employees`;
 
   public getEmployees(): Observable<Employee[]> {
     return this.client.get<Employee[]>(this.apiUrl);

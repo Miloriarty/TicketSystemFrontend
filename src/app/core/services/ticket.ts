@@ -1,34 +1,13 @@
 import {inject, Service} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-
-export interface Ticket {
-  id: number;
-  description: string;
-  status: TicketStatus;
-  createdAt: Date;
-  employeesId: Array<number>;
-  categoriesId: Array<number>;
-}
-
-export interface TicketRequest {
-  description: string;
-  status: TicketStatus;
-  employeesId: Array<number>;
-  categoriesId: Array<number>;
-}
-
-export enum TicketStatus {
-  New = "New",
-  InProgress = "progress",
-  Cancelled = "Cancelled",
-  Completed = "Completed",
-}
+import {API_URL} from '../api';
+import {Ticket, TicketRequest} from '../models/ticket';
 
 @Service()
 export class TicketService {
   private readonly client = inject<HttpClient>(HttpClient);
-  private readonly apiUrl = "http://localhost:5042/api/tickets";
+  private readonly apiUrl = `${API_URL}/tickets`;
 
   public getTickets() : Observable<Ticket[]> {
     return this.client.get<Ticket[]>(this.apiUrl);

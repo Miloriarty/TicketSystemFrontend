@@ -1,0 +1,72 @@
+<main class="content">
+  <section class="tickets">
+    <div class="section-title">
+      <h2>All tickets</h2>
+      <span>{{ tickets().length }}</span>
+    </div>
+
+    <div class="tickets-grid">
+      @for (ticket of tickets(); track ticket.id) {
+        <mat-card class="ticket-card">
+
+          <div class="ticket-header">
+            <div class="card-icon">
+              <mat-icon>confirmation_number</mat-icon>
+            </div>
+            <div class="ticket-info">
+              <h3>Todo title</h3>
+              <span class="ticket-description">{{ ticket.description }}</span>
+            </div>
+            <div class="status" [ngClass]="statusClass[ticket.status]">
+              {{ ticket.status }}
+            </div>
+          </div>
+
+          <div class="ticket-meta">
+            <span>
+              <mat-icon>schedule</mat-icon>
+              {{ ticket.createdAt | date:'dd.MM.yy' }}
+            </span>
+          </div>
+
+          @if (ticket.categoriesId.length > 0) {
+            <div class="chips">
+              @for (name of (ticket.categoriesId | namesByIds: categories() : 'name'); track name) {
+                <mat-chip class="chip">{{ name }}</mat-chip>
+              }
+            </div>
+          }
+
+          <mat-card-actions class="ticket-actions">
+            <button matButton="outlined"
+                    class="cancel-button"
+                    (click)="changeStatus(ticket, TicketStatus.Cancelled)"
+            >
+              <mat-icon>cancel</mat-icon>
+              Cancel
+            </button>
+
+            @if (ticket.status === TicketStatus.InProgress) {
+              <button mat-flat-button
+                      class="create-button"
+                      (click)="changeStatus(ticket, TicketStatus.Completed)"
+              >
+                <mat-icon>check</mat-icon>
+                Finish
+              </button>
+            } @else {
+              <button mat-flat-button
+                      class="create-button"
+                      (click)="changeStatus(ticket, TicketStatus.InProgress)"
+              >
+                <mat-icon>add</mat-icon>
+                Take
+              </button>
+            }
+
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  </section>
+</main>

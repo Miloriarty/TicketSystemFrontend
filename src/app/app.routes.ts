@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import {AdminComponent} from './admin/admin';
-import {ManagerComponent} from './manager/manager';
-import {EmployeeComponent} from './employee/employee';
+import {AdminComponent} from './pages/admin/admin';
+import {ManagerComponent} from './pages/manager/manager';
+import {EmployeeComponent} from './pages/employee/employee';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'manager', pathMatch: 'full' },
