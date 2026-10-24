@@ -48,7 +48,7 @@ import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids';
   styleUrl: './admin.css',
   templateUrl: './admin.html',
 })
-export class AdminComponent { // todo delete action, validation
+export class AdminComponent { // Todo add trim to fields
   categoryService = inject(CategoryService);
   employeeService = inject(EmployeeService);
   ticketService = inject(TicketService);
@@ -168,8 +168,16 @@ export class AdminComponent { // todo delete action, validation
     this.createCategoryField.set(cat.name);
   }
 
-  protected deleteCategory(cat: Category) {
-
+  protected deleteCategory(id: number) {
+    this.categoryService.deleteCategory(id).subscribe({
+      next: () => {
+        console.log("Category deleted", id);
+        this.categories.update(list => list.filter(c => c.id !== id));
+      },
+      error: error => {
+        console.error("Failed to delete category: ", error);
+      }
+    })
   }
 
   protected createCategory() {

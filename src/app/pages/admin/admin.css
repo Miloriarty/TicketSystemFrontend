@@ -148,7 +148,7 @@ CREATE CARD
 .add-category {
   display: flex;
   align-items: center;
-  gap: 12px;
+  /*gap: 12px;*/
   margin-top: auto;
   padding-top: 16px;
 
@@ -156,6 +156,7 @@ CREATE CARD
     flex: 1;
     --mat-form-field-container-height: 44px;
     --mat-form-field-container-vertical-padding: 8px;
+    margin-right: 12px
   }
 }
 

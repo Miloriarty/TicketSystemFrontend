@@ -127,7 +127,7 @@
             </button>
             <button mat-icon-button
                     class="delete-button"
-                    (click)="deleteCategory(cat)">
+                    (click)="deleteCategory(cat.id)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
@@ -139,12 +139,12 @@
 
       <!-- Add category -->
       <div class="add-category">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" style="">
         <!-- <mat-label>New category</mat-label>-->
-          <input matInput
+          <input matInput style="padding-top: 2px; "
                  [ngModel]="createCategoryField()"
                  (ngModelChange)="onCrateCategoryFieldChange($event)"
-                 placeholder="Enter category name">
+                 placeholder="Category name">
         </mat-form-field>
 
         <button matButton="outlined"
