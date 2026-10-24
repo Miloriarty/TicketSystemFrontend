@@ -138,6 +138,17 @@
             <div class="status" [ngClass]="statusClass[ticket.status]">
               {{ ticket.status }}
             </div>
+
+            <div class="ticket-actions">
+              <button mat-icon-button
+                      (click)="editTicket(ticket)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button class="delete-button"
+                      (click)="deleteTicket(ticket.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
           <span class="ticket-description">{{ ticket.description }}</span>
           <div class="ticket-bottom">

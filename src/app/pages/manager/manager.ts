@@ -131,5 +131,13 @@ export class ManagerComponent {
     return categoriesId.every(c => employeeCategoriesId.has(c));
   }
 
+  protected editTicket(ticket: Ticket) {
+
+  }
+
+  protected deleteTicket(ticketId: number) {
+
+  }
+
   protected readonly TicketStatus = TicketStatus;
 }
