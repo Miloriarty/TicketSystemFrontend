@@ -20,4 +20,8 @@ export class EmployeeService {
   public editEmployee(id: number, employee: EmployeeRequest): Observable<Employee> {
     return this.client.put<Employee>(`${this.apiUrl}/${id}`, employee);
   }
+
+  public deleteEmployee(id: number): Observable<void> {
+    return this.client.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

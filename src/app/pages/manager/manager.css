@@ -82,12 +82,20 @@
 }
 
 /* =========================
-   Create button
+   Buttons
    ========================= */
 
 .create-button {
   min-height: 44px;
   padding: 0 22px;
+  min-width: 160px;
+}
+
+.cancel-button {
+  min-height: 44px;
+  padding: 0 22px;
+  min-width: 160px;
+  margin-right: 8px;
 }
 
 /* =========================

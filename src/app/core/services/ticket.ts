@@ -20,4 +20,8 @@ export class TicketService {
   public updateTicket(id: number, ticket: TicketRequest): Observable<Ticket> {
     return this.client.put<Ticket>(`${this.apiUrl}/${id}`, ticket);
   }
+
+  public deleteTicket(id: number): Observable<void> {
+    return this.client.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

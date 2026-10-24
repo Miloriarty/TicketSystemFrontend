@@ -81,6 +81,15 @@
 
     <!-- Button -->
     <mat-card-actions>
+      <button matButton="outlined"
+              class="cancel-button"
+              [disabled]="!canCancel()"
+              (click)="clearForm()"
+      >
+        <mat-icon>cancel</mat-icon>
+        Cancel
+      </button>
+
       <button
         mat-flat-button
         class="create-button"

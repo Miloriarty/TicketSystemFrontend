@@ -190,7 +190,7 @@ export class AdminComponent { // todo delete action, validation
         }
       })
     } else {
-      this.categoryService.updateCategory(cat).subscribe({
+      this.categoryService.updateCategory(this.editingCategoryId()!, cat).subscribe({
         next: cat => {
             console.log('Category updated: ', cat);
 
@@ -221,7 +221,15 @@ export class AdminComponent { // todo delete action, validation
   }
 
   protected deleteEmployee(employeeId: number) {
-
+    this.employeeService.deleteEmployee(employeeId).subscribe({
+      next: () => {
+        console.log('Employee deleted: ', employeeId);
+        this.employees.update(list => list.filter(e => e.id !== employeeId));
+      },
+      error: error => {
+        console.error("Failed to delete employee: ", error);
+      }
+    })
   }
 
   protected canCancelEmployee(): boolean {

@@ -17,7 +17,11 @@ export class CategoryService {
     return this.client.post<Category>(this.apiUrl, cat);
   }
 
-  public updateCategory(cat: CategoryRequest): Observable<Category> {
-    return this.client.put<Category>(this.apiUrl, cat);
+  public updateCategory(id: number, cat: CategoryRequest): Observable<Category> {
+    return this.client.put<Category>(`${this.apiUrl}/${id}`, cat);
+  }
+
+  public deleteCategory(id: number): Observable<void> {
+    return this.client.delete<void>(`${this.apiUrl}/${id}`)
   }
 }

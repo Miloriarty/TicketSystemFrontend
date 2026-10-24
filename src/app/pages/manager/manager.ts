@@ -63,6 +63,7 @@ export class ManagerComponent {
   selectedEmployees = signal<Employee[]>([]);
 
   tickets = signal<Ticket[]>([]);
+  editingTicketId = signal<number | null>(null);
 
   constructor() {
     this.categoryService.getCategories().subscribe(categories => {
@@ -132,11 +133,41 @@ export class ManagerComponent {
   }
 
   protected editTicket(ticket: Ticket) {
-
+    this.editingTicketId.set(ticket.id);
+    this.title.set("Todo title"); // todo title
+    this.description.set(ticket.description);
+    this.selectedCategories.set(this.categories()
+      .filter(c => ticket.categoriesId.includes(c.id)));
+    this.selectedEmployees.set(this.employees()
+      .filter(e => e.ticketsId.includes(ticket.id))
+    )
   }
 
   protected deleteTicket(ticketId: number) {
+    this.ticketService.deleteTicket(ticketId).subscribe({
+      next: () => {
+        console.log('Ticket deleted: ', ticketId);
+        this.tickets.update(list => list.filter(t => t.id !== ticketId));
+      },
+      error: error => {
+        console.error('Failed to delete ticket: ', error);
+      }
+    })
+  }
 
+  protected canCancel() {
+    return this.title().length > 0
+      || this.description().length > 0
+      || this.selectedCategories().length > 0
+      || this.selectedEmployees().length > 0;
+  }
+
+  protected clearForm() {
+    this.editingTicketId.set(null);
+    this.title.set('');
+    this.description.set('');
+    this.selectedCategories.set([]);
+    this.selectedEmployees.set([]);
   }
 
   protected readonly TicketStatus = TicketStatus;
