@@ -5,10 +5,14 @@
   <mat-card class="ticket-create-card">
     <mat-card-header>
       <div mat-card-avatar class="card-icon">
-        <mat-icon>add_task</mat-icon>
+        <mat-icon>
+          {{ editingTicketId() === null ? 'add_task' : 'edit'}}
+        </mat-icon>
       </div>
       <mat-card-title>New ticket</mat-card-title>
-      <mat-card-subtitle>Create ticket</mat-card-subtitle>
+      <mat-card-subtitle>
+        {{ editingTicketId() === null ? 'Add ticket' : 'Edit ticket'}}
+      </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>

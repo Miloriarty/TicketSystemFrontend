@@ -43,6 +43,11 @@
     color: var(--mat-sys-on-tertiary-container);
     background-color: var(--mat-sys-tertiary-container);
   }
+
+  &.cancelled {
+    color: var(--mat-sys-on-error-container);
+    background-color: var(--mat-sys-error-container);
+  }
 }
 
 .ticket-description {
