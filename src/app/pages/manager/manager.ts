@@ -21,6 +21,8 @@ import {Employee} from '../../core/models/employee';
 import {Ticket, TicketRequest, TicketStatus, TICKET_STATUS_CLASS} from '../../core/models/ticket';
 import {DatePipe, NgClass} from '@angular/common';
 import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids';
+import {ConfirmService} from '../../shared/confirm-dialog/confirm-service';
+import {switchMap, filter} from 'rxjs';
 
 
 @Component({
@@ -52,6 +54,7 @@ export class ManagerComponent {
   categoryService = inject(CategoryService);
   employeeService = inject(EmployeeService);
   ticketService = inject(TicketService);
+  confirmService = inject(ConfirmService);
 
   title = signal<string>('');
   description = signal<string>("");
@@ -144,7 +147,13 @@ export class ManagerComponent {
   }
 
   protected deleteTicket(ticketId: number) {
-    this.ticketService.deleteTicket(ticketId).subscribe({
+    this.confirmService.confirm({
+      title: "Delete ticket",
+      message: "Delete this ticket?"
+    }).pipe(
+      filter(Boolean),
+      switchMap(() => this.ticketService.deleteTicket(ticketId))
+    ).subscribe({
       next: () => {
         console.log('Ticket deleted: ', ticketId);
         this.tickets.update(list => list.filter(t => t.id !== ticketId));

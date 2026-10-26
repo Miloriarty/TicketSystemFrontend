@@ -74,17 +74,17 @@
           }
         </mat-select>
       </mat-form-field>
+    </mat-card-content>
 
+    <!-- Button -->
+    <mat-card-actions>
       @if (selectedCategories().length > 0 && !isAllCategoriesCovered()) {
         <div class="validation-warning">
           <mat-icon>warning</mat-icon>
           <span>Not all categories covered</span>
         </div>
       }
-    </mat-card-content>
 
-    <!-- Button -->
-    <mat-card-actions>
       <button matButton="outlined"
               class="cancel-button"
               [disabled]="!canCancel()"

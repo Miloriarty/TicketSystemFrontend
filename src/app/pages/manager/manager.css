@@ -67,8 +67,8 @@
 .validation-warning {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
+  gap: 12px;
+  padding: 0 20px;
   border-radius: 12px;
   background-color: transparent;
   color: var(--mat-sys-on-error-container);

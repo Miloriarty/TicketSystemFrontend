@@ -84,6 +84,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 20px;
+  margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--mat-sys-outline-variant);
   font-size: 13px;
@@ -106,7 +107,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: auto;
 
   mat-chip {
     --mat-chip-label-text-size: 12px;

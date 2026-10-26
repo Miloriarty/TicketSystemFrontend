@@ -69,9 +69,5 @@ export class EmployeeComponent {
     });
   }
 
-  protected deleteTicket(ticketId: number) {
-
-  }
-
   protected readonly TicketStatus = TicketStatus;
 }

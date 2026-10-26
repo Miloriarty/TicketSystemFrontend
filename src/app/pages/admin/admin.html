@@ -97,7 +97,7 @@
       <div mat-card-avatar class="card-icon">
         <mat-icon>create_new_folder</mat-icon>
       </div>
-      <mat-card-title style="padding-left: 0px">Create category</mat-card-title>
+      <mat-card-title style="padding-left: 0">Create category</mat-card-title>
 
       <!-- Search -->
       <mat-form-field class="header-search"
@@ -122,12 +122,8 @@
 
           <div class="row-actions">
             <button mat-icon-button
-                    (click)="editCategory(cat)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button
                     class="delete-button"
-                    (click)="deleteCategory(cat.id)">
+                    (click)="deleteCategory(cat)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
@@ -137,34 +133,39 @@
         }
       </ul>
 
-      <!-- Add category -->
-      <div class="add-category">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" style="">
-        <!-- <mat-label>New category</mat-label>-->
-          <input matInput style="padding-top: 2px; "
-                 [ngModel]="createCategoryField()"
-                 (ngModelChange)="onCrateCategoryFieldChange($event)"
-                 placeholder="Category name">
-        </mat-form-field>
-
-        <button matButton="outlined"
-                class="cancel-button"
-                [disabled]="!(createCategoryField().length > 0)"
-                (click)="clearCategoryForm(); editingCategoryId.set(null)"
-        >
-          <mat-icon>cancel</mat-icon>
-          Cancel
-        </button>
-        <button mat-flat-button
-                class="create-button"
-                [disabled]="!canCreateCategory()"
-                (click)="createCategory()"
-        >
-          <mat-icon>{{ editingCategoryId() === null ? 'add' : 'edit'}}</mat-icon>
-          {{ editingCategoryId() === null ? 'Add category' : 'Edit category'}}
-        </button>
-      </div>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" style="">
+         <mat-label>New category</mat-label>
+        <input matInput style="padding-top: 2px; "
+               [ngModel]="createCategoryField()"
+               (ngModelChange)="onCrateCategoryFieldChange($event)"
+               placeholder="Category name">
+      </mat-form-field>
     </mat-card-content>
+
+    <mat-card-actions>
+      @if (isCategoryExists()) {
+        <div class="validation-warning">
+          <mat-icon>warning</mat-icon>
+          <div>Category already exists</div>
+        </div>
+      }
+      <button matButton="outlined"
+              class="cancel-button"
+              [disabled]="!(createCategoryField().length > 0)"
+              (click)="clearCategoryForm()"
+      >
+        <mat-icon>cancel</mat-icon>
+        Cancel
+      </button>
+      <button mat-flat-button
+              class="create-button"
+              [disabled]="!canCreateCategory()"
+              (click)="createCategory()"
+      >
+        <mat-icon>add</mat-icon>
+        Add category
+      </button>
+    </mat-card-actions>
   </mat-card>
 
   <!-- All employees -->
@@ -195,7 +196,7 @@
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button class="delete-button"
-                    (click)="deleteEmployee(employee.id)">
+                    (click)="deleteEmployee(employee)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

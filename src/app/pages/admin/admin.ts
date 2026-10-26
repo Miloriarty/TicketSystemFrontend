@@ -23,6 +23,8 @@ import {Ticket} from '../../core/models/ticket';
 import {Role} from '../../core/models/role';
 import {DatePipe} from '@angular/common';
 import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids';
+import {ConfirmService} from '../../shared/confirm-dialog/confirm-service';
+import {switchMap, filter} from 'rxjs';
 
 @Component({
   imports: [
@@ -42,7 +44,7 @@ import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids';
     MatCardAvatar,
     MatIconButton,
     DatePipe,
-    NamesByIdsPipe
+    NamesByIdsPipe,
   ],
   selector: 'app-admin',
   styleUrl: './admin.css',
@@ -53,6 +55,7 @@ export class AdminComponent { // Todo add trim to fields
   employeeService = inject(EmployeeService);
   ticketService = inject(TicketService);
   roleService = inject(RoleService);
+  confirmService = inject(ConfirmService);
 
   fullName = signal<string>('');
 
@@ -71,7 +74,6 @@ export class AdminComponent { // Todo add trim to fields
 
   createCategoryField = signal<string>('');
   searchCategory = signal<string>('');
-  editingCategoryId = signal<number | null>(null);
 
   filteredCategories = computed(() => {
     const query = this.searchCategory().trim().toLowerCase();
@@ -119,7 +121,7 @@ export class AdminComponent { // Todo add trim to fields
           console.log('Employee created: ', employee);
 
           this.clearEmployeeForm();
-          this.employees().push(employee);
+          this.employees.update(list => [...list, employee]);
         },
         error: err => {
           console.error("Failed to create employee: ", err)
@@ -144,7 +146,12 @@ export class AdminComponent { // Todo add trim to fields
   }
 
   protected canCreateCategory(): boolean {
-    return this.createCategoryField().trim().length > 0;
+    return this.createCategoryField().trim().length > 0 && !this.isCategoryExists();
+  }
+
+  protected isCategoryExists(): boolean {
+    const name = this.createCategoryField().trim().toLowerCase();
+    return this.categories().some(c => c.name.trim().toLowerCase() === name);
   }
 
   protected onCategoriesChange(categories: Category[]) {
@@ -163,13 +170,15 @@ export class AdminComponent { // Todo add trim to fields
     this.searchCategory.set(text);
   }
 
-  protected editCategory(cat: Category) {
-    this.editingCategoryId.set(cat.id);
-    this.createCategoryField.set(cat.name);
-  }
-
-  protected deleteCategory(id: number) {
-    this.categoryService.deleteCategory(id).subscribe({
+  protected deleteCategory(cat: Category) {
+    const id = cat.id;
+    this.confirmService.confirm({
+        title: "Delete category",
+        message: `Delete category ${cat.name}?`
+      }).pipe(
+        filter(Boolean),
+      switchMap(() => this.categoryService.deleteCategory(id))
+    ).subscribe({
       next: () => {
         console.log("Category deleted", id);
         this.categories.update(list => list.filter(c => c.id !== id));
@@ -186,34 +195,16 @@ export class AdminComponent { // Todo add trim to fields
     }
     this.createCategoryField.set('');
 
-    if (this.editingCategoryId() === null) {
-      this.categoryService.createCategory(cat).subscribe({
-        next: category => {
-          console.log('Category created: ', category);
-          this.clearCategoryForm()
-          this.categories().push(category);
-        },
-        error: err => {
-          console.error("Failed to create category: ", err)
-        }
-      })
-    } else {
-      this.categoryService.updateCategory(this.editingCategoryId()!, cat).subscribe({
-        next: cat => {
-            console.log('Category updated: ', cat);
-
-            this.clearCategoryForm();
-            this.categories.update(list =>
-              list.map(e => e.id === cat.id ? cat: e)
-            )
-            this.editingCategoryId.set(null);
-        },
-        error: err => {
-          console.error("Failed to update category: ", err)
-        }
-      })
-    }
-
+    this.categoryService.createCategory(cat).subscribe({
+      next: category => {
+        console.log('Category created: ', category);
+        this.clearCategoryForm()
+        this.categories.update(list => [...list, category]);
+      },
+      error: err => {
+        console.error("Failed to create category: ", err)
+      }
+    })
   }
 
   protected editEmployee(employee: Employee) {
@@ -228,8 +219,15 @@ export class AdminComponent { // Todo add trim to fields
     )
   }
 
-  protected deleteEmployee(employeeId: number) {
-    this.employeeService.deleteEmployee(employeeId).subscribe({
+  protected deleteEmployee(employee: Employee) {
+    const employeeId = employee.id;
+    this.confirmService.confirm({
+      title: "Delete employee",
+      message: `Delete employee ${employee.fullName}?`
+    }).pipe(
+      filter(Boolean),
+      switchMap(() => this.employeeService.deleteEmployee(employeeId))
+    ).subscribe({
       next: () => {
         console.log('Employee deleted: ', employeeId);
         this.employees.update(list => list.filter(e => e.id !== employeeId));
