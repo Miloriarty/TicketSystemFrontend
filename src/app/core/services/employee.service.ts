@@ -2,7 +2,7 @@ import {inject, Service} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {API_URL} from '../api';
-import {Employee, EmployeeRequest} from '../models/employee';
+import {Employee, EmployeeRequest} from '../models/employee.model';
 
 @Service()
 export class EmployeeService {

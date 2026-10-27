@@ -68,7 +68,7 @@
             <mat-option [value]="employee">
               <span>{{employee.fullName}}</span>
               <small style="margin: 12px">
-                {{(employee.categoriesId | namesByIds: categories() : 'name')}}
+                {{(employee.categoryIds | namesByIds: categories() : 'name')}}
               </small>
             </mat-option>
           }
@@ -127,7 +127,7 @@
           </span>
           <span>
             <mat-icon>person</mat-icon>
-            {{(ticket.employeesId | namesByIds: employees() : 'fullName').join(", ")}}
+            {{(ticket.employeeIds | namesByIds: employees() : 'fullName').join(", ")}}
           </span>
         </div>
       </mat-card>
@@ -171,7 +171,7 @@
           </span>
             <span>
             <mat-icon>person</mat-icon>
-              {{(ticket.employeesId | namesByIds: employees() : 'fullName').join(", ")}}
+              {{(ticket.employeeIds | namesByIds: employees() : 'fullName').join(", ")}}
           </span>
           </div>
         </mat-card>

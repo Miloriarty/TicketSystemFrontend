@@ -13,15 +13,15 @@ import {
   MatCardTitle
 } from '@angular/material/card';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {CategoryService} from '../../core/services/category';
-import {EmployeeService} from '../../core/services/employee';
-import {TicketService} from '../../core/services/ticket';
-import {Category} from '../../core/models/category';
-import {Employee} from '../../core/models/employee';
-import {Ticket, TicketRequest, TicketStatus, TICKET_STATUS_CLASS} from '../../core/models/ticket';
+import {CategoryService} from '../../core/services/category.service';
+import {EmployeeService} from '../../core/services/employee.service';
+import {TicketService} from '../../core/services/ticket.service';
+import {Category} from '../../core/models/category.model';
+import {Employee} from '../../core/models/employee.model';
+import {Ticket, TicketRequest, TicketStatus, TICKET_STATUS_CLASS} from '../../core/models/ticket.model';
 import {DatePipe, NgClass} from '@angular/common';
-import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids';
-import {ConfirmService} from '../../shared/confirm-dialog/confirm-service';
+import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
+import {ConfirmService} from '../../shared/confirm-dialog/confirm.service';
 import {switchMap, filter} from 'rxjs';
 
 
@@ -47,8 +47,8 @@ import {switchMap, filter} from 'rxjs';
   ],
   standalone: true,
   selector: 'app-manager',
-  styleUrl: './manager.css',
-  templateUrl: './manager.html',
+  styleUrl: './manager.component.css',
+  templateUrl: './manager.component.html',
 })
 export class ManagerComponent {
   categoryService = inject(CategoryService);
@@ -100,8 +100,8 @@ export class ManagerComponent {
     const ticket: TicketRequest = {
       description: this.description(),
       status: TicketStatus.New,
-      employeesId: this.selectedEmployees().map(e => e.id),
-      categoriesId: this.selectedCategories().map(c => c.id)
+      employeeIds: this.selectedEmployees().map(e => e.id),
+      categoryIds: this.selectedCategories().map(c => c.id)
     }
 
     this.ticketService.createTicket(ticket).subscribe({
@@ -128,11 +128,11 @@ export class ManagerComponent {
   }
 
   protected isAllCategoriesCovered() {
-    let categoriesId = this.selectedCategories().map(c => c.id);
-    let employeeCategoriesId = new Set(this.selectedEmployees().flatMap(e => e.categoriesId));
-    if (categoriesId.length === 0) return false;
+    let categoryIds = this.selectedCategories().map(c => c.id);
+    let employeeCategoryIds = new Set(this.selectedEmployees().flatMap(e => e.categoryIds));
+    if (categoryIds.length === 0) return false;
 
-    return categoriesId.every(c => employeeCategoriesId.has(c));
+    return categoryIds.every(c => employeeCategoryIds.has(c));
   }
 
   protected editTicket(ticket: Ticket) {
@@ -140,9 +140,9 @@ export class ManagerComponent {
     this.title.set("Todo title"); // todo title
     this.description.set(ticket.description);
     this.selectedCategories.set(this.categories()
-      .filter(c => ticket.categoriesId.includes(c.id)));
+      .filter(c => ticket.categoryIds.includes(c.id)));
     this.selectedEmployees.set(this.employees()
-      .filter(e => e.ticketsId.includes(ticket.id))
+      .filter(e => e.ticketIds.includes(ticket.id))
     )
   }
 

@@ -2,7 +2,7 @@ import {inject, Service} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {API_URL} from '../api';
-import {Role} from '../models/role';
+import {Role} from '../models/role.model';
 
 @Service()
 export class RoleService {

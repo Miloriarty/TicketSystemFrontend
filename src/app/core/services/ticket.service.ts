@@ -2,7 +2,7 @@ import {inject, Service} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {API_URL} from '../api';
-import {Ticket, TicketRequest} from '../models/ticket';
+import {Ticket, TicketRequest} from '../models/ticket.model';
 
 @Service()
 export class TicketService {

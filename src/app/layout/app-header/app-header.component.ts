@@ -5,7 +5,7 @@ import {MatIconModule} from '@angular/material/icon';
 @Component({
   selector: 'app-header',
   imports: [RouterLink, RouterLinkActive, MatIconModule],
-  templateUrl: './app-header.html',
-  styleUrl: './app-header.css',
+  templateUrl: './app-header.component.html',
+  styleUrl: './app-header.component.css',
 })
 export class AppHeader {}

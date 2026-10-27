@@ -3,15 +3,15 @@ export interface Ticket {
   description: string;
   status: TicketStatus;
   createdAt: Date;
-  employeesId: Array<number>;
-  categoriesId: Array<number>;
+  employeeIds: Array<number>;
+  categoryIds: Array<number>;
 }
 
 export interface TicketRequest {
   description: string;
   status: TicketStatus;
-  employeesId: Array<number>;
-  categoriesId: Array<number>;
+  employeeIds: Array<number>;
+  categoryIds: Array<number>;
 }
 
 export enum TicketStatus {

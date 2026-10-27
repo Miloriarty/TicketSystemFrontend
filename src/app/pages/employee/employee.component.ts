@@ -1,12 +1,12 @@
 import {Component, inject, signal} from '@angular/core';
-import {TicketService} from '../../core/services/ticket';
-import {CategoryService} from '../../core/services/category';
-import {Ticket, TicketRequest, TicketStatus, TICKET_STATUS_CLASS} from '../../core/models/ticket';
-import {Category} from '../../core/models/category';
+import {TicketService} from '../../core/services/ticket.service';
+import {CategoryService} from '../../core/services/category.service';
+import {Ticket, TicketRequest, TicketStatus, TICKET_STATUS_CLASS} from '../../core/models/ticket.model';
+import {Category} from '../../core/models/category.model';
 import {DatePipe, NgClass} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardActions} from '@angular/material/card';
-import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids';
+import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
 import {MatButton} from '@angular/material/button';
 import {MatChip} from '@angular/material/chips';
 
@@ -24,8 +24,8 @@ import {MatChip} from '@angular/material/chips';
     NamesByIdsPipe
   ],
   selector: 'app-employee',
-  styleUrl: './employee.css',
-  templateUrl: './employee.html',
+  styleUrl: './employee.component.css',
+  templateUrl: './employee.component.html',
 })
 export class EmployeeComponent {
   ticketService = inject(TicketService);
@@ -51,8 +51,8 @@ export class EmployeeComponent {
     const request: TicketRequest = {
       description: ticket.description,
       status: status,
-      employeesId: ticket.employeesId,
-      categoriesId: ticket.categoriesId
+      employeeIds: ticket.employeeIds,
+      categoryIds: ticket.categoryIds
     }
 
     this.ticketService.updateTicket(ticket.id, request).subscribe({

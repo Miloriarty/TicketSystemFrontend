@@ -18,8 +18,8 @@ export interface ConfirmDialogData {
 @Component({
   imports: [MatButton, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose],
   selector: 'app-confirm-dialog',
-  styleUrl: './confirm-dialog.scss',
-  templateUrl: './confirm-dialog.html',
+  styleUrl: './confirm-dialog.component.scss',
+  templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {
   protected readonly data = inject(MAT_DIALOG_DATA);

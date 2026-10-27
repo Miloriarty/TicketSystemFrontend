@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Manager } from './manager';
+import { AppHeader } from './app-header.component';
 
-describe('Manager', () => {
-  let component: Manager;
-  let fixture: ComponentFixture<Manager>;
+describe('AppHeader', () => {
+  let component: AppHeader;
+  let fixture: ComponentFixture<AppHeader>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Manager],
+      imports: [AppHeader],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Manager);
+    fixture = TestBed.createComponent(AppHeader);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

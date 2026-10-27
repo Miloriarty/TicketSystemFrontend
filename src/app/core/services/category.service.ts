@@ -2,7 +2,7 @@ import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_URL } from '../api';
-import { Category, CategoryRequest } from '../models/category';
+import { Category, CategoryRequest } from '../models/category.model';
 
 @Service()
 export class CategoryService {

@@ -1,8 +1,8 @@
 export interface Category {
   id: number;
   name: string;
-  employeesId: Array<number>,
-  ticketsId: Array<number>
+  employeeIds: Array<number>,
+  ticketIds: Array<number>
 }
 
 export interface CategoryRequest {

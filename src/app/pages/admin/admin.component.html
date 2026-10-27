@@ -133,7 +133,7 @@
         }
       </ul>
 
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" style="">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" style="margin-top: auto">
          <mat-label>New category</mat-label>
         <input matInput style="padding-top: 2px; "
                [ngModel]="createCategoryField()"
@@ -209,9 +209,9 @@
           </span>
         </div>
 
-        @if (employee.categoriesId.length > 0) {
+        @if (employee.categoryIds.length > 0) {
         <div class="chips">
-          @for (name of (employee.categoriesId | namesByIds: categories() : 'name'); track name) {
+          @for (name of (employee.categoryIds | namesByIds: categories() : 'name'); track name) {
             <span class="chip">{{ name }}</span>
           }
             </div>

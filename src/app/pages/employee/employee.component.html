@@ -29,9 +29,9 @@
             </span>
           </div>
 
-          @if (ticket.categoriesId.length > 0) {
+          @if (ticket.categoryIds.length > 0) {
             <div class="chips">
-              @for (name of (ticket.categoriesId | namesByIds: categories() : 'name'); track name) {
+              @for (name of (ticket.categoryIds | namesByIds: categories() : 'name'); track name) {
                 <mat-chip class="chip">{{ name }}</mat-chip>
               }
             </div>

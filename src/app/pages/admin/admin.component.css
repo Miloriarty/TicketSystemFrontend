@@ -95,7 +95,9 @@ CREATE CARD
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: calc(var(--row-height) * var(--visible-rows));
+  /* fixed height so filtering doesn't resize the card */
+  height: calc(var(--row-height) * var(--visible-rows));
+  flex-shrink: 0;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--mat-sys-outline-variant) transparent;

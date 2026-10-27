@@ -13,17 +13,17 @@ import {
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
-import {CategoryService} from '../../core/services/category';
-import {EmployeeService} from '../../core/services/employee';
-import {TicketService} from '../../core/services/ticket';
-import {RoleService} from '../../core/services/role';
-import {Category, CategoryRequest} from '../../core/models/category';
-import {Employee, EmployeeRequest} from '../../core/models/employee';
-import {Ticket} from '../../core/models/ticket';
-import {Role} from '../../core/models/role';
+import {CategoryService} from '../../core/services/category.service';
+import {EmployeeService} from '../../core/services/employee.service';
+import {TicketService} from '../../core/services/ticket.service';
+import {RoleService} from '../../core/services/role.service';
+import {Category, CategoryRequest} from '../../core/models/category.model';
+import {Employee, EmployeeRequest} from '../../core/models/employee.model';
+import {Ticket} from '../../core/models/ticket.model';
+import {Role} from '../../core/models/role.model';
 import {DatePipe} from '@angular/common';
-import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids';
-import {ConfirmService} from '../../shared/confirm-dialog/confirm-service';
+import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
+import {ConfirmService} from '../../shared/confirm-dialog/confirm.service';
 import {switchMap, filter} from 'rxjs';
 
 @Component({
@@ -47,8 +47,8 @@ import {switchMap, filter} from 'rxjs';
     NamesByIdsPipe,
   ],
   selector: 'app-admin',
-  styleUrl: './admin.css',
-  templateUrl: './admin.html',
+  styleUrl: './admin.component.css',
+  templateUrl: './admin.component.html',
 })
 export class AdminComponent { // Todo add trim to fields
   categoryService = inject(CategoryService);
@@ -110,7 +110,7 @@ export class AdminComponent { // Todo add trim to fields
       fullName: this.fullName(),
       position: this.position(),
       roleId: this.selectedRole()!.id,
-      categoriesId: this.selectedCategories().map(c => c.id),
+      categoryIds: this.selectedCategories().map(c => c.id),
     }
 
     const id = this.editingEmployeeId();
@@ -212,7 +212,7 @@ export class AdminComponent { // Todo add trim to fields
     this.fullName.set(employee.fullName);
     this.position.set(employee.position);
     this.selectedCategories.set(
-      this.categories().filter(c => employee.categoriesId.includes(c.id))
+      this.categories().filter(c => employee.categoryIds.includes(c.id))
     )
     this.selectedRole.set(
       this.roles().find(r => r.id === employee.roleId) ?? null

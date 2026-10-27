@@ -4,13 +4,13 @@ export interface Employee {
   position: string;
   startDate: Date;
   roleId: number;
-  categoriesId: Array<number>;
-  ticketsId: Array<number>;
+  categoryIds: Array<number>;
+  ticketIds: Array<number>;
 }
 
 export interface EmployeeRequest {
   fullName: string;
   position: string;
   roleId: number;
-  categoriesId: Array<number>;
+  categoryIds: Array<number>;
 }
