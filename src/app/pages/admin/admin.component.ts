@@ -61,6 +61,8 @@ export class AdminComponent { // Todo add trim to fields
 
   position = signal<string>('');
 
+  password = signal<string>('');
+
   categories = signal<Category[]>([]);
   selectedCategories = signal<Category[]>([]);
 
@@ -109,6 +111,7 @@ export class AdminComponent { // Todo add trim to fields
     const employee: EmployeeRequest = {
       fullName: this.fullName(),
       position: this.position(),
+      password: this.password(),
       roleId: this.selectedRole()!.id,
       categoryIds: this.selectedCategories().map(c => c.id),
     }

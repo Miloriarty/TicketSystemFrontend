@@ -1,5 +1,6 @@
 export interface Ticket {
   id: number;
+  title: string;
   description: string;
   status: TicketStatus;
   createdAt: Date;
@@ -8,6 +9,7 @@ export interface Ticket {
 }
 
 export interface TicketRequest {
+  title: string;
   description: string;
   status: TicketStatus;
   employeeIds: Array<number>;

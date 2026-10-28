@@ -33,6 +33,15 @@
           >
         </mat-form-field>
 
+      <mat-form-field appearance="outline" style="flex: 50">
+        <mat-label>Password</mat-label>
+        <input matInput
+               [ngModel]="password()"
+               (ngModelChange)="password.set($event)"
+               placeholder="Enter password for employee "
+        >
+      </mat-form-field>
+
           <div style="display: flex; flex-direction: row; gap: 4px">
 
             <!--Categories-->
@@ -135,7 +144,7 @@
 
       <mat-form-field appearance="outline" subscriptSizing="dynamic" style="margin-top: auto">
          <mat-label>New category</mat-label>
-        <input matInput style="padding-top: 2px; "
+        <input matInput
                [ngModel]="createCategoryField()"
                (ngModelChange)="onCrateCategoryFieldChange($event)"
                placeholder="Category name">

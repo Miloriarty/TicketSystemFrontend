@@ -64,6 +64,9 @@
           placeholder="Choose employee"
           [disabled]="!categorySelected()"
           >
+          <mat-select-trigger>
+            {{ employeeNames() }}
+          </mat-select-trigger>
           @for (employee of employees(); track employee.id) {
             <mat-option [value]="employee">
               <span>{{employee.fullName}}</span>
@@ -113,10 +116,20 @@
         <div class="ticket-top">
           <div class="ticket-info">
             <span class="ticket-number">Ticket #{{ticket.id}}</span>
-            <h3>Todo Title</h3>
+            <h3>{{ticket.title}}</h3>
           </div>
           <div class="status" [ngClass]="statusClass[ticket.status]">
             {{ ticket.status }}
+          </div>
+          <div class="ticket-actions">
+            <button mat-icon-button
+                    (click)="editTicket(ticket)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="delete-button"
+                    (click)="deleteTicket(ticket.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
         </div>
         <span class="ticket-description">{{ ticket.description }}</span>
@@ -146,7 +159,7 @@
           <div class="ticket-top">
             <div class="ticket-info">
               <span class="ticket-number">Заявка #{{ticket.id}}</span>
-              <h3>Todo Title</h3> <!-- todo title -->
+              <h3>{{ticket.title}}</h3>
             </div>
             <div class="status" [ngClass]="statusClass[ticket.status]">
               {{ ticket.status }}

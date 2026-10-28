@@ -49,6 +49,7 @@ export class EmployeeComponent {
 
   protected changeStatus(ticket: Ticket, status: TicketStatus) {
     const request: TicketRequest = {
+      title: ticket.title,
       description: ticket.description,
       status: status,
       employeeIds: ticket.employeeIds,

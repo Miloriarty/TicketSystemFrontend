@@ -11,6 +11,7 @@ export interface Employee {
 export interface EmployeeRequest {
   fullName: string;
   position: string;
+  password?: string;
   roleId: number;
   categoryIds: Array<number>;
 }

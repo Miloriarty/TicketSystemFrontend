@@ -106,7 +106,6 @@
   flex-direction: column;
   gap: 20px;
 
-  /* fill the grid row so the column matches the create card's height */
   .ticket-card { flex: 1; }
 }
 

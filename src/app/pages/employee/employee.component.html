@@ -14,7 +14,7 @@
               <mat-icon>confirmation_number</mat-icon>
             </div>
             <div class="ticket-info">
-              <h3>Todo title</h3>
+              <h3>{{ticket.title}}</h3>
               <span class="ticket-description">{{ ticket.description }}</span>
             </div>
             <div class="status" [ngClass]="statusClass[ticket.status]">

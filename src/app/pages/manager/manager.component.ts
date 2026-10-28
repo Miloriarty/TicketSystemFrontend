@@ -12,7 +12,7 @@ import {
   MatCardSubtitle,
   MatCardTitle
 } from '@angular/material/card';
-import {MatOption, MatSelect} from '@angular/material/select';
+import {MatOption, MatSelect, MatSelectTrigger} from '@angular/material/select';
 import {CategoryService} from '../../core/services/category.service';
 import {EmployeeService} from '../../core/services/employee.service';
 import {TicketService} from '../../core/services/ticket.service';
@@ -41,6 +41,7 @@ import {switchMap, filter} from 'rxjs';
     MatCardSubtitle,
     MatSelect,
     MatOption,
+    MatSelectTrigger,
     DatePipe,
     NgClass,
     NamesByIdsPipe,
@@ -98,6 +99,7 @@ export class ManagerComponent {
 
   protected createTicket() {
     const ticket: TicketRequest = {
+      title: this.title(),
       description: this.description(),
       status: TicketStatus.New,
       employeeIds: this.selectedEmployees().map(e => e.id),
@@ -127,6 +129,10 @@ export class ManagerComponent {
     this.selectedEmployees.set(employees);
   }
 
+  protected employeeNames() {
+    return this.selectedEmployees().map(e => e.fullName).join(', ');
+  }
+
   protected isAllCategoriesCovered() {
     let categoryIds = this.selectedCategories().map(c => c.id);
     let employeeCategoryIds = new Set(this.selectedEmployees().flatMap(e => e.categoryIds));
@@ -137,7 +143,7 @@ export class ManagerComponent {
 
   protected editTicket(ticket: Ticket) {
     this.editingTicketId.set(ticket.id);
-    this.title.set("Todo title"); // todo title
+    this.title.set(ticket.title);
     this.description.set(ticket.description);
     this.selectedCategories.set(this.categories()
       .filter(c => ticket.categoryIds.includes(c.id)));
