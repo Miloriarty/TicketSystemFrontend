@@ -73,13 +73,11 @@ export class EmployeeComponent {
     });
   }
 
-  protected showSnackBar(ticket: Ticket): boolean {
-    let ref = this._snackBar.open("Ticket cancelled", "cancel", {duration: 5000});
+  protected showSnackBar(ticket: Ticket) {
+    let ref = this._snackBar.open("Ticket cancelled", "Undo", {duration: 5000});
     ref.onAction().subscribe(() => {
-      this.changeStatus(ticket, TicketStatus.New);
+      this.changeStatus(ticket, ticket.status);
     });
-
-    return true;
   }
 
   protected readonly TicketStatus = TicketStatus;
