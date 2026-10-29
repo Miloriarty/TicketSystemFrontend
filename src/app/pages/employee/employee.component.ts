@@ -9,6 +9,7 @@ import {MatCard, MatCardActions} from '@angular/material/card';
 import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
 import {MatButton} from '@angular/material/button';
 import {MatChip} from '@angular/material/chips';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 
@@ -28,6 +29,8 @@ import {MatChip} from '@angular/material/chips';
   templateUrl: './employee.component.html',
 })
 export class EmployeeComponent {
+  _snackBar = inject(MatSnackBar);
+
   ticketService = inject(TicketService);
   categoryService = inject(CategoryService);
 
@@ -68,6 +71,15 @@ export class EmployeeComponent {
         console.error("Failed to update ticket: " + err);
       }
     });
+  }
+
+  protected showSnackBar(ticket: Ticket): boolean {
+    let ref = this._snackBar.open("Ticket cancelled", "cancel", {duration: 5000});
+    ref.onAction().subscribe(() => {
+      this.changeStatus(ticket, TicketStatus.New);
+    });
+
+    return true;
   }
 
   protected readonly TicketStatus = TicketStatus;

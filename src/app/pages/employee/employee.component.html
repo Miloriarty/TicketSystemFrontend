@@ -40,7 +40,7 @@
           <mat-card-actions class="ticket-actions">
             <button matButton="outlined"
                     class="cancel-button"
-                    (click)="changeStatus(ticket, TicketStatus.Cancelled)"
+                    (click)="changeStatus(ticket, TicketStatus.Cancelled); showSnackBar(ticket)"
             >
               <mat-icon>cancel</mat-icon>
               Cancel
