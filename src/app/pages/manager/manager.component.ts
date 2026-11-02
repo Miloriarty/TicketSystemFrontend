@@ -114,6 +114,7 @@ export class ManagerComponent {
         this.description.set('');
         this.selectedCategories.set([]);
         this.selectedEmployees.set([]);
+        this.tickets.update(list => [...list, ticket]);
       },
       error: error => {
         console.error('Failed to create ticket: ', error);

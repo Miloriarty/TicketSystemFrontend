@@ -14,4 +14,8 @@ export class LoginService {
   public login(request: LoginRequest): Observable<Employee> {
     return this.client.post<Employee>(this.apiUrl, request)
   }
+
+  public logout(): Observable<void> {
+    return this.client.post<void>(`${this.apiUrl}/logout`, {})
+  }
 }
