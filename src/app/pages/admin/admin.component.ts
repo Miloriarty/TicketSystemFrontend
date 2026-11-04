@@ -25,6 +25,8 @@ import {DatePipe} from '@angular/common';
 import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
 import {ConfirmService} from '../../shared/confirm-dialog/confirm.service';
 import {switchMap, filter} from 'rxjs';
+import {httpErrorMessage} from '../../core/http-error';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   imports: [
@@ -56,6 +58,7 @@ export class AdminComponent { // Todo add trim to fields
   ticketService = inject(TicketService);
   roleService = inject(RoleService);
   confirmService = inject(ConfirmService);
+  _snackBar = inject(MatSnackBar);
 
   fullName = signal<string>('');
 
@@ -83,21 +86,25 @@ export class AdminComponent { // Todo add trim to fields
   })
 
   constructor() {
-    this.categoryService.getCategories().subscribe(categories => {
-      this.categories.set(categories);
+    this.categoryService.getCategories().subscribe({
+      next: categories => this.categories.set(categories),
+      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load categories')),
     });
 
-    this.employeeService.getEmployees().subscribe(employees => {
-      this.employees.set(employees);
-    })
+    this.employeeService.getEmployees().subscribe({
+      next: employees => this.employees.set(employees),
+      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load employees')),
+    });
 
-    this.ticketService.getTickets().subscribe(tickets => {
-      this.tickets.set(tickets);
-    })
+    this.ticketService.getTickets().subscribe({
+      next: tickets => this.tickets.set(tickets),
+      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load tickets')),
+    });
 
-    this.roleService.getRoles().subscribe(roles => {
-      this.roles.set(roles);
-    })
+    this.roleService.getRoles().subscribe({
+      next: roles => this.roles.set(roles),
+      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load roles')),
+    });
   }
 
   protected canCreateEmployee(): boolean {
@@ -128,6 +135,7 @@ export class AdminComponent { // Todo add trim to fields
         },
         error: err => {
           console.error("Failed to create employee: ", err)
+          this.showErrorShackBar(httpErrorMessage(err, 'create employee'));
         }
       })
     } else {
@@ -143,6 +151,7 @@ export class AdminComponent { // Todo add trim to fields
         },
         error: err => {
           console.error("Failed to update employee: ", err)
+          this.showErrorShackBar(httpErrorMessage(err, 'update employee', 'Employee not found'));
         }
       })
     }
@@ -188,6 +197,7 @@ export class AdminComponent { // Todo add trim to fields
       },
       error: error => {
         console.error("Failed to delete category: ", error);
+        this.showErrorShackBar(httpErrorMessage(error, 'delete category', 'Category not found'));
       }
     })
   }
@@ -196,8 +206,6 @@ export class AdminComponent { // Todo add trim to fields
     const cat: CategoryRequest =  {
       name: this.createCategoryField()
     }
-    this.createCategoryField.set('');
-
     this.categoryService.createCategory(cat).subscribe({
       next: category => {
         console.log('Category created: ', category);
@@ -206,6 +214,7 @@ export class AdminComponent { // Todo add trim to fields
       },
       error: err => {
         console.error("Failed to create category: ", err)
+        this.showErrorShackBar(httpErrorMessage(err, 'create category'));
       }
     })
   }
@@ -237,8 +246,17 @@ export class AdminComponent { // Todo add trim to fields
       },
       error: error => {
         console.error("Failed to delete employee: ", error);
+        this.showErrorShackBar(httpErrorMessage(error, 'delete employee', 'Employee not found'));
       }
     })
+  }
+
+  protected showErrorShackBar(error: string): void {
+    this._snackBar.open(error, "Ok", {
+      duration: 2000,
+      verticalPosition: "top",
+      horizontalPosition: "center"
+    });
   }
 
   protected canCancelEmployee(): boolean {

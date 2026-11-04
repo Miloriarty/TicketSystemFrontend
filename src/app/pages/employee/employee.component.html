@@ -7,7 +7,7 @@
 
     <div class="tickets-grid">
       @for (ticket of tickets(); track ticket.id) {
-        <mat-card class="ticket-card">
+        <mat-card class="ticket-card" (click)="openTicket(ticket)">
 
           <div class="ticket-header">
             <div class="card-icon">
@@ -37,7 +37,7 @@
             </div>
           }
 
-          <mat-card-actions class="ticket-actions">
+          <mat-card-actions class="ticket-actions" (click)="$event.stopPropagation()">
             <button matButton="outlined"
                     class="cancel-button"
                     (click)="changeStatus(ticket, TicketStatus.Cancelled); showSnackBar(ticket)"

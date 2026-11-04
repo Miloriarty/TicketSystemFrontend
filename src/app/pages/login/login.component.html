@@ -39,22 +39,13 @@
 
     <mat-card-actions>
       <button matButton="outlined"
-              class="cancel-button"
-              [disabled]="!canCancel()"
-              (click)="clearForm()"
-              >
-        <mat-icon>cancel</mat-icon>
-        Cancel
-      </button>
-
-      <button matButton="outlined"
               [disabled]="!canLogin()"
               (click)="tryLogin()"
+              (keydown.enter)="tryLogin()"
       >
         <mat-icon>login</mat-icon>
         Log in
       </button>
-
     </mat-card-actions>
   </mat-card>
 </main>

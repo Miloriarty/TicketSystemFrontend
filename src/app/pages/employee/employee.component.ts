@@ -10,7 +10,11 @@ import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
 import {MatButton} from '@angular/material/button';
 import {MatChip} from '@angular/material/chips';
 import {MatSnackBar} from '@angular/material/snack-bar';
-
+import {MatDialog} from '@angular/material/dialog';
+import {filter} from 'rxjs';
+import {TicketDialogComponent, TicketDialogData} from './ticket-dialog/ticket-dialog.component';
+import {httpErrorMessage} from '../../core/http-error';
+import {AuthService} from '../../core/services/auth.service';
 
 @Component({
   imports: [
@@ -29,6 +33,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class EmployeeComponent {
   _snackBar = inject(MatSnackBar);
+  private readonly dialog = inject(MatDialog);
+  authService = inject(AuthService);
 
   ticketService = inject(TicketService);
   categoryService = inject(CategoryService);
@@ -37,13 +43,20 @@ export class EmployeeComponent {
   categories = signal<Category[]>([]);
 
   constructor() {
-    this.ticketService.getTickets().subscribe(ticket => {
-      this.tickets.set(ticket)
-    })
+    this.ticketService.getTickets().subscribe({
+      next: tickets => {
+        let filtered = tickets.filter(t =>
+          t.employeeIds.includes(this.authService.user()!.id)
+        )
+        this.tickets.set(filtered.filter(t => t.status !== TicketStatus.Cancelled))
+      },
+      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load tickets')),
+    });
 
-    this.categoryService.getCategories().subscribe(category => {
-      this.categories.set(category)
-    })
+    this.categoryService.getCategories().subscribe({
+      next: categories => this.categories.set(categories),
+      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load categories')),
+    });
   }
 
   protected readonly statusClass = TICKET_STATUS_CLASS;
@@ -59,24 +72,69 @@ export class EmployeeComponent {
     }
 
     this.ticketService.updateTicket(ticket.id, request).subscribe({
-      next: ticket => {
-        this.tickets.update(list =>
-          list.map(t => t.id == ticket.id ? ticket : t)
-        )
+      next: updated => {
+        this.tickets.update(list => {
+          const exists = list.some(t => t.id === updated.id);
+
+          const next = exists
+            ? list.map(t => t.id === updated.id ? updated : t)
+            : [...list, updated];
+          return next.filter(t => t.status !== TicketStatus.Cancelled);
+        });
 
         console.log("Ticket changed");
       },
       error: err => {
-        console.error("Failed to update ticket: " + err);
+        console.error("Failed to update ticket: ", err);
+        this.showErrorShackBar(httpErrorMessage(err, 'update ticket', 'Ticket not found'));
       }
     });
   }
 
+  protected showErrorShackBar(error: string): void {
+    this._snackBar.open(error, "Ok", {
+      duration: 2000,
+      verticalPosition: "top",
+      horizontalPosition: "center"
+    });
+  }
+
   protected showSnackBar(ticket: Ticket) {
-    let ref = this._snackBar.open("Ticket cancelled", "Undo", {duration: 5000});
+    const found = this.tickets().findIndex(t => t.id === ticket.id);
+    const index = found < 0 ? this.tickets().length : found;
+
+    const ref = this._snackBar.open(
+      "Ticket cancelled",
+      "Undo",
+      {duration: 5000}
+    );
     ref.onAction().subscribe(() => {
+      this.tickets.update(list =>
+        list.some(t => t.id === ticket.id)
+          ? list
+          : [...list.slice(0, index), ticket, ...list.slice(index)]
+      );
       this.changeStatus(ticket, ticket.status);
     });
+  }
+
+  protected openTicket(ticket: Ticket) {
+    const categoryNames = this.categories()
+      .filter(c => ticket.categoryIds.includes(c.id))
+      .map(c => c.name);
+
+    this.dialog
+      .open<TicketDialogComponent, TicketDialogData, TicketStatus>(TicketDialogComponent, {
+        data: {ticket, categoryNames},
+        width: '500px',
+        maxWidth: '95vw',
+      })
+      .afterClosed()
+      .pipe(filter(Boolean))
+      .subscribe(status => {
+        this.changeStatus(ticket, status);
+        if (status === TicketStatus.Cancelled) this.showSnackBar(ticket);
+      });
   }
 
   protected readonly TicketStatus = TicketStatus;

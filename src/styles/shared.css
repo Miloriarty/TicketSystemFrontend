@@ -59,3 +59,19 @@
   font-size: 13px;
   color: var(--mat-sys-on-surface-variant);
 }
+
+
+@media (max-width: 600px) {
+  .section-title {
+    gap: 10px;
+    margin-bottom: 12px;
+
+    h2 {
+      font-size: 20px;
+    }
+
+    span {
+      font-size: 18px;
+    }
+  }
+}

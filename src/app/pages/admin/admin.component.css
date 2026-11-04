@@ -343,3 +343,83 @@ Bottom Employees
   grid-column: 1 / -1;
   margin-top: 8px;
 }
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+
+@media (max-width: 960px) {
+  .content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .content {
+    width: calc(100% - 32px);
+    padding: 24px 0 48px;
+    gap: 20px;
+  }
+
+  .employee-create-card,
+  .category-create-card {
+    mat-card-header {
+      padding: 16px 16px 12px;
+    }
+
+    mat-card-content {
+      padding: 8px 16px 4px;
+    }
+
+    mat-card-actions {
+      padding: 12px 16px 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  }
+
+  .employee-create-card mat-card-content {
+    gap: 4px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .category-create-card {
+    mat-card-header {
+      flex-wrap: wrap;
+    }
+
+    .header-search {
+      width: 100%;
+    }
+  }
+
+  .validation-warning {
+    flex-basis: 100%;
+    padding: 0 4px 4px;
+  }
+
+  .create-button,
+  .cancel-button {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0 12px;
+    margin-right: 0;
+  }
+
+  .employee-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .employee-card {
+    padding: 16px;
+    gap: 12px;
+  }
+}

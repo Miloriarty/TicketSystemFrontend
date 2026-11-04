@@ -32,6 +32,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 24px;
+  cursor: pointer;
 
   h3 {
     margin: 0;
@@ -121,4 +122,30 @@
 .status {
   font-weight: 500;
   align-self: flex-start;
+}
+
+@media (max-width: 600px) {
+  .content {
+    width: calc(100% - 32px);
+    padding: 24px 0 48px;
+  }
+
+  .tickets-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .ticket-card {
+    padding: 16px;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .ticket-header {
+    gap: 12px;
+  }
+
+  .ticket-actions button {
+    flex: 1;
+  }
 }

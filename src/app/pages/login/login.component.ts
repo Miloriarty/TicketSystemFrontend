@@ -15,6 +15,8 @@ import {AuthService} from '../../core/services/auth.service';
 import {LoginRequest} from '../../core/models/auth.model';
 import {Router} from '@angular/router';
 import {homeFor} from '../../core/guards';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   imports: [
@@ -40,14 +42,11 @@ import {homeFor} from '../../core/guards';
 export class LoginComponent {
   loginService = inject(AuthService);
   router = inject(Router);
+  _snackBar = inject(MatSnackBar);
 
   login = signal<string>('');
   password = signal<string>('');
   hidePassword = signal<boolean>(true)
-
-  protected canCancel(): boolean {
-    return this.login().length > 0 || this.password().length > 0;
-  }
 
   protected canLogin(): boolean {
     return this.login().length > 0 && this.password().length > 0;
@@ -65,14 +64,26 @@ export class LoginComponent {
         this.router.navigateByUrl(homeFor(user.role));
       },
       error: e => {
-        console.error("Login failed: ", e);
+        console.warn("Login failed: ", e);
+        this.showShackBar(this.loginErrorMessage(e));
       }
     })
   }
 
-  protected clearForm(): void {
-    this.login.set('');
-    this.password.set('');
-    this.hidePassword.set(true);
+  private loginErrorMessage(e: HttpErrorResponse): string {
+    switch (e.status) {
+      case 404: return 'User not found';
+      case 401: return 'Incorrect password';
+      case 0:   return 'Server is down';
+      default:  return 'Failed to login';
+    }
+  }
+
+  protected showShackBar(error: string): void {
+    this._snackBar.open(error, "Ok", {
+      duration: 2000,
+      verticalPosition: "top",
+      horizontalPosition: "center"
+    });
   }
 }

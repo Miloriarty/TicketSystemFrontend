@@ -23,6 +23,9 @@ import {DatePipe, NgClass} from '@angular/common';
 import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
 import {ConfirmService} from '../../shared/confirm-dialog/confirm.service';
 import {switchMap, filter} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {httpErrorMessage} from '../../core/http-error';
 
 
 @Component({
@@ -56,6 +59,7 @@ export class ManagerComponent {
   employeeService = inject(EmployeeService);
   ticketService = inject(TicketService);
   confirmService = inject(ConfirmService);
+  _snackBar = inject(MatSnackBar);
 
   title = signal<string>('');
   description = signal<string>("");
@@ -70,19 +74,20 @@ export class ManagerComponent {
   editingTicketId = signal<number | null>(null);
 
   constructor() {
-    this.categoryService.getCategories().subscribe(categories => {
-      //console.log("Categories" + categories)
-      this.categories.set(categories);
+    this.categoryService.getCategories().subscribe({
+      next: categories => this.categories.set(categories),
+      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load categories')),
     });
 
-    this.employeeService.getEmployees().subscribe(employees => {
-      //console.log("Employees: " + employees);
-      this.employees.set(employees);
-    })
+    this.employeeService.getEmployees().subscribe({
+      next: employees => this.employees.set(employees),
+      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load employees')),
+    });
 
-    this.ticketService.getTickets().subscribe(tickets => {
-      this.tickets.set(tickets);
-    })
+    this.ticketService.getTickets().subscribe({
+      next: tickets => this.tickets.set(tickets),
+      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load tickets')),
+    });
   }
 
   protected readonly statusClass = TICKET_STATUS_CLASS;
@@ -118,6 +123,7 @@ export class ManagerComponent {
       },
       error: error => {
         console.error('Failed to create ticket: ', error);
+        this.showErrorShackBar(httpErrorMessage(error, 'create ticket'));
       }
     });
   }
@@ -167,6 +173,7 @@ export class ManagerComponent {
       },
       error: error => {
         console.error('Failed to delete ticket: ', error);
+        this.showErrorShackBar(httpErrorMessage(error, 'delete ticket', 'Ticket not found'));
       }
     })
   }
@@ -184,6 +191,14 @@ export class ManagerComponent {
     this.description.set('');
     this.selectedCategories.set([]);
     this.selectedEmployees.set([]);
+  }
+
+  protected showErrorShackBar(error: string): void {
+    this._snackBar.open(error, "Ok", {
+      duration: 2000,
+      verticalPosition: "top",
+      horizontalPosition: "center"
+    });
   }
 
   protected readonly TicketStatus = TicketStatus;

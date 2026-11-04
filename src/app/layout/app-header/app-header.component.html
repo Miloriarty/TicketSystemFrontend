@@ -1,26 +1,20 @@
 <header class="page-header">
-  <a class="header-item" routerLink="/manager" routerLinkActive="active">
-    <mat-icon>add_task</mat-icon>
-    <span>Manager</span>
-  </a>
+  @for (link of links(); track link.path) {
+    <a class="header-item" routerLink="link.path" routerLinkActive="active">
+      <mat-icon>{{link.icon}}</mat-icon>
+      <span>{{link.label}}</span>
+    </a>
+  }
 
-  <a class="header-item" routerLink="/admin" routerLinkActive="active">
-    <mat-icon>confirmation_number</mat-icon>
-    <span>Admin</span>
-  </a>
-
-  <a class="header-item" routerLink="/employees" routerLinkActive="active">
-    <mat-icon>people</mat-icon>
-    <span>Employees</span>
-  </a>
-
-  <a class="header-item" routerLink="/login" routerLinkActive="active">
-    <mat-icon>login</mat-icon>
-    <span>Log in</span>
-  </a>
-
-  <a class="header-item" (click)="logout()" routerLinkActive="active"> <!-- todo login/logout, this is funny, but i'll fix -->
-    <mat-icon>logout</mat-icon>
-    <span>Logout</span>
-  </a>
+  @if (user()) {
+    <a class="header-item" (click)="logout()" routerLinkActive="active"> <!-- todo login/logout, this is funny, but i'll fix -->
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </a>
+  } @else {
+    <a class="header-item" routerLink="/login" routerLinkActive="active">
+      <mat-icon>login</mat-icon>
+      <span>Log in</span>
+    </a>
+  }
 </header>

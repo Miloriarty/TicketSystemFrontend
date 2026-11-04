@@ -1,0 +1,13 @@
+.create-button,
+.cancel-button {
+  min-width: 90px;
+}
+
+.status {
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+mat-chip {
+  margin: 4px 4px 0 0;
+}

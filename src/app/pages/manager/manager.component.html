@@ -9,7 +9,9 @@
           {{ editingTicketId() === null ? 'add_task' : 'edit'}}
         </mat-icon>
       </div>
-      <mat-card-title>New ticket</mat-card-title>
+      <mat-card-title>
+        {{ editingTicketId() === null ? 'Create ticket' : 'Edit ticket'}}
+      </mat-card-title>
       <mat-card-subtitle>
         {{ editingTicketId() === null ? 'Add ticket' : 'Edit ticket'}}
       </mat-card-subtitle>
@@ -87,15 +89,16 @@
           <span>Not all categories covered</span>
         </div>
       }
-
-      <button matButton="outlined"
+      @if (this.editingTicketId() !== null) {
+        <button matButton="outlined"
               class="cancel-button"
               [disabled]="!canCancel()"
               (click)="clearForm()"
-      >
-        <mat-icon>cancel</mat-icon>
-        Cancel
-      </button>
+         >
+          <mat-icon>cancel</mat-icon>
+          Cancel
+        </button>
+      }
 
       <button
         mat-flat-button

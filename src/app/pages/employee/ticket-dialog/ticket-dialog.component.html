@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>{{ data.ticket.title }}</h2>
+
+<mat-dialog-content>
+  <div class="status" [ngClass]="statusClass[data.ticket.status]">{{ data.ticket.status }}</div>
+  <p>{{ data.ticket.description }}</p>
+  <p>Created: {{ data.ticket.createdAt | date: 'dd.MM.yy HH:mm' }}</p>
+  @for (name of data.categoryNames; track name) {
+    <mat-chip>{{ name }}</mat-chip>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close>Close</button>
+
+  <button matButton="outlined" class="cancel-button" [mat-dialog-close]="TicketStatus.Cancelled">
+    <mat-icon>cancel</mat-icon>
+    Cancel
+  </button>
+
+  @if (data.ticket.status === TicketStatus.InProgress) {
+    <button mat-flat-button class="create-button" [mat-dialog-close]="TicketStatus.Completed">
+      <mat-icon>check</mat-icon>
+      Finish
+    </button>
+  } @else {
+    <button mat-flat-button class="create-button" [mat-dialog-close]="TicketStatus.InProgress">
+      <mat-icon>add</mat-icon>
+      Take
+    </button>
+  }
+</mat-dialog-actions>

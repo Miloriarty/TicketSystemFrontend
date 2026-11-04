@@ -52,3 +52,44 @@ HEADER
     }
   }
 }
+
+/* =========================
+ADAPTIVE
+========================= */
+
+@media (max-width: 960px) {
+  .page-header {
+    gap: 8px;
+  }
+}
+
+/* Phone: icon over label, items share the width evenly */
+@media (max-width: 600px) {
+  .page-header {
+    height: 60px;
+    gap: 0;
+    justify-content: space-around;
+  }
+
+  .header-item {
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 0 4px;
+    font-size: 11px;
+
+    span {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &.active::after {
+      left: 12px;
+      right: 12px;
+    }
+  }
+}
