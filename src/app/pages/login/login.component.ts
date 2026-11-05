@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {afterNextRender, Component, ElementRef, inject, signal, viewChild} from '@angular/core';
 import {MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
 import {
   MatCard,
@@ -36,7 +36,7 @@ import {HttpErrorResponse} from '@angular/common/http';
     MatButton
   ],
   selector: 'app-login',
-  styleUrl: './login.component.css',
+  styleUrl: './login.component.scss',
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
@@ -46,8 +46,14 @@ export class LoginComponent {
 
   login = signal<string>('');
   password = signal<string>('');
-  hidePassword = signal<boolean>(true)
+  hidePassword = signal<boolean>(true);
 
+  private loginInput = viewChild
+    .required<ElementRef<HTMLInputElement>>('loginInput')
+
+  constructor() {
+    afterNextRender(() => this.loginInput().nativeElement.focus());
+  }
   protected canLogin(): boolean {
     return this.login().length > 0 && this.password().length > 0;
   }

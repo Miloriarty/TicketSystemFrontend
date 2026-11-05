@@ -33,7 +33,7 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/material-theme.scss", "src/styles.css", "src/styles/shared.css"]
+            "styles": ["src/material-theme.scss", "src/styles.scss", "src/styles/shared.scss"]
           },
           "configurations": {
             "production": {

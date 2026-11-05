@@ -51,7 +51,7 @@ import {httpErrorMessage} from '../../core/http-error';
   ],
   standalone: true,
   selector: 'app-manager',
-  styleUrl: './manager.component.css',
+  styleUrl: './manager.component.scss',
   templateUrl: './manager.component.html',
 })
 export class ManagerComponent {

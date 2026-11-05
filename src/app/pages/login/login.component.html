@@ -12,6 +12,7 @@
       <mat-form-field appearance="outline">
         <mat-label>Login</mat-label>
         <input matInput
+               #loginInput
                [ngModel]="login()"
                (ngModelChange)="login.set($event)"
                (keydown.enter)="passwordInput.focus()"

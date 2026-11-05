@@ -23,7 +23,7 @@ const NAV_LINKS: NAV_LINK[] = [
   selector: 'app-header',
   imports: [RouterLink, RouterLinkActive, MatIconModule],
   templateUrl: './app-header.component.html',
-  styleUrl: './app-header.component.css',
+  styleUrl: './app-header.component.scss',
 })
 export class AppHeader {
   private readonly loginService = inject(AuthService);

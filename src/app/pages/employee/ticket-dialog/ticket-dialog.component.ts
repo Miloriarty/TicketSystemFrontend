@@ -20,7 +20,7 @@ export interface TicketDialogData {
     MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose
   ],
   templateUrl: './ticket-dialog.component.html',
-  styleUrl: './ticket-dialog.component.css',
+  styleUrl: './ticket-dialog.component.scss',
 })
 export class TicketDialogComponent {
   protected readonly data = inject<TicketDialogData>(MAT_DIALOG_DATA);

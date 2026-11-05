@@ -49,7 +49,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     NamesByIdsPipe,
   ],
   selector: 'app-admin',
-  styleUrl: './admin.component.css',
+  styleUrl: './admin.component.scss',
   templateUrl: './admin.component.html',
 })
 export class AdminComponent { // Todo add trim to fields

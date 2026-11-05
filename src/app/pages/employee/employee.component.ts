@@ -28,7 +28,7 @@ import {AuthService} from '../../core/services/auth.service';
     NamesByIdsPipe
   ],
   selector: 'app-employee',
-  styleUrl: './employee.component.css',
+  styleUrl: './employee.component.scss',
   templateUrl: './employee.component.html',
 })
 export class EmployeeComponent {
