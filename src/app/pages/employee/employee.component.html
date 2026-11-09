@@ -40,7 +40,7 @@
           <mat-card-actions class="ticket-actions" (click)="$event.stopPropagation()">
             <button matButton="outlined"
                     class="cancel-button"
-                    (click)="changeStatus(ticket, TicketStatus.Cancelled); showSnackBar(ticket)"
+                    (click)="closeTicket(ticket, TicketStatus.Cancelled)"
             >
               <mat-icon>cancel</mat-icon>
               Cancel
@@ -49,7 +49,7 @@
             @if (ticket.status === TicketStatus.InProgress) {
               <button mat-flat-button
                       class="create-button"
-                      (click)="changeStatus(ticket, TicketStatus.Completed)"
+                      (click)="closeTicket(ticket, TicketStatus.Completed)"
               >
                 <mat-icon>check</mat-icon>
                 Finish

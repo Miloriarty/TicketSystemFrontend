@@ -103,29 +103,43 @@ export class ManagerComponent {
   }
 
   protected createTicket() {
-    const ticket: TicketRequest = {
+    const editingId = this.editingTicketId();
+    const editing = this.tickets().find(t => t.id === editingId);
+    const request: TicketRequest = {
       title: this.title(),
       description: this.description(),
-      status: TicketStatus.New,
+      status: editing?.status ?? TicketStatus.New,
       employeeIds: this.selectedEmployees().map(e => e.id),
       categoryIds: this.selectedCategories().map(c => c.id)
     }
 
-    this.ticketService.createTicket(ticket).subscribe({
-      next: ticket => {
-        console.log('Ticket created: ', ticket);
+    if (editingId === null) {
+      this.ticketService.createTicket(request).subscribe({
+        next: ticket => {
+          console.log('Ticket created: ', ticket);
 
-        this.title.set('');
-        this.description.set('');
-        this.selectedCategories.set([]);
-        this.selectedEmployees.set([]);
-        this.tickets.update(list => [...list, ticket]);
-      },
-      error: error => {
-        console.error('Failed to create ticket: ', error);
-        this.showErrorShackBar(httpErrorMessage(error, 'create ticket'));
-      }
-    });
+          this.tickets.update(list => [...list, ticket]);
+          this.clearForm();
+        },
+        error: error => {
+          console.error('Failed to create ticket: ', error);
+          this.showErrorShackBar(httpErrorMessage(error, 'create ticket'));
+        }
+      });
+    } else {
+      this.ticketService.updateTicket(editingId, request).subscribe({
+        next: ticket => {
+          console.log('Ticket updated: ', ticket);
+
+          this.tickets.update(list => list.map(t => t.id === ticket.id ? ticket : t));
+          this.clearForm();
+        },
+        error: error => {
+          console.error('Failed to update ticket: ', error);
+          this.showErrorShackBar(httpErrorMessage(error, 'update ticket', 'Ticket not found'));
+        }
+      });
+    }
   }
 
   protected categorySelected() {
@@ -155,8 +169,7 @@ export class ManagerComponent {
     this.selectedCategories.set(this.categories()
       .filter(c => ticket.categoryIds.includes(c.id)));
     this.selectedEmployees.set(this.employees()
-      .filter(e => e.ticketIds.includes(ticket.id))
-    )
+      .filter(e => ticket.employeeIds.includes(e.id)));
   }
 
   protected deleteTicket(ticketId: number) {
@@ -178,11 +191,43 @@ export class ManagerComponent {
     })
   }
 
+  protected reopenTicket(ticket: Ticket) {
+    let request: TicketRequest = {
+      title: ticket.title,
+      description: ticket.description,
+      status: TicketStatus.New,
+      employeeIds: ticket.employeeIds,
+      categoryIds: ticket.categoryIds
+    }
+    this.ticketService.updateTicket(ticket.id, request).subscribe({
+      next: ticket => {
+        console.log('Ticket updated: ', ticket);
+        this.tickets.update(list => list.map(t => t.id === ticket.id ? ticket : t));
+      },
+      error: error => {
+        console.error('Failed to update ticket: ', error);
+        this.showErrorShackBar(httpErrorMessage(error, 'update ticket', 'Ticket not found'));
+      }
+    })
+  }
+
   protected canCancel() {
     return this.title().length > 0
       || this.description().length > 0
       || this.selectedCategories().length > 0
       || this.selectedEmployees().length > 0;
+  }
+
+  protected canDelete(ticket: Ticket): boolean {
+    if (ticket.status === TicketStatus.New || ticket.status === TicketStatus.InProgress) {
+      return false
+    }else {
+      return true
+    }
+  }
+
+  protected canReopen(ticket: Ticket): boolean {
+    return (ticket.status === TicketStatus.Completed || ticket.status === TicketStatus.Cancelled);
   }
 
   protected clearForm() {

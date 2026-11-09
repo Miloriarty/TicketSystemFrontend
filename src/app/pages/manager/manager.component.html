@@ -106,8 +106,10 @@
         [disabled]="!canCreateTicket()"
         (click)="createTicket()"
       >
-        <mat-icon>add</mat-icon>
-        Create ticket
+        <mat-icon>
+          {{ editingTicketId() === null ? 'add' : 'edit'}}
+        </mat-icon>
+        {{ editingTicketId() === null ? 'Add ticket' : 'Edit ticket'}}
       </button>
     </mat-card-actions>
   </mat-card>
@@ -129,10 +131,18 @@
                     (click)="editTicket(ticket)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button class="delete-button"
-                    (click)="deleteTicket(ticket.id)">
-              <mat-icon>delete</mat-icon>
-            </button>
+            @if (canDelete(ticket)) {
+              <button mat-icon-button class="delete-button"
+                      (click)="deleteTicket(ticket.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+            @if (canReopen(ticket)) {
+              <button mat-icon-button class="delete-button"
+                      (click)="reopenTicket(ticket)">
+                <mat-icon>restart_alt</mat-icon>
+              </button>
+            }
           </div>
         </div>
         <span class="ticket-description">{{ ticket.description }}</span>
@@ -173,10 +183,18 @@
                       (click)="editTicket(ticket)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button class="delete-button"
-                      (click)="deleteTicket(ticket.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
+              @if (canDelete(ticket)) {
+                <button mat-icon-button class="delete-button"
+                        (click)="deleteTicket(ticket.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              }
+              @if (canReopen(ticket)) {
+                <button mat-icon-button class="delete-button"
+                        (click)="reopenTicket(ticket)">
+                  <mat-icon>restart_alt</mat-icon>
+                </button>
+              }
             </div>
           </div>
           <span class="ticket-description">{{ ticket.description }}</span>

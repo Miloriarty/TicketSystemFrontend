@@ -48,7 +48,10 @@ export class EmployeeComponent {
         let filtered = tickets.filter(t =>
           t.employeeIds.includes(this.authService.user()!.id)
         )
-        this.tickets.set(filtered.filter(t => t.status !== TicketStatus.Cancelled))
+        this.tickets.set(filtered.filter(
+          t => t.status !== TicketStatus.Cancelled
+            && t.status !== TicketStatus.Completed
+        ))
       },
       error: err => this.showErrorShackBar(httpErrorMessage(err, 'load tickets')),
     });
@@ -79,7 +82,7 @@ export class EmployeeComponent {
           const next = exists
             ? list.map(t => t.id === updated.id ? updated : t)
             : [...list, updated];
-          return next.filter(t => t.status !== TicketStatus.Cancelled);
+          return next.filter(t => !this.isClosed(t.status));
         });
 
         console.log("Ticket changed");
@@ -99,12 +102,21 @@ export class EmployeeComponent {
     });
   }
 
-  protected showSnackBar(ticket: Ticket) {
+  private isClosed(status: TicketStatus) {
+    return status === TicketStatus.Cancelled || status === TicketStatus.Completed;
+  }
+
+  protected closeTicket(ticket: Ticket, status: TicketStatus.Cancelled | TicketStatus.Completed) {
+    this.changeStatus(ticket, status);
+    this.showSnackBar(ticket, status === TicketStatus.Cancelled ? 'cancelled' : 'finished');
+  }
+
+  protected showSnackBar(ticket: Ticket, message: string) {
     const found = this.tickets().findIndex(t => t.id === ticket.id);
     const index = found < 0 ? this.tickets().length : found;
 
     const ref = this._snackBar.open(
-      "Ticket cancelled",
+      `Ticket ${message}`,
       "Undo",
       {duration: 5000}
     );
@@ -132,8 +144,11 @@ export class EmployeeComponent {
       .afterClosed()
       .pipe(filter(Boolean))
       .subscribe(status => {
-        this.changeStatus(ticket, status);
-        if (status === TicketStatus.Cancelled) this.showSnackBar(ticket);
+        if (status === TicketStatus.Cancelled || status === TicketStatus.Completed) {
+          this.closeTicket(ticket, status);
+        } else {
+          this.changeStatus(ticket, status);
+        }
       });
   }
 
