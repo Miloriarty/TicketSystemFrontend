@@ -7,7 +7,6 @@ import {
   MatCardActions, MatCardAvatar,
   MatCardContent,
   MatCardHeader,
-  MatCardSubtitle,
   MatCardTitle
 } from '@angular/material/card';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
@@ -110,8 +109,8 @@ export class AdminComponent { // Todo add trim to fields
   protected canCreateEmployee(): boolean {
     return this.fullName().trim().length > 0
       && this.position().trim().length > 0
-      && this.selectedCategories().length > 0
-      && this.selectedRole() !== null;
+      && this.selectedRole() !== null
+      && (!this.haveCategories(this.selectedRole()) || this.selectedCategories().length > 0);
   }
 
   protected createEmployee(): void {
@@ -172,6 +171,7 @@ export class AdminComponent { // Todo add trim to fields
 
   protected onRolesChange(role: Role) {
       this.selectedRole.set(role);
+      if (!this.haveCategories(role)) this.selectedCategories.set([]);
   }
 
   protected onCrateCategoryFieldChange(categoryName: string) {
@@ -269,13 +269,16 @@ export class AdminComponent { // Todo add trim to fields
   protected clearEmployeeForm(): void {
     this.fullName.set('');
     this.position.set('');
-    this.fullName.set('');
-    this.position.set('');
+    this.password.set('');
     this.selectedRole.set(null);
     this.selectedCategories.set([]);
   }
 
   protected clearCategoryForm(): void {
     this.createCategoryField.set('');
+  }
+
+  protected haveCategories(role: Role | null) {
+    return role?.name === "employee";
   }
 }

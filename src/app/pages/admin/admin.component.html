@@ -51,6 +51,7 @@
                   multiple
                   [ngModel]="selectedCategories()"
                   (ngModelChange)="onCategoriesChange($event)"
+                  [disabled]="!haveCategories(selectedRole()!)"
                   placeholder="Choose categories"
               >
                 @for (cat of categories(); track cat.id) {

@@ -1,6 +1,6 @@
 <header class="page-header">
   @for (link of links(); track link.path) {
-    <a class="header-item" routerLink="link.path" routerLinkActive="active">
+    <a class="header-item" [routerLink]="link.path" routerLinkActive="active">
       <mat-icon>{{link.icon}}</mat-icon>
       <span>{{link.label}}</span>
     </a>

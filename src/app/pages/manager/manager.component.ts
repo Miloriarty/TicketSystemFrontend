@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import {Component, signal, inject, computed} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -69,6 +69,10 @@ export class ManagerComponent {
 
   employees = signal<Employee[]>([]);
   selectedEmployees = signal<Employee[]>([]);
+  filteredEmployees = computed(() => {
+    const ids = this.selectedCategories().map(c => c.id);
+    return this.employees().filter(e => e.categoryIds.some(id => ids.includes(id)));
+  })
 
   tickets = signal<Ticket[]>([]);
   editingTicketId = signal<number | null>(null);
