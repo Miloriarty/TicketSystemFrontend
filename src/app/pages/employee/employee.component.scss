@@ -104,6 +104,16 @@
   }
 }
 
+.tickets-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px;
+  font-size: 16px;
+}
+
 .chips {
   display: flex;
   flex-wrap: wrap;
