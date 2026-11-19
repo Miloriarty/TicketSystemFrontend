@@ -15,11 +15,10 @@ import {MatSelect} from '@angular/material/select';
 import {CategoryService} from '../../core/services/category.service';
 import {EmployeeService} from '../../core/services/employee.service';
 import {TicketService} from '../../core/services/ticket.service';
-import {RoleService} from '../../core/services/role.service';
 import {Category, CategoryRequest} from '../../core/models/category.model';
 import {Employee, EmployeeRequest} from '../../core/models/employee.model';
 import {Ticket} from '../../core/models/ticket.model';
-import {Role} from '../../core/models/role.model';
+import {Role, ROLES} from '../../core/models/role.model';
 import {DatePipe} from '@angular/common';
 import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
 import {ConfirmService} from '../../shared/confirm-dialog/confirm.service';
@@ -55,7 +54,6 @@ export class AdminComponent { // Todo add trim to fields
   categoryService = inject(CategoryService);
   employeeService = inject(EmployeeService);
   ticketService = inject(TicketService);
-  roleService = inject(RoleService);
   confirmService = inject(ConfirmService);
   _snackBar = inject(MatSnackBar);
 
@@ -68,7 +66,7 @@ export class AdminComponent { // Todo add trim to fields
   categories = signal<Category[]>([]);
   selectedCategories = signal<Category[]>([]);
 
-  roles = signal<Role[]>([]);
+  readonly roles = ROLES;
   selectedRole = signal<Role | null>(null);
 
   employees = signal<Employee[]>([]);
@@ -99,11 +97,6 @@ export class AdminComponent { // Todo add trim to fields
       next: tickets => this.tickets.set(tickets),
       error: err => this.showErrorShackBar(httpErrorMessage(err, 'load tickets')),
     });
-
-    this.roleService.getRoles().subscribe({
-      next: roles => this.roles.set(roles),
-      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load roles')),
-    });
   }
 
   protected canCreateEmployee(): boolean {
@@ -118,7 +111,7 @@ export class AdminComponent { // Todo add trim to fields
       fullName: this.fullName(),
       position: this.position(),
       password: this.password(),
-      roleId: this.selectedRole()!.id,
+      role: this.selectedRole()!,
       categoryIds: this.selectedCategories().map(c => c.id),
     }
 
@@ -226,9 +219,7 @@ export class AdminComponent { // Todo add trim to fields
     this.selectedCategories.set(
       this.categories().filter(c => employee.categoryIds.includes(c.id))
     )
-    this.selectedRole.set(
-      this.roles().find(r => r.id === employee.roleId) ?? null
-    )
+    this.selectedRole.set(employee.role)
   }
 
   protected deleteEmployee(employee: Employee) {
@@ -279,6 +270,6 @@ export class AdminComponent { // Todo add trim to fields
   }
 
   protected haveCategories(role: Role | null) {
-    return role?.name === "employee";
+    return role === Role.Employee;
   }
 }

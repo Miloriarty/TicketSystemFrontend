@@ -6,11 +6,12 @@ import {LoginComponent} from './pages/login/login.component';
 import {AuthService} from './core/services/auth.service';
 import {inject} from '@angular/core';
 import {homeFor, roleGuard} from './core/guards';
+import {Role} from './core/models/role.model';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: () => homeFor(inject(AuthService).user()?.role)},
-  { path: 'manager', component: ManagerComponent, canActivate: [roleGuard], data: {roles: ['manager']} },
-  { path: 'admin', component: AdminComponent, canActivate: [roleGuard], data: {roles: ['admin']} },
-  { path: 'employees', component: EmployeeComponent, canActivate: [roleGuard], data: {roles: ['employee']} },
+  { path: 'manager', component: ManagerComponent, canActivate: [roleGuard], data: {roles: [Role.Manager]} },
+  { path: 'admin', component: AdminComponent, canActivate: [roleGuard], data: {roles: [Role.Admin]} },
+  { path: 'employees', component: EmployeeComponent, canActivate: [roleGuard], data: {roles: [Role.Employee]} },
   { path: 'login', component: LoginComponent },
 ];

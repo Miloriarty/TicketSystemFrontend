@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   public loadMe(): Observable<AuthUser | null> {
-    return this.client.get<AuthUser>(`${API_URL}/login/me`).pipe(
+    return this.client.get<AuthUser>(`${API_URL}/login/info`).pipe(
       tap(u => this.user.set(u)),
       catchError(() => { this.user.set(null); return of(null); }),
     );

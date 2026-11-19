@@ -4,19 +4,20 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AuthService} from '../../core/services/auth.service';
 import {httpErrorMessage} from '../../core/http-error';
+import {Role} from '../../core/models/role.model';
 
 
 interface NAV_LINK {
   path: string;
   icon: string;
   label: string;
-  roles: string[];
+  roles: Role[];
 }
 
 const NAV_LINKS: NAV_LINK[] = [
-  { path: '/manager', icon: 'add_task', label: 'Manager', roles: ['manager'] },
-  { path: '/admin', icon: 'confirmation_number', label: 'Admin', roles: ['admin'] },
-  { path: '/employees', icon: 'people', label: 'Employees', roles: ['employee'] },
+  { path: '/manager', icon: 'add_task', label: 'Manager', roles: [Role.Manager] },
+  { path: '/admin', icon: 'confirmation_number', label: 'Admin', roles: [Role.Admin] },
+  { path: '/employees', icon: 'people', label: 'Employees', roles: [Role.Employee] },
 ]
 
 @Component({

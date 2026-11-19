@@ -70,9 +70,9 @@
                           (ngModelChange)="onRolesChange($event)"
                           placeholder="Choose role"
               >
-                @for (role of roles(); track role.id) {
+                @for (role of roles; track role) {
                   <mat-option [value]="role">
-                    {{role.name}}
+                    {{role}}
                   </mat-option>
                 }
               </mat-select>

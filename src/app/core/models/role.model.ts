@@ -1,5 +1,7 @@
-export interface Role {
-  id: number;
-  name: string;
-  employeeIds: Array<number>
+export enum Role {
+  Admin = 'admin',
+  Manager = 'manager',
+  Employee = 'employee',
 }
+
+export const ROLES: Role[] = Object.values(Role);

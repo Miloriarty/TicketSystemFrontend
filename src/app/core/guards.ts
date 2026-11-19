@@ -1,15 +1,16 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { Role } from './models/role.model';
 
-const ROLE_HOME: Record<string, string> = {
-  admin: '/admin',
-  manager: '/manager',
-  employee: '/employees',
+const ROLE_HOME: Record<Role, string> = {
+  [Role.Admin]: '/admin',
+  [Role.Manager]: '/manager',
+  [Role.Employee]: '/employees',
 };
 
 export function homeFor(role: string | null | undefined): string {
-  return (role && ROLE_HOME[role.toLowerCase()]) || '/login';
+  return (role && ROLE_HOME[role.toLowerCase() as Role]) || '/login';
 }
 
 export const roleGuard: CanActivateFn = (route) => {
@@ -18,7 +19,7 @@ export const roleGuard: CanActivateFn = (route) => {
 
   if (!user) return router.parseUrl('/login');
 
-  const allowed = route.data['roles'] as string[];
+  const allowed = route.data['roles'] as Role[];
   if (allowed.includes(user.role)) return true;
 
   return router.parseUrl(homeFor(user.role));
