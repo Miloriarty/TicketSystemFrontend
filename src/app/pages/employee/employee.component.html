@@ -1,12 +1,29 @@
 <main class="content">
   <section class="tickets">
-    <div class="section-title">
-      <h2>All tickets</h2>
-      <span>{{ tickets().length }}</span>
+    <div class="tickets-toolbar">
+      <div class="tickets-toolbar-left">
+        <div class="section-title">
+          <h2>All tickets</h2>
+          <span>{{ visibleTickets().length }}</span>
+        </div>
+
+        <mat-chip-listbox [(ngModel)]="selectedStatusFilter">
+          <mat-chip-option [value]="TicketStatus.New">New</mat-chip-option>
+          <mat-chip-option [value]="TicketStatus.InProgress">In progress</mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput
+               [ngModel]="searchTicket()"
+               (ngModelChange)="searchTicket.set($event)"
+               placeholder="Search tickets">
+      </mat-form-field>
     </div>
 
     <div class="tickets-grid">
-      @for (ticket of tickets(); track ticket.id) {
+      @for (ticket of visibleTickets(); track ticket.id) {
         <mat-card class="ticket-card" (click)="openTicket(ticket)">
 
           <div class="ticket-header">

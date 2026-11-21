@@ -26,6 +26,7 @@ import {switchMap, filter} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {httpErrorMessage} from '../../core/http-error';
+import {MatChipListbox, MatChipOption} from '@angular/material/chips';
 
 
 @Component({
@@ -48,6 +49,8 @@ import {httpErrorMessage} from '../../core/http-error';
     DatePipe,
     NgClass,
     NamesByIdsPipe,
+    MatChipListbox,
+    MatChipOption,
   ],
   standalone: true,
   selector: 'app-manager',
@@ -76,6 +79,23 @@ export class ManagerComponent {
 
   tickets = signal<Ticket[]>([]);
   editingTicketId = signal<number | null>(null);
+  sortedTickets = computed(() =>
+    [...this.tickets()].sort((a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+  )
+
+  selectedStatusFilter = signal<string | undefined>(undefined);
+  searchTicket = signal<string>('');
+  visibleTickets = computed(() => {
+    const search = this.searchTicket().trim().toLowerCase();
+    const status = this.selectedStatusFilter();
+
+    return this.tickets().filter(t =>
+      (!status || t.status === status)
+      && (t.title.toLowerCase().includes(search) || t.description.toLowerCase().includes(search))
+    )
+  })
 
   constructor() {
     this.categoryService.getCategories().subscribe({
@@ -251,4 +271,5 @@ export class ManagerComponent {
   }
 
   protected readonly TicketStatus = TicketStatus;
+  protected readonly statuses = Object.values(TicketStatus);
 }

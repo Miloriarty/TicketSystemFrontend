@@ -61,6 +61,33 @@
 }
 
 
+/* =========================
+   Tickets toolbar
+   ========================= */
+
+.tickets-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  .section-title {
+    margin-bottom: 12px;
+  }
+}
+
+.toolbar-fields {
+  display: flex;
+  gap: 12px;
+}
+
+.search-field {
+  width: 280px;
+  --mat-form-field-container-height: 40px;
+  --mat-form-field-container-vertical-padding: 8px;
+}
+
 @media (max-width: 600px) {
   .section-title {
     gap: 10px;
@@ -73,5 +100,18 @@
     span {
       font-size: 18px;
     }
+  }
+
+  .tickets-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-fields {
+    flex-direction: column;
+  }
+
+  .search-field {
+    width: 100%;
   }
 }

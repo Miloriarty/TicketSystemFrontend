@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {TicketService} from '../../core/services/ticket.service';
 import {CategoryService} from '../../core/services/category.service';
 import {Ticket, TicketRequest, TicketStatus, TICKET_STATUS_CLASS} from '../../core/models/ticket.model';
@@ -8,13 +8,15 @@ import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardActions} from '@angular/material/card';
 import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
 import {MatButton} from '@angular/material/button';
-import {MatChip} from '@angular/material/chips';
+import {MatChip, MatChipListbox, MatChipOption} from '@angular/material/chips';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
-import {filter} from 'rxjs';
+import {combineLatest, filter} from 'rxjs';
 import {TicketDialogComponent, TicketDialogData} from './ticket-dialog/ticket-dialog.component';
 import {httpErrorMessage} from '../../core/http-error';
 import {AuthService} from '../../core/services/auth.service';
+import {FormsModule} from '@angular/forms';
+import {MatFormField, MatInput, MatPrefix} from '@angular/material/input';
 
 @Component({
   imports: [
@@ -25,7 +27,13 @@ import {AuthService} from '../../core/services/auth.service';
     MatCardActions,
     MatButton,
     NgClass,
-    NamesByIdsPipe
+    NamesByIdsPipe,
+    MatChipOption,
+    MatChipListbox,
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatPrefix
   ],
   selector: 'app-employee',
   styleUrl: './employee.component.scss',
@@ -36,22 +44,31 @@ export class EmployeeComponent {
   private readonly dialog = inject(MatDialog);
   authService = inject(AuthService);
 
+  selectedStatusFilter = signal<TicketStatus | undefined>(undefined);
+  visibleTickets = computed(() => {
+    const myId = this.authService.user()?.id;
+    const status = this.selectedStatusFilter();
+    const search = this.searchTicket().trim().toLowerCase();
+
+    return this.tickets().filter(t =>
+      myId != null && t.employeeIds.includes(myId)
+      && !this.isClosed(t.status) && (!status || t.status === status)
+      && (t.title.toLowerCase().includes(search) || t.description.toLowerCase().includes(search))
+    );
+  });
+
   ticketService = inject(TicketService);
   categoryService = inject(CategoryService);
 
   tickets = signal<Ticket[]>([]);
   categories = signal<Category[]>([]);
 
+  searchTicket = signal<string>('');
+
   constructor() {
     this.ticketService.getTickets().subscribe({
       next: tickets => {
-        let filtered = tickets.filter(t =>
-          t.employeeIds.includes(this.authService.user()!.id)
-        )
-        this.tickets.set(filtered.filter(
-          t => t.status !== TicketStatus.Cancelled
-            && t.status !== TicketStatus.Completed
-        ))
+        this.tickets.set(tickets);
       },
       error: err => this.showErrorShackBar(httpErrorMessage(err, 'load tickets')),
     });

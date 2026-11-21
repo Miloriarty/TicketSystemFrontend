@@ -116,7 +116,7 @@
 
   <!-- Right section -->
   <section class="tickets">
-    @for (ticket of tickets().slice(0, 3); track ticket.id) {
+    @for (ticket of sortedTickets().slice(0, 3); track ticket.id) {
       <mat-card class="ticket-card">
         <div class="ticket-top">
           <div class="ticket-info">
@@ -162,16 +162,34 @@
 
   <!-- Bottom section -->
   <section class="all-tickets">
-    <div class="section-title">
-      <h2>Overall tickets: {{tickets().length}}</h2>
+    <div class="tickets-toolbar">
+      <div>
+        <div class="section-title">
+          <h2>Overall tickets: {{ visibleTickets().length }}</h2>
+        </div>
+
+        <mat-chip-listbox [(ngModel)]="selectedStatusFilter">
+          @for (status of statuses; track status) {
+            <mat-chip-option [value]="status">{{ status }}</mat-chip-option>
+          }
+        </mat-chip-listbox>
+      </div>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput
+               [ngModel]="searchTicket()"
+               (ngModelChange)="searchTicket.set($event)"
+               placeholder="Search tickets">
+      </mat-form-field>
     </div>
 
     <div class="tickets-grid">
-      @for (ticket of tickets().slice(3); track ticket.id) {
+      @for (ticket of visibleTickets(); track ticket.id) {
         <mat-card class="ticket-card">
           <div class="ticket-top">
             <div class="ticket-info">
-              <span class="ticket-number">Заявка #{{ticket.id}}</span>
+              <span class="ticket-number">Ticket #{{ticket.id}}</span>
               <h3>{{ticket.title}}</h3>
             </div>
             <div class="status" [ngClass]="statusClass[ticket.status]">

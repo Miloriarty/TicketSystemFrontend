@@ -175,13 +175,44 @@
 
   <!-- All employees -->
   <section class="all-employee">
-    <div class="section-title">
-      <h2>All employees</h2>
-      <span>{{ employees().length }}</span>
+    <div class="tickets-toolbar">
+      <div>
+        <div class="section-title">
+          <h2>All employees</h2>
+          <span>{{ visibleEmployees().length }}</span>
+        </div>
+
+        <mat-chip-listbox [(ngModel)]="selectedRoleFilter">
+          @for (role of roles; track role) {
+            <mat-chip-option [value]="role">{{ role }}</mat-chip-option>
+          }
+        </mat-chip-listbox>
+      </div>
+
+      <div class="toolbar-fields">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+          <mat-select multiple
+                      placeholder="Categories"
+                      [ngModel]="selectedCategoriesFilter()"
+                      (ngModelChange)="selectedCategoriesFilter.set($event)">
+            @for (category of categories(); track category.id) {
+              <mat-option [value]="category.id">{{ category.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput
+                 [ngModel]="searchEmployee()"
+                 (ngModelChange)="searchEmployee.set($event)"
+                 placeholder="Search employees">
+        </mat-form-field>
+      </div>
     </div>
 
     <div class="employee-grid">
-      @for (employee of employees(); track employee.id) {
+      @for (employee of visibleEmployees(); track employee.id) {
       <mat-card class="employee-card">
 
         <div class="employee-top">
@@ -222,6 +253,8 @@
             </div>
         }
       </mat-card>
+      } @empty {
+        <div class="employees-empty">No employees found</div>
       }
     </div>
   </section>

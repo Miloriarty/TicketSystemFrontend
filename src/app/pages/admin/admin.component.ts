@@ -9,7 +9,8 @@ import {
   MatCardHeader,
   MatCardTitle
 } from '@angular/material/card';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {MatFormField, MatInput, MatLabel, MatPrefix} from '@angular/material/input';
+import {MatChipListbox, MatChipOption} from '@angular/material/chips';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {CategoryService} from '../../core/services/category.service';
@@ -45,6 +46,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     MatIconButton,
     DatePipe,
     NamesByIdsPipe,
+    MatPrefix,
+    MatChipListbox,
+    MatChipOption,
   ],
   selector: 'app-admin',
   styleUrl: './admin.component.scss',
@@ -65,11 +69,25 @@ export class AdminComponent { // Todo add trim to fields
 
   categories = signal<Category[]>([]);
   selectedCategories = signal<Category[]>([]);
+  selectedCategoriesFilter = signal<number[]>([]);
 
   readonly roles = ROLES;
   selectedRole = signal<Role | null>(null);
 
   employees = signal<Employee[]>([]);
+  selectedRoleFilter = signal<Role | undefined>(undefined);
+  searchEmployee = signal<string>('');
+  visibleEmployees = computed(() => {
+    const role = this.selectedRoleFilter();
+    const categoryIds = this.selectedCategoriesFilter();
+    const search = this.searchEmployee().trim().toLowerCase();
+
+    return this.employees().filter(e =>
+      (!role || e.role === role)
+      && (categoryIds.length === 0 || categoryIds.every(id => e.categoryIds.includes(id)))
+      && (e.fullName.toLowerCase().includes(search) || e.position.toLowerCase().includes(search))
+    );
+  });
   editingEmployeeId =signal<number | null>(null);
 
   tickets = signal<Ticket[]>([]);
