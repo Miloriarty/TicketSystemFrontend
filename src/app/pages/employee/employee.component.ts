@@ -18,6 +18,8 @@ import {AuthService} from '../../core/services/auth.service';
 import {FormsModule} from '@angular/forms';
 import {MatFormField, MatInput, MatPrefix} from '@angular/material/input';
 
+type SortDirection = 'asc' | 'desc';
+
 @Component({
   imports: [
     DatePipe,
@@ -44,17 +46,21 @@ export class EmployeeComponent {
   private readonly dialog = inject(MatDialog);
   authService = inject(AuthService);
 
+  sortDirection = signal<SortDirection>('desc');
   selectedStatusFilter = signal<TicketStatus | undefined>(undefined);
   visibleTickets = computed(() => {
     const myId = this.authService.user()?.id;
     const status = this.selectedStatusFilter();
     const search = this.searchTicket().trim().toLowerCase();
+    const direction = this.sortDirection() === 'asc' ? 1 : -1;
 
     return this.tickets().filter(t =>
       myId != null && t.employeeIds.includes(myId)
       && !this.isClosed(t.status) && (!status || t.status === status)
       && (t.title.toLowerCase().includes(search) || t.description.toLowerCase().includes(search))
-    );
+    )
+      .sort((a, b) =>
+        (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) * direction)
   });
 
   ticketService = inject(TicketService);
@@ -167,6 +173,10 @@ export class EmployeeComponent {
           this.changeStatus(ticket, status);
         }
       });
+  }
+
+  protected toggleSort() {
+    this.sortDirection.update(d => (d === 'asc' ? 'desc' : 'asc'));
   }
 
   protected readonly TicketStatus = TicketStatus;
