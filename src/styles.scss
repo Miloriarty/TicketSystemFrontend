@@ -6,3 +6,7 @@ html, body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+html {
+  --mat-dialog-container-color: var(--mat-sys-surface-container-high);
+}

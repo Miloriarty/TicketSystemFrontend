@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {DatePipe, NgClass} from '@angular/common';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatChip} from '@angular/material/chips';
 import {
   MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle,
@@ -16,7 +16,7 @@ export interface TicketDialogData {
 @Component({
   selector: 'app-ticket-dialog',
   imports: [
-    DatePipe, NgClass, MatButton, MatChip, MatIcon,
+    DatePipe, NgClass, MatButton, MatIconButton, MatChip, MatIcon,
     MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose
   ],
   templateUrl: './ticket-dialog.component.html',

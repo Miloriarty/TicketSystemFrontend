@@ -1,3 +1,7 @@
+<button matIconButton mat-dialog-close class="close-button" aria-label="Close">
+  <mat-icon>close</mat-icon>
+</button>
+
 <h2 mat-dialog-title>{{ data.ticket.title }}</h2>
 
 <mat-dialog-content>
@@ -10,8 +14,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button matButton mat-dialog-close>Close</button>
-
   <button matButton="outlined" class="cancel-button" [mat-dialog-close]="TicketStatus.Cancelled">
     <mat-icon>cancel</mat-icon>
     Cancel
