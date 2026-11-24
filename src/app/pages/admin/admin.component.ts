@@ -28,7 +28,7 @@ import { Role, ROLES } from '../../core/models/role.model';
 import { NamesByIdsPipe } from '../../shared/pipes/names-by-ids.pipe';
 import { ConfirmService } from '../../shared/confirm-dialog/confirm.service';
 import { httpErrorMessage } from '../../core/http-error';
-import {AuthService} from '../../core/services/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   imports: [
@@ -301,6 +301,6 @@ export class AdminComponent {
   }
 
   protected haveCategories(role: Role | null) {
-    return role === Role.Employee;
+    return role === 'employee';
   }
 }

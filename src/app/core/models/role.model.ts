@@ -1,7 +1,3 @@
-export enum Role {
-  Admin = 'admin',
-  Manager = 'manager',
-  Employee = 'employee',
-}
+export type Role = 'admin' | 'manager' | 'employee';
 
-export const ROLES: Role[] = Object.values(Role);
+export const ROLES: Role[] = ['admin', 'manager', 'employee'];

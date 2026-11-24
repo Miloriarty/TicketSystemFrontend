@@ -5,9 +5,9 @@ import { AuthService } from './services/auth.service';
 import { Role } from './models/role.model';
 
 const ROLE_HOME: Record<Role, string> = {
-  [Role.Admin]: '/admin',
-  [Role.Manager]: '/manager',
-  [Role.Employee]: '/employees',
+  admin: '/admin',
+  manager: '/manager',
+  employee: '/employees',
 };
 
 export function homeFor(role: string | null | undefined): string {

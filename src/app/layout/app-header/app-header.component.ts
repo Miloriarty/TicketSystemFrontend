@@ -15,9 +15,9 @@ interface NAV_LINK {
 }
 
 const NAV_LINKS: NAV_LINK[] = [
-  { path: '/manager', icon: 'add_task', label: 'Manager', roles: [Role.Manager] },
-  { path: '/admin', icon: 'confirmation_number', label: 'Admin', roles: [Role.Admin] },
-  { path: '/employees', icon: 'people', label: 'Employees', roles: [Role.Employee] },
+  { path: '/manager', icon: 'add_task', label: 'Manager', roles: ['manager'] },
+  { path: '/admin', icon: 'confirmation_number', label: 'Admin', roles: ['admin'] },
+  { path: '/employees', icon: 'people', label: 'Employees', roles: ['employee'] },
 ];
 
 @Component({

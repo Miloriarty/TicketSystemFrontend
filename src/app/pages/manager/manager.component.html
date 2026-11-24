@@ -117,44 +117,17 @@
 
   <!-- Right section -->
   <section class="tickets">
+    <div class="section-title">
+      <h2>Recent tickets</h2>
+    </div>
     @for (ticket of sortedTickets().slice(0, 3); track ticket.id) {
-      <mat-card class="ticket-card">
-        <div class="ticket-top">
-          <div class="ticket-info">
-            <span class="ticket-number">Ticket #{{ ticket.id }}</span>
-            <h3>{{ ticket.title }}</h3>
-          </div>
-          <div class="status" [ngClass]="statusClass[ticket.status]">
-            {{ ticket.status }}
-          </div>
-          <div class="ticket-actions">
-            <button mat-icon-button (click)="editTicket(ticket)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            @if (canDelete(ticket)) {
-              <button mat-icon-button class="delete-button" (click)="deleteTicket(ticket.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            }
-            @if (canReopen(ticket)) {
-              <button mat-icon-button class="delete-button" (click)="reopenTicket(ticket)">
-                <mat-icon>restart_alt</mat-icon>
-              </button>
-            }
-          </div>
-        </div>
-        <span class="ticket-description">{{ ticket.description }}</span>
-        <div class="ticket-bottom">
-          <span>
-            <mat-icon>schedule</mat-icon>
-            {{ ticket.createdAt | date: 'dd.MM.yy, HH.mm' }}
-          </span>
-          <span>
-            <mat-icon>person</mat-icon>
-            {{ (ticket.employeeIds | namesByIds: employees() : 'fullName').join(', ') }}
-          </span>
-        </div>
-      </mat-card>
+      <app-ticket-card
+        [ticket]="ticket"
+        [employees]="employees()"
+        (edit)="editTicket($event)"
+        (delete)="deleteTicket($event)"
+        (reopen)="reopenTicket($event)"
+      />
     }
   </section>
 
@@ -186,44 +159,13 @@
 
     <div class="tickets-grid">
       @for (ticket of visibleTickets(); track ticket.id) {
-        <mat-card class="ticket-card">
-          <div class="ticket-top">
-            <div class="ticket-info">
-              <span class="ticket-number">Ticket #{{ ticket.id }}</span>
-              <h3>{{ ticket.title }}</h3>
-            </div>
-            <div class="status" [ngClass]="statusClass[ticket.status]">
-              {{ ticket.status }}
-            </div>
-
-            <div class="ticket-actions">
-              <button mat-icon-button (click)="editTicket(ticket)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              @if (canDelete(ticket)) {
-                <button mat-icon-button class="delete-button" (click)="deleteTicket(ticket.id)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              }
-              @if (canReopen(ticket)) {
-                <button mat-icon-button class="delete-button" (click)="reopenTicket(ticket)">
-                  <mat-icon>restart_alt</mat-icon>
-                </button>
-              }
-            </div>
-          </div>
-          <span class="ticket-description">{{ ticket.description }}</span>
-          <div class="ticket-bottom">
-            <span>
-              <mat-icon>schedule</mat-icon>
-              {{ ticket.createdAt | date: 'dd.MM.yy, HH.mm' }}
-            </span>
-            <span>
-              <mat-icon>person</mat-icon>
-              {{ (ticket.employeeIds | namesByIds: employees() : 'fullName').join(', ') }}
-            </span>
-          </div>
-        </mat-card>
+        <app-ticket-card
+          [ticket]="ticket"
+          [employees]="employees()"
+          (edit)="editTicket($event)"
+          (delete)="deleteTicket($event)"
+          (reopen)="reopenTicket($event)"
+        />
       }
     </div>
   </section>

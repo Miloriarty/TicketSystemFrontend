@@ -106,90 +106,12 @@
   flex-direction: column;
   gap: 20px;
 
-  .ticket-card {
+  .section-title {
+    margin-bottom: 0;
+  }
+
+  app-ticket-card {
     flex: 1;
-  }
-}
-
-.ticket-card {
-  padding: 24px;
-  gap: 16px;
-  overflow-wrap: anywhere;
-
-  h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--mat-sys-on-surface);
-  }
-}
-
-.ticket-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.ticket-actions {
-  display: flex;
-  flex-direction: row;
-  /*justify-content: flex-end;*/
-  gap: 8px;
-  padding: 0;
-  margin: 0;
-  align-items: center;
-  height: 100%;
-
-  .icon-button {
-    color: var(--mat-sys-on-surface-variant);
-  }
-  .delete-button:hover {
-    color: var(--mat-sys-error);
-  }
-}
-
-.ticket-number {
-  display: block;
-  margin-bottom: 7px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--mat-sys-primary);
-}
-
-.ticket-info {
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: anywhere;
-
-  h3 {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-.ticket-bottom {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-top: auto;
-  padding-top: 14px;
-  border-top: 1px solid var(--mat-sys-outline-variant);
-  font-size: 12px;
-  color: var(--mat-sys-on-surface-variant);
-
-  span {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  mat-icon {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
   }
 }
 
@@ -245,24 +167,6 @@
     min-width: 0;
     padding: 0 12px;
     margin-right: 0;
-  }
-
-  .ticket-card {
-    padding: 16px;
-    gap: 12px;
-  }
-
-  .ticket-top {
-    gap: 8px;
-  }
-
-  .ticket-actions {
-    gap: 0;
-  }
-
-  .ticket-bottom {
-    flex-wrap: wrap;
-    gap: 8px 16px;
   }
 
   .tickets-grid {

@@ -13,7 +13,6 @@ import {
   MatCardTitle,
 } from '@angular/material/card';
 import { MatOption, MatSelect, MatSelectTrigger } from '@angular/material/select';
-import { DatePipe, NgClass } from '@angular/common';
 import { switchMap, filter } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
@@ -27,11 +26,11 @@ import {
   Ticket,
   TicketRequest,
   TicketStatus,
-  TICKET_STATUS_CLASS,
 } from '../../core/models/ticket.model';
 import { NamesByIdsPipe } from '../../shared/pipes/names-by-ids.pipe';
 import { ConfirmService } from '../../shared/confirm-dialog/confirm.service';
 import { httpErrorMessage } from '../../core/http-error';
+import {TicketCardComponent} from './ticket-card/ticket-card.component';
 
 @Component({
   imports: [
@@ -50,11 +49,10 @@ import { httpErrorMessage } from '../../core/http-error';
     MatSelect,
     MatOption,
     MatSelectTrigger,
-    DatePipe,
-    NgClass,
     NamesByIdsPipe,
     MatChipListbox,
     MatChipOption,
+    TicketCardComponent,
   ],
   selector: 'app-manager',
   styleUrl: './manager.component.scss',
@@ -117,8 +115,6 @@ export class ManagerComponent {
       error: (err) => this.showErrorShackBar(httpErrorMessage(err, 'load tickets')),
     });
   }
-
-  protected readonly statusClass = TICKET_STATUS_CLASS;
 
   protected onCategoriesChange(categories: Category[]) {
     this.selectedCategories.set(categories);
@@ -241,18 +237,6 @@ export class ManagerComponent {
       this.selectedCategories().length > 0 ||
       this.selectedEmployees().length > 0
     );
-  }
-
-  protected canDelete(ticket: Ticket): boolean {
-    if (ticket.status === TicketStatus.New || ticket.status === TicketStatus.InProgress) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  protected canReopen(ticket: Ticket): boolean {
-    return ticket.status === TicketStatus.Completed || ticket.status === TicketStatus.Cancelled;
   }
 
   protected clearForm() {
