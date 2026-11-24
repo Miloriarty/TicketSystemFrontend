@@ -1,0 +1,39 @@
+<mat-card class="employee-card">
+  <div class="employee-top">
+    <div class="employee-identity">
+      <div class="card-icon">
+        <mat-icon>person</mat-icon>
+      </div>
+      <div class="employee-info">
+        <h3>{{ employee().fullName }}</h3>
+        <span class="employee-position">{{ employee().position }}</span>
+      </div>
+    </div>
+
+    <div class="employee-actions">
+      <button mat-icon-button (click)="edit.emit(employee())">
+        <mat-icon>edit</mat-icon>
+      </button>
+      @if (myId() !== employee().id) {
+        <button mat-icon-button class="delete-button" (click)="delete.emit(employee())">
+          <mat-icon>delete</mat-icon>
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="employee-meta">
+    <span>
+      <mat-icon>schedule</mat-icon>
+      {{ employee().startDate | date: 'dd.MM.yy' }}
+    </span>
+  </div>
+
+  @if (employee().categoryIds.length > 0) {
+    <div class="chips">
+      @for (name of employee().categoryIds | namesByIds: categories() : 'name'; track name) {
+        <span class="chip">{{ name }}</span>
+      }
+    </div>
+  }
+</mat-card>

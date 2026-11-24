@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import {
   MatCard,
   MatCardActions,
@@ -14,7 +14,6 @@ import { MatFormField, MatInput, MatLabel, MatPrefix } from '@angular/material/i
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
-import { DatePipe } from '@angular/common';
 import { switchMap, filter } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -25,10 +24,11 @@ import { Category, CategoryRequest } from '../../core/models/category.model';
 import { Employee, EmployeeRequest } from '../../core/models/employee.model';
 import { Ticket } from '../../core/models/ticket.model';
 import { Role, ROLES } from '../../core/models/role.model';
-import { NamesByIdsPipe } from '../../shared/pipes/names-by-ids.pipe';
 import { ConfirmService } from '../../shared/confirm-dialog/confirm.service';
 import { httpErrorMessage } from '../../core/http-error';
 import { AuthService } from '../../core/services/auth.service';
+import { EmployeeCardComponent } from './employee-card/employee-card.component';
+import { CategoriesCardComponent } from './categories-card/categories-card.component';
 
 @Component({
   imports: [
@@ -46,12 +46,11 @@ import { AuthService } from '../../core/services/auth.service';
     MatOption,
     MatSelect,
     MatCardAvatar,
-    MatIconButton,
-    DatePipe,
-    NamesByIdsPipe,
     MatPrefix,
     MatChipListbox,
     MatChipOption,
+    EmployeeCardComponent,
+    CategoriesCardComponent,
   ],
   selector: 'app-admin',
   styleUrl: './admin.component.scss',
@@ -99,13 +98,7 @@ export class AdminComponent {
 
   tickets = signal<Ticket[]>([]);
 
-  createCategoryField = signal<string>('');
-  searchCategory = signal<string>('');
-
-  filteredCategories = computed(() => {
-    const query = this.searchCategory().trim().toLowerCase();
-    return this.categories().filter((c) => c.name.toLowerCase().includes(query));
-  });
+  newCategoryName = signal<string>('');
 
   constructor() {
     this.categoryService.getCategories().subscribe({
@@ -178,15 +171,6 @@ export class AdminComponent {
     }
   }
 
-  protected canCreateCategory(): boolean {
-    return this.createCategoryField().trim().length > 0 && !this.isCategoryExists();
-  }
-
-  protected isCategoryExists(): boolean {
-    const name = this.createCategoryField().trim().toLowerCase();
-    return this.categories().some((c) => c.name.trim().toLowerCase() === name);
-  }
-
   protected onCategoriesChange(categories: Category[]) {
     this.selectedCategories.set(categories);
   }
@@ -194,14 +178,6 @@ export class AdminComponent {
   protected onRolesChange(role: Role) {
     this.selectedRole.set(role);
     if (!this.haveCategories(role)) this.selectedCategories.set([]);
-  }
-
-  protected onCrateCategoryFieldChange(categoryName: string) {
-    this.createCategoryField.set(categoryName);
-  }
-
-  protected onSearchCategoryChange(text: string) {
-    this.searchCategory.set(text);
   }
 
   protected deleteCategory(cat: Category) {
@@ -225,9 +201,9 @@ export class AdminComponent {
       });
   }
 
-  protected createCategory() {
+  protected createCategory(name: string) {
     const cat: CategoryRequest = {
-      name: this.createCategoryField(),
+      name: name,
     };
     this.categoryService.createCategory(cat).subscribe({
       next: (category) => {
@@ -296,11 +272,11 @@ export class AdminComponent {
     this.selectedCategories.set([]);
   }
 
-  protected clearCategoryForm(): void {
-    this.createCategoryField.set('');
-  }
-
   protected haveCategories(role: Role | null) {
     return role === 'employee';
+  }
+
+  protected clearCategoryForm(): void {
+    this.newCategoryName.set('');
   }
 }

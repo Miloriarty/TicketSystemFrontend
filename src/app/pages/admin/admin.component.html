@@ -107,73 +107,12 @@
   </mat-card>
 
   <!--  Categories Card  -->
-  <mat-card class="category-create-card">
-    <mat-card-header>
-      <div mat-card-avatar class="card-icon">
-        <mat-icon>create_new_folder</mat-icon>
-      </div>
-      <mat-card-title style="padding-left: 0">Create category</mat-card-title>
-
-      <!-- Search -->
-      <mat-form-field class="header-search" appearance="outline" subscriptSizing="dynamic">
-        <mat-icon matPrefix>search</mat-icon>
-        <input
-          matInput
-          [ngModel]="searchCategory()"
-          (ngModelChange)="onSearchCategoryChange($event)"
-          placeholder="Search categories"
-        />
-      </mat-form-field>
-    </mat-card-header>
-
-    <mat-card-content>
-      <!-- Categories -->
-      <ul class="category-list">
-        @for (cat of filteredCategories(); track cat.id) {
-          <li class="category-row">
-            <span class="category-name">{{ cat.name }}</span>
-
-            <div class="row-actions">
-              <button mat-icon-button class="delete-button" (click)="deleteCategory(cat)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </li>
-        } @empty {
-          <li class="category-empty">No categories found</li>
-        }
-      </ul>
-
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" style="margin-top: auto">
-        <mat-label>New category</mat-label>
-        <input
-          matInput
-          [ngModel]="createCategoryField()"
-          (ngModelChange)="onCrateCategoryFieldChange($event)"
-          (keydown.enter)="canCreateCategory() && createCategory()"
-          placeholder="Category name"
-        />
-      </mat-form-field>
-    </mat-card-content>
-
-    <mat-card-actions>
-      @if (isCategoryExists()) {
-        <div class="validation-warning">
-          <mat-icon>warning</mat-icon>
-          <div>Category already exists</div>
-        </div>
-      }
-      <button
-        mat-flat-button
-        class="create-button"
-        [disabled]="!canCreateCategory()"
-        (click)="createCategory()"
-      >
-        <mat-icon>add</mat-icon>
-        Add category
-      </button>
-    </mat-card-actions>
-  </mat-card>
+  <app-categories-card
+    [categories]="categories()"
+    [(newCategory)]="newCategoryName"
+    (create)="createCategory($event)"
+    (delete)="deleteCategory($event)"
+  />
 
   <!-- All employees -->
   <section class="all-employee">
@@ -219,45 +158,13 @@
 
     <div class="employee-grid">
       @for (employee of visibleEmployees(); track employee.id) {
-        <mat-card class="employee-card">
-          <div class="employee-top">
-            <div class="employee-identity">
-              <div class="card-icon">
-                <mat-icon>person</mat-icon>
-              </div>
-              <div class="employee-info">
-                <h3>{{ employee.fullName }}</h3>
-                <span class="employee-position">{{ employee.position }}</span>
-              </div>
-            </div>
-
-            <div class="employee-actions">
-              <button mat-icon-button (click)="editEmployee(employee)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              @if (myId !== employee.id) {
-                <button mat-icon-button class="delete-button" (click)="deleteEmployee(employee)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              }
-            </div>
-          </div>
-
-          <div class="employee-meta">
-            <span>
-              <mat-icon>schedule</mat-icon>
-              {{ employee.startDate | date: 'dd.MM.yy' }}
-            </span>
-          </div>
-
-          @if (employee.categoryIds.length > 0) {
-            <div class="chips">
-              @for (name of employee.categoryIds | namesByIds: categories() : 'name'; track name) {
-                <span class="chip">{{ name }}</span>
-              }
-            </div>
-          }
-        </mat-card>
+        <app-employee-card
+          [employee]="employee"
+          [categories]="categories()"
+          [myId]="myId"
+          (edit)="editEmployee($event)"
+          (delete)="deleteEmployee($event)"
+        />
       } @empty {
         <div class="employees-empty">No employees found</div>
       }

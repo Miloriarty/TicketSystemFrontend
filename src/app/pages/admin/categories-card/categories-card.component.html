@@ -1,0 +1,66 @@
+<mat-card class="category-create-card">
+  <mat-card-header>
+    <div mat-card-avatar class="card-icon">
+      <mat-icon>create_new_folder</mat-icon>
+    </div>
+    <mat-card-title class="card-title">Create category</mat-card-title>
+
+    <!-- Search -->
+    <mat-form-field class="header-search" appearance="outline" subscriptSizing="dynamic">
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        [ngModel]="searchCategory()"
+        (ngModelChange)="onSearchCategoryChange($event)"
+        placeholder="Search categories"
+      />
+    </mat-form-field>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Categories -->
+    <ul class="category-list">
+      @for (cat of filteredCategories(); track cat.id) {
+        <li class="category-row">
+          <span class="category-name">{{ cat.name }}</span>
+
+          <div class="row-actions">
+            <button mat-icon-button class="delete-button" (click)="delete.emit(cat)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </li>
+      } @empty {
+        <li class="category-empty">No categories found</li>
+      }
+    </ul>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="new-category-field">
+      <mat-label>New category</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newCategory"
+        (keydown.enter)="canCreateCategory() && create.emit(newCategory())"
+        placeholder="Category name"
+      />
+    </mat-form-field>
+  </mat-card-content>
+
+  <mat-card-actions>
+    @if (isCategoryExists()) {
+      <div class="validation-warning">
+        <mat-icon>warning</mat-icon>
+        <div>Category already exists</div>
+      </div>
+    }
+    <button
+      mat-flat-button
+      class="create-button"
+      [disabled]="!canCreateCategory()"
+      (click)="create.emit(newCategory())"
+    >
+      <mat-icon>add</mat-icon>
+      Add category
+    </button>
+  </mat-card-actions>
+</mat-card>
