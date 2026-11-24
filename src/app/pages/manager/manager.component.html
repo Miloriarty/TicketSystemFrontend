@@ -1,30 +1,30 @@
 <!-- Content -->
 <main class="content">
-
   <!-- Create card -->
   <mat-card class="ticket-create-card">
     <mat-card-header>
       <div mat-card-avatar class="card-icon">
         <mat-icon>
-          {{ editingTicketId() === null ? 'add_task' : 'edit'}}
+          {{ editingTicketId() === null ? 'add_task' : 'edit' }}
         </mat-icon>
       </div>
       <mat-card-title>
-        {{ editingTicketId() === null ? 'Create ticket' : 'Edit ticket'}}
+        {{ editingTicketId() === null ? 'Create ticket' : 'Edit ticket' }}
       </mat-card-title>
       <mat-card-subtitle>
-        {{ editingTicketId() === null ? 'Add ticket' : 'Edit ticket'}}
+        {{ editingTicketId() === null ? 'Add ticket' : 'Edit ticket' }}
       </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <mat-form-field appearance="outline">
         <mat-label>Title</mat-label>
-        <input matInput
-               [ngModel]="title()"
-               (ngModelChange)="title.set($event)"
-               placeholder="Enter title"
-        >
+        <input
+          matInput
+          [ngModel]="title()"
+          (ngModelChange)="title.set($event)"
+          placeholder="Enter title"
+        />
       </mat-form-field>
 
       <!-- Description -->
@@ -65,15 +65,15 @@
           (ngModelChange)="onEmployeesChange($event)"
           placeholder="Choose employee"
           [disabled]="!categorySelected()"
-          >
+        >
           <mat-select-trigger>
             {{ employeeNames() }}
           </mat-select-trigger>
           @for (employee of filteredEmployees(); track employee.id) {
             <mat-option [value]="employee">
-              <span>{{employee.fullName}}</span>
+              <span>{{ employee.fullName }}</span>
               <small style="margin: 12px">
-                {{(employee.categoryIds | namesByIds: categories() : 'name')}}
+                {{ employee.categoryIds | namesByIds: categories() : 'name' }}
               </small>
             </mat-option>
           }
@@ -90,11 +90,12 @@
         </div>
       }
       @if (this.editingTicketId() !== null) {
-        <button matButton="outlined"
-              class="cancel-button"
-              [disabled]="!canCancel()"
-              (click)="clearForm()"
-         >
+        <button
+          matButton="outlined"
+          class="cancel-button"
+          [disabled]="!canCancel()"
+          (click)="clearForm()"
+        >
           <mat-icon>cancel</mat-icon>
           Cancel
         </button>
@@ -107,9 +108,9 @@
         (click)="createTicket()"
       >
         <mat-icon>
-          {{ editingTicketId() === null ? 'add' : 'edit'}}
+          {{ editingTicketId() === null ? 'add' : 'save' }}
         </mat-icon>
-        {{ editingTicketId() === null ? 'Add ticket' : 'Edit ticket'}}
+        {{ editingTicketId() === null ? 'Add ticket' : 'Save ticket' }}
       </button>
     </mat-card-actions>
   </mat-card>
@@ -120,26 +121,23 @@
       <mat-card class="ticket-card">
         <div class="ticket-top">
           <div class="ticket-info">
-            <span class="ticket-number">Ticket #{{ticket.id}}</span>
-            <h3>{{ticket.title}}</h3>
+            <span class="ticket-number">Ticket #{{ ticket.id }}</span>
+            <h3>{{ ticket.title }}</h3>
           </div>
           <div class="status" [ngClass]="statusClass[ticket.status]">
             {{ ticket.status }}
           </div>
           <div class="ticket-actions">
-            <button mat-icon-button
-                    (click)="editTicket(ticket)">
+            <button mat-icon-button (click)="editTicket(ticket)">
               <mat-icon>edit</mat-icon>
             </button>
             @if (canDelete(ticket)) {
-              <button mat-icon-button class="delete-button"
-                      (click)="deleteTicket(ticket.id)">
+              <button mat-icon-button class="delete-button" (click)="deleteTicket(ticket.id)">
                 <mat-icon>delete</mat-icon>
               </button>
             }
             @if (canReopen(ticket)) {
-              <button mat-icon-button class="delete-button"
-                      (click)="reopenTicket(ticket)">
+              <button mat-icon-button class="delete-button" (click)="reopenTicket(ticket)">
                 <mat-icon>restart_alt</mat-icon>
               </button>
             }
@@ -149,11 +147,11 @@
         <div class="ticket-bottom">
           <span>
             <mat-icon>schedule</mat-icon>
-            {{ticket.createdAt | date:'dd.MM.yy, HH.mm'}}
+            {{ ticket.createdAt | date: 'dd.MM.yy, HH.mm' }}
           </span>
           <span>
             <mat-icon>person</mat-icon>
-            {{(ticket.employeeIds | namesByIds: employees() : 'fullName').join(", ")}}
+            {{ (ticket.employeeIds | namesByIds: employees() : 'fullName').join(', ') }}
           </span>
         </div>
       </mat-card>
@@ -177,10 +175,12 @@
 
       <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
         <mat-icon matPrefix>search</mat-icon>
-        <input matInput
-               [ngModel]="searchTicket()"
-               (ngModelChange)="searchTicket.set($event)"
-               placeholder="Search tickets">
+        <input
+          matInput
+          [ngModel]="searchTicket()"
+          (ngModelChange)="searchTicket.set($event)"
+          placeholder="Search tickets"
+        />
       </mat-form-field>
     </div>
 
@@ -189,27 +189,24 @@
         <mat-card class="ticket-card">
           <div class="ticket-top">
             <div class="ticket-info">
-              <span class="ticket-number">Ticket #{{ticket.id}}</span>
-              <h3>{{ticket.title}}</h3>
+              <span class="ticket-number">Ticket #{{ ticket.id }}</span>
+              <h3>{{ ticket.title }}</h3>
             </div>
             <div class="status" [ngClass]="statusClass[ticket.status]">
               {{ ticket.status }}
             </div>
 
             <div class="ticket-actions">
-              <button mat-icon-button
-                      (click)="editTicket(ticket)">
+              <button mat-icon-button (click)="editTicket(ticket)">
                 <mat-icon>edit</mat-icon>
               </button>
               @if (canDelete(ticket)) {
-                <button mat-icon-button class="delete-button"
-                        (click)="deleteTicket(ticket.id)">
+                <button mat-icon-button class="delete-button" (click)="deleteTicket(ticket.id)">
                   <mat-icon>delete</mat-icon>
                 </button>
               }
               @if (canReopen(ticket)) {
-                <button mat-icon-button class="delete-button"
-                        (click)="reopenTicket(ticket)">
+                <button mat-icon-button class="delete-button" (click)="reopenTicket(ticket)">
                   <mat-icon>restart_alt</mat-icon>
                 </button>
               }
@@ -217,14 +214,14 @@
           </div>
           <span class="ticket-description">{{ ticket.description }}</span>
           <div class="ticket-bottom">
-          <span>
-            <mat-icon>schedule</mat-icon>
-            {{ticket.createdAt | date:'dd.MM.yy, HH.mm'}}
-          </span>
             <span>
-            <mat-icon>person</mat-icon>
-              {{(ticket.employeeIds | namesByIds: employees() : 'fullName').join(", ")}}
-          </span>
+              <mat-icon>schedule</mat-icon>
+              {{ ticket.createdAt | date: 'dd.MM.yy, HH.mm' }}
+            </span>
+            <span>
+              <mat-icon>person</mat-icon>
+              {{ (ticket.employeeIds | namesByIds: employees() : 'fullName').join(', ') }}
+            </span>
           </div>
         </mat-card>
       }

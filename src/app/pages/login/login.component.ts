@@ -1,22 +1,23 @@
-import {afterNextRender, Component, ElementRef, inject, signal, viewChild} from '@angular/core';
-import {MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
+import { afterNextRender, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import {
   MatCard,
   MatCardActions,
   MatCardContent,
   MatCardHeader,
   MatCardSubtitle,
-  MatCardTitle
+  MatCardTitle,
 } from '@angular/material/card';
-import {MatIcon} from '@angular/material/icon';
-import {FormsModule} from '@angular/forms';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {AuthService} from '../../core/services/auth.service';
-import {LoginRequest} from '../../core/models/auth.model';
-import {Router} from '@angular/router';
-import {homeFor} from '../../core/guards';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {HttpErrorResponse} from '@angular/common/http';
+import { MatIcon } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { AuthService } from '../../core/services/auth.service';
+import { LoginRequest } from '../../core/models/auth.model';
+import { homeFor } from '../../core/guards';
 
 @Component({
   imports: [
@@ -33,7 +34,7 @@ import {HttpErrorResponse} from '@angular/common/http';
     MatIconButton,
     MatSuffix,
     MatCardActions,
-    MatButton
+    MatButton,
   ],
   selector: 'app-login',
   styleUrl: './login.component.scss',
@@ -48,8 +49,7 @@ export class LoginComponent {
   password = signal<string>('');
   hidePassword = signal<boolean>(true);
 
-  private loginInput = viewChild
-    .required<ElementRef<HTMLInputElement>>('loginInput')
+  private loginInput = viewChild.required<ElementRef<HTMLInputElement>>('loginInput');
 
   constructor() {
     afterNextRender(() => this.loginInput().nativeElement.focus());
@@ -61,35 +61,37 @@ export class LoginComponent {
   protected tryLogin() {
     let request: LoginRequest = {
       fullName: this.login(),
-      password: this.password()
-    }
+      password: this.password(),
+    };
     this.loginService.login(request).subscribe({
-      next: user => {
-        console.log("Login successfully: ", user);
+      next: (user) => {
         this.loginService.user.set(user);
         this.router.navigateByUrl(homeFor(user.role));
       },
-      error: e => {
-        console.warn("Login failed: ", e);
+      error: (e) => {
         this.showShackBar(this.loginErrorMessage(e));
-      }
-    })
+      },
+    });
   }
 
   private loginErrorMessage(e: HttpErrorResponse): string {
     switch (e.status) {
-      case 404: return 'User not found';
-      case 401: return 'Incorrect password';
-      case 0:   return 'Server is down';
-      default:  return 'Failed to login';
+      case 404:
+        return 'User not found';
+      case 401:
+        return 'Incorrect password';
+      case 0:
+        return 'Server is down';
+      default:
+        return 'Failed to login';
     }
   }
 
   protected showShackBar(error: string): void {
-    this._snackBar.open(error, "Ok", {
+    this._snackBar.open(error, 'Ok', {
       duration: 2000,
-      verticalPosition: "top",
-      horizontalPosition: "center"
+      verticalPosition: 'top',
+      horizontalPosition: 'center',
     });
   }
 }

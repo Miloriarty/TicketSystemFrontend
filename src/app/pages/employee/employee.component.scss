@@ -67,8 +67,12 @@
   padding: 0;
   margin: auto 0 0;
 
-  .icon-button { color: var(--mat-sys-on-surface-variant); }
-  .delete-button:hover { color: var(--mat-sys-error); }
+  .icon-button {
+    color: var(--mat-sys-on-surface-variant);
+  }
+  .delete-button:hover {
+    color: var(--mat-sys-error);
+  }
 }
 
 /* Buttons */

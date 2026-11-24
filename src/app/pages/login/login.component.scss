@@ -9,7 +9,7 @@
 }
 
 .login-card {
- min-width: 400px;
+  min-width: 400px;
 
   mat-card-header {
     padding: 24px 24px 20px;
@@ -51,14 +51,11 @@
 }
 
 .create-button {
-
 }
 
 .cancel-button {
-
   margin-right: 8px;
 }
-
 
 @media (max-width: 600px) {
   .content {

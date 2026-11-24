@@ -1,12 +1,17 @@
-import {Component, inject} from '@angular/core';
-import {DatePipe, NgClass} from '@angular/common';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatChip} from '@angular/material/chips';
+import { Component, inject } from '@angular/core';
+import { DatePipe, NgClass } from '@angular/common';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatChip } from '@angular/material/chips';
 import {
-  MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle,
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle,
 } from '@angular/material/dialog';
-import {MatIcon} from '@angular/material/icon';
-import {Ticket, TICKET_STATUS_CLASS, TicketStatus} from '../../../core/models/ticket.model';
+import { MatIcon } from '@angular/material/icon';
+
+import { Ticket, TICKET_STATUS_CLASS, TicketStatus } from '../../../core/models/ticket.model';
 
 export interface TicketDialogData {
   ticket: Ticket;
@@ -16,8 +21,16 @@ export interface TicketDialogData {
 @Component({
   selector: 'app-ticket-dialog',
   imports: [
-    DatePipe, NgClass, MatButton, MatIconButton, MatChip, MatIcon,
-    MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose
+    DatePipe,
+    NgClass,
+    MatButton,
+    MatIconButton,
+    MatChip,
+    MatIcon,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
   ],
   templateUrl: './ticket-dialog.component.html',
   styleUrl: './ticket-dialog.component.scss',
@@ -27,4 +40,3 @@ export class TicketDialogComponent {
   protected readonly statusClass = TICKET_STATUS_CLASS;
   protected readonly TicketStatus = TicketStatus;
 }
-

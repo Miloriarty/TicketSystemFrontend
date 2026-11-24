@@ -106,7 +106,9 @@
   flex-direction: column;
   gap: 20px;
 
-  .ticket-card { flex: 1; }
+  .ticket-card {
+    flex: 1;
+  }
 }
 
 .ticket-card {
@@ -139,8 +141,12 @@
   align-items: center;
   height: 100%;
 
-  .icon-button { color: var(--mat-sys-on-surface-variant); }
-  .delete-button:hover { color: var(--mat-sys-error); }
+  .icon-button {
+    color: var(--mat-sys-on-surface-variant);
+  }
+  .delete-button:hover {
+    color: var(--mat-sys-error);
+  }
 }
 
 .ticket-number {
@@ -187,7 +193,6 @@
   }
 }
 
-
 .all-tickets {
   grid-column: 1 / -1;
   margin-top: 8px;
@@ -204,7 +209,6 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
-
 
 @media (max-width: 600px) {
   .content {

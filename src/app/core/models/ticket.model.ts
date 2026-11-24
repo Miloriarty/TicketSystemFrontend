@@ -17,10 +17,10 @@ export interface TicketRequest {
 }
 
 export enum TicketStatus {
-  New = "New",
-  InProgress = "progress",
-  Cancelled = "Cancelled",
-  Completed = "Completed",
+  New = 'New',
+  InProgress = 'progress',
+  Cancelled = 'Cancelled',
+  Completed = 'Completed',
 }
 
 export const TICKET_STATUS_CLASS: Record<TicketStatus, string> = {

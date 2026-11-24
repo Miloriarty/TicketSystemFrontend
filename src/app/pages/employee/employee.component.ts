@@ -1,22 +1,28 @@
-import {Component, computed, inject, signal} from '@angular/core';
-import {TicketService} from '../../core/services/ticket.service';
-import {CategoryService} from '../../core/services/category.service';
-import {Ticket, TicketRequest, TicketStatus, TICKET_STATUS_CLASS} from '../../core/models/ticket.model';
-import {Category} from '../../core/models/category.model';
-import {DatePipe, NgClass} from '@angular/common';
-import {MatIcon} from '@angular/material/icon';
-import {MatCard, MatCardActions} from '@angular/material/card';
-import {NamesByIdsPipe} from '../../shared/pipes/names-by-ids.pipe';
-import {MatButton} from '@angular/material/button';
-import {MatChip, MatChipListbox, MatChipOption} from '@angular/material/chips';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatDialog} from '@angular/material/dialog';
-import {combineLatest, filter} from 'rxjs';
-import {TicketDialogComponent, TicketDialogData} from './ticket-dialog/ticket-dialog.component';
-import {httpErrorMessage} from '../../core/http-error';
-import {AuthService} from '../../core/services/auth.service';
-import {FormsModule} from '@angular/forms';
-import {MatFormField, MatInput, MatPrefix} from '@angular/material/input';
+import { Component, computed, inject, signal } from '@angular/core';
+import { DatePipe, NgClass } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatCard, MatCardActions } from '@angular/material/card';
+import { MatButton } from '@angular/material/button';
+import { MatChip, MatChipListbox, MatChipOption } from '@angular/material/chips';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { filter } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatInput, MatPrefix } from '@angular/material/input';
+
+import { TicketService } from '../../core/services/ticket.service';
+import { CategoryService } from '../../core/services/category.service';
+import {
+  Ticket,
+  TicketRequest,
+  TicketStatus,
+  TICKET_STATUS_CLASS,
+} from '../../core/models/ticket.model';
+import { Category } from '../../core/models/category.model';
+import { NamesByIdsPipe } from '../../shared/pipes/names-by-ids.pipe';
+import { TicketDialogComponent, TicketDialogData } from './ticket-dialog/ticket-dialog.component';
+import { httpErrorMessage } from '../../core/http-error';
+import { AuthService } from '../../core/services/auth.service';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -35,7 +41,7 @@ type SortDirection = 'asc' | 'desc';
     FormsModule,
     MatFormField,
     MatInput,
-    MatPrefix
+    MatPrefix,
   ],
   selector: 'app-employee',
   styleUrl: './employee.component.scss',
@@ -54,13 +60,18 @@ export class EmployeeComponent {
     const search = this.searchTicket().trim().toLowerCase();
     const direction = this.sortDirection() === 'asc' ? 1 : -1;
 
-    return this.tickets().filter(t =>
-      myId != null && t.employeeIds.includes(myId)
-      && !this.isClosed(t.status) && (!status || t.status === status)
-      && (t.title.toLowerCase().includes(search) || t.description.toLowerCase().includes(search))
-    )
-      .sort((a, b) =>
-        (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) * direction)
+    return this.tickets()
+      .filter(
+        (t) =>
+          myId != null &&
+          t.employeeIds.includes(myId) &&
+          !this.isClosed(t.status) &&
+          (!status || t.status === status) &&
+          (t.title.toLowerCase().includes(search) || t.description.toLowerCase().includes(search)),
+      )
+      .sort(
+        (a, b) => (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) * direction,
+      );
   });
 
   ticketService = inject(TicketService);
@@ -73,20 +84,19 @@ export class EmployeeComponent {
 
   constructor() {
     this.ticketService.getTickets().subscribe({
-      next: tickets => {
+      next: (tickets) => {
         this.tickets.set(tickets);
       },
-      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load tickets')),
+      error: (err) => this.showErrorShackBar(httpErrorMessage(err, 'load tickets')),
     });
 
     this.categoryService.getCategories().subscribe({
-      next: categories => this.categories.set(categories),
-      error: err => this.showErrorShackBar(httpErrorMessage(err, 'load categories')),
+      next: (categories) => this.categories.set(categories),
+      error: (err) => this.showErrorShackBar(httpErrorMessage(err, 'load categories')),
     });
   }
 
   protected readonly statusClass = TICKET_STATUS_CLASS;
-
 
   protected changeStatus(ticket: Ticket, status: TicketStatus) {
     const request: TicketRequest = {
@@ -94,34 +104,31 @@ export class EmployeeComponent {
       description: ticket.description,
       status: status,
       employeeIds: ticket.employeeIds,
-      categoryIds: ticket.categoryIds
-    }
+      categoryIds: ticket.categoryIds,
+    };
 
     this.ticketService.updateTicket(ticket.id, request).subscribe({
-      next: updated => {
-        this.tickets.update(list => {
-          const exists = list.some(t => t.id === updated.id);
+      next: (updated) => {
+        this.tickets.update((list) => {
+          const exists = list.some((t) => t.id === updated.id);
 
           const next = exists
-            ? list.map(t => t.id === updated.id ? updated : t)
+            ? list.map((t) => (t.id === updated.id ? updated : t))
             : [...list, updated];
-          return next.filter(t => !this.isClosed(t.status));
+          return next.filter((t) => !this.isClosed(t.status));
         });
-
-        console.log("Ticket changed");
       },
-      error: err => {
-        console.error("Failed to update ticket: ", err);
+      error: (err) => {
         this.showErrorShackBar(httpErrorMessage(err, 'update ticket', 'Ticket not found'));
-      }
+      },
     });
   }
 
   protected showErrorShackBar(error: string): void {
-    this._snackBar.open(error, "Ok", {
+    this._snackBar.open(error, 'Ok', {
       duration: 2000,
-      verticalPosition: "top",
-      horizontalPosition: "center"
+      verticalPosition: 'top',
+      horizontalPosition: 'center',
     });
   }
 
@@ -135,19 +142,15 @@ export class EmployeeComponent {
   }
 
   protected showSnackBar(ticket: Ticket, message: string) {
-    const found = this.tickets().findIndex(t => t.id === ticket.id);
+    const found = this.tickets().findIndex((t) => t.id === ticket.id);
     const index = found < 0 ? this.tickets().length : found;
 
-    const ref = this._snackBar.open(
-      `Ticket ${message}`,
-      "Undo",
-      {duration: 5000}
-    );
+    const ref = this._snackBar.open(`Ticket ${message}`, 'Undo', { duration: 5000 });
     ref.onAction().subscribe(() => {
-      this.tickets.update(list =>
-        list.some(t => t.id === ticket.id)
+      this.tickets.update((list) =>
+        list.some((t) => t.id === ticket.id)
           ? list
-          : [...list.slice(0, index), ticket, ...list.slice(index)]
+          : [...list.slice(0, index), ticket, ...list.slice(index)],
       );
       this.changeStatus(ticket, ticket.status);
     });
@@ -155,18 +158,18 @@ export class EmployeeComponent {
 
   protected openTicket(ticket: Ticket) {
     const categoryNames = this.categories()
-      .filter(c => ticket.categoryIds.includes(c.id))
-      .map(c => c.name);
+      .filter((c) => ticket.categoryIds.includes(c.id))
+      .map((c) => c.name);
 
     this.dialog
       .open<TicketDialogComponent, TicketDialogData, TicketStatus>(TicketDialogComponent, {
-        data: {ticket, categoryNames},
+        data: { ticket, categoryNames },
         width: '500px',
         maxWidth: '95vw',
       })
       .afterClosed()
       .pipe(filter(Boolean))
-      .subscribe(status => {
+      .subscribe((status) => {
         if (status === TicketStatus.Cancelled || status === TicketStatus.Completed) {
           this.closeTicket(ticket, status);
         } else {
@@ -176,7 +179,7 @@ export class EmployeeComponent {
   }
 
   protected toggleSort() {
-    this.sortDirection.update(d => (d === 'asc' ? 'desc' : 'asc'));
+    this.sortDirection.update((d) => (d === 'asc' ? 'desc' : 'asc'));
   }
 
   protected readonly TicketStatus = TicketStatus;

@@ -1,13 +1,13 @@
 <header class="page-header">
   @for (link of links(); track link.path) {
     <a class="header-item" [routerLink]="link.path" routerLinkActive="active">
-      <mat-icon>{{link.icon}}</mat-icon>
-      <span>{{link.label}}</span>
+      <mat-icon>{{ link.icon }}</mat-icon>
+      <span>{{ link.label }}</span>
     </a>
   }
 
   @if (user()) {
-    <a class="header-item" (click)="logout()" routerLinkActive="active"> <!-- todo login/logout, this is funny, but i'll fix -->
+    <a class="header-item" (click)="logout()" routerLinkActive="active">
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </a>

@@ -11,38 +11,38 @@
     <mat-card-content>
       <mat-form-field appearance="outline">
         <mat-label>Login</mat-label>
-        <input matInput
-               #loginInput
-               [ngModel]="login()"
-               (ngModelChange)="login.set($event)"
-               (keydown.enter)="passwordInput.focus()"
-               placeholder="Enter login"
-        >
+        <input
+          matInput
+          #loginInput
+          [ngModel]="login()"
+          (ngModelChange)="login.set($event)"
+          (keydown.enter)="passwordInput.focus()"
+          placeholder="Enter login"
+        />
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
-        <input matInput
-               #passwordInput
-               [type]="hidePassword() ? 'password' : 'text'"
-               [ngModel]="password()"
-               (ngModelChange)="password.set($event)"
-               (keydown.enter)="canLogin() && tryLogin()"
-               placeholder="Enter password"
-        >
-        <button mat-icon-button
-                matSuffix
-                type="button"
-                (click)="hidePassword.set(!hidePassword())">
-          <mat-icon>{{ hidePassword() ? "visibility_off" : "visibility" }}</mat-icon>
+        <input
+          matInput
+          #passwordInput
+          [type]="hidePassword() ? 'password' : 'text'"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          (keydown.enter)="canLogin() && tryLogin()"
+          placeholder="Enter password"
+        />
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword.set(!hidePassword())">
+          <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>
     </mat-card-content>
 
     <mat-card-actions>
-      <button matButton="outlined"
-              [disabled]="!canLogin()"
-              (click)="tryLogin()"
-              (keydown.enter)="tryLogin()"
+      <button
+        matButton="outlined"
+        [disabled]="!canLogin()"
+        (click)="tryLogin()"
+        (keydown.enter)="tryLogin()"
       >
         <mat-icon>login</mat-icon>
         Log in

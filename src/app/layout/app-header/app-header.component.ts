@@ -1,11 +1,11 @@
-import {Component, computed, inject} from '@angular/core';
-import {Router, RouterLink, RouterLinkActive} from '@angular/router';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {AuthService} from '../../core/services/auth.service';
-import {httpErrorMessage} from '../../core/http-error';
-import {Role} from '../../core/models/role.model';
+import { Component, computed, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { AuthService } from '../../core/services/auth.service';
+import { httpErrorMessage } from '../../core/http-error';
+import { Role } from '../../core/models/role.model';
 
 interface NAV_LINK {
   path: string;
@@ -18,7 +18,7 @@ const NAV_LINKS: NAV_LINK[] = [
   { path: '/manager', icon: 'add_task', label: 'Manager', roles: [Role.Manager] },
   { path: '/admin', icon: 'confirmation_number', label: 'Admin', roles: [Role.Admin] },
   { path: '/employees', icon: 'people', label: 'Employees', roles: [Role.Employee] },
-]
+];
 
 @Component({
   selector: 'app-header',
@@ -36,23 +36,21 @@ export class AppHeader {
   protected readonly links = computed(() => {
     let role = this.user()?.role;
     return role ? NAV_LINKS.filter((link) => link.roles.includes(role)) : [];
-  })
+  });
 
   protected logout(): void {
     this.loginService.logout().subscribe({
-        next: () => {
-          this.loginService.user.set(null);
-          this.router.navigate(['/login']);
-        },
-        error: err => {
-          console.error("Failed to log out: ", err);
-          this.snackBar.open(httpErrorMessage(err, 'log out'), 'Ok', {
-            duration: 2000,
-            verticalPosition: 'top',
-            horizontalPosition: 'center',
-          });
-        },
-      }
-    )
+      next: () => {
+        this.loginService.user.set(null);
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        this.snackBar.open(httpErrorMessage(err, 'log out'), 'Ok', {
+          duration: 2000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+      },
+    });
   }
 }

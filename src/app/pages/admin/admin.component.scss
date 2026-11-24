@@ -71,7 +71,7 @@ CREATE CARD
     }
   }
 
-    /*--mdc-outlined-text-field-container-shape: 20px;*/
+  /*--mdc-outlined-text-field-container-shape: 20px;*/
 
   mat-card-content {
     padding: 12px 24px 24px;
@@ -157,7 +157,7 @@ CREATE CARD
     flex: 1;
     --mat-form-field-container-height: 44px;
     --mat-form-field-container-vertical-padding: 8px;
-    margin-right: 12px
+    margin-right: 12px;
   }
 }
 
@@ -213,7 +213,6 @@ Buttons
   padding: 0 22px;
   min-width: 160px;
   align-self: flex-end;
-
 }
 
 .cancel-button {
@@ -292,8 +291,12 @@ Category section
   flex-shrink: 0;
   margin: -8px -8px 0 0;
 
-  button { color: var(--mat-sys-on-surface-variant); }
-  .delete-button:hover { color: var(--mat-sys-error); }
+  button {
+    color: var(--mat-sys-on-surface-variant);
+  }
+  .delete-button:hover {
+    color: var(--mat-sys-error);
+  }
 }
 
 .employee-meta {
@@ -357,7 +360,6 @@ Bottom Employees
   flex-direction: row;
   gap: 4px;
 }
-
 
 @media (max-width: 960px) {
   .content {

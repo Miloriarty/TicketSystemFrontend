@@ -14,28 +14,29 @@
       </div>
 
       <button matButton="outlined" (click)="toggleSort()">
-        <mat-icon>{{sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
-        {{sortDirection() === 'asc' ? 'Oldest first' : 'Newest first'}}
+        <mat-icon>{{ sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+        {{ sortDirection() === 'asc' ? 'Oldest first' : 'Newest first' }}
       </button>
       <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
         <mat-icon matPrefix>search</mat-icon>
-        <input matInput
-               [ngModel]="searchTicket()"
-               (ngModelChange)="searchTicket.set($event)"
-               placeholder="Search tickets">
+        <input
+          matInput
+          [ngModel]="searchTicket()"
+          (ngModelChange)="searchTicket.set($event)"
+          placeholder="Search tickets"
+        />
       </mat-form-field>
     </div>
 
     <div class="tickets-grid">
       @for (ticket of visibleTickets(); track ticket.id) {
         <mat-card class="ticket-card" (click)="openTicket(ticket)">
-
           <div class="ticket-header">
             <div class="card-icon">
               <mat-icon>confirmation_number</mat-icon>
             </div>
             <div class="ticket-info">
-              <h3>{{ticket.title}}</h3>
+              <h3>{{ ticket.title }}</h3>
               <span class="ticket-description">{{ ticket.description }}</span>
             </div>
             <div class="status" [ngClass]="statusClass[ticket.status]">
@@ -46,45 +47,47 @@
           <div class="ticket-meta">
             <span>
               <mat-icon>schedule</mat-icon>
-              {{ ticket.createdAt | date:'dd.MM.yy' }}
+              {{ ticket.createdAt | date: 'dd.MM.yy' }}
             </span>
           </div>
 
           @if (ticket.categoryIds.length > 0) {
             <div class="chips">
-              @for (name of (ticket.categoryIds | namesByIds: categories() : 'name'); track name) {
+              @for (name of ticket.categoryIds | namesByIds: categories() : 'name'; track name) {
                 <mat-chip class="chip">{{ name }}</mat-chip>
               }
             </div>
           }
 
           <mat-card-actions class="ticket-actions" (click)="$event.stopPropagation()">
-            <button matButton="outlined"
-                    class="cancel-button"
-                    (click)="closeTicket(ticket, TicketStatus.Cancelled)"
+            <button
+              matButton="outlined"
+              class="cancel-button"
+              (click)="closeTicket(ticket, TicketStatus.Cancelled)"
             >
               <mat-icon>cancel</mat-icon>
               Cancel
             </button>
 
             @if (ticket.status === TicketStatus.InProgress) {
-              <button mat-flat-button
-                      class="create-button"
-                      (click)="closeTicket(ticket, TicketStatus.Completed)"
+              <button
+                mat-flat-button
+                class="create-button"
+                (click)="closeTicket(ticket, TicketStatus.Completed)"
               >
                 <mat-icon>check</mat-icon>
                 Finish
               </button>
             } @else {
-              <button mat-flat-button
-                      class="create-button"
-                      (click)="changeStatus(ticket, TicketStatus.InProgress)"
+              <button
+                mat-flat-button
+                class="create-button"
+                (click)="changeStatus(ticket, TicketStatus.InProgress)"
               >
                 <mat-icon>add</mat-icon>
                 Take
               </button>
             }
-
           </mat-card-actions>
         </mat-card>
       } @empty {

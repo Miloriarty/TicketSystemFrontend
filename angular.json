@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "PracticeProjectAngular": {
+    "TicketSystemFrontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": { "type": "component" },
@@ -63,10 +63,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "PracticeProjectAngular:build:production"
+              "buildTarget": "TicketSystemFrontend:build:production"
             },
             "development": {
-              "buildTarget": "PracticeProjectAngular:build:development"
+              "buildTarget": "TicketSystemFrontend:build:development"
             }
           },
           "defaultConfiguration": "development"
