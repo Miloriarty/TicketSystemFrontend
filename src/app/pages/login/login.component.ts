@@ -1,4 +1,12 @@
-import { afterNextRender, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import {
   MatCard,
@@ -54,9 +62,10 @@ export class LoginComponent {
   constructor() {
     afterNextRender(() => this.loginInput().nativeElement.focus());
   }
-  protected canLogin(): boolean {
-    return this.login().length > 0 && this.password().length > 0;
-  }
+
+  protected canLogin = computed(() =>
+    this.login().length > 0 && this.password().length > 0
+  );
 
   protected tryLogin() {
     let request: LoginRequest = {

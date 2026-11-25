@@ -1,0 +1,110 @@
+<mat-card class="employee-create-card">
+  <mat-card-header>
+    <div mat-card-avatar class="card-icon">
+      <mat-icon fontSet="material-symbols-outlined">
+        {{ isEditing() ? 'person_edit' : 'person_add' }}
+      </mat-icon>
+    </div>
+    <mat-card-title class="card-title">
+      {{ isEditing() ? 'Edit employee' : 'Add employee' }}
+    </mat-card-title>
+  </mat-card-header>
+
+  <!-- Name -->
+  <mat-card-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Full name</mat-label>
+      <input
+        matInput
+        [ngModel]="fullName()"
+        (ngModelChange)="fullName.set($event)"
+        placeholder="Enter employee's full name"
+      />
+    </mat-form-field>
+
+    <!-- Position -->
+    <mat-form-field appearance="outline">
+      <mat-label>Position</mat-label>
+      <input
+        matInput
+        [ngModel]="position()"
+        (ngModelChange)="position.set($event)"
+        placeholder="Enter employee's position"
+      />
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [ngModel]="password()"
+        (ngModelChange)="password.set($event)"
+        [placeholder]="
+          isEditing() ? 'Leave empty to keep current password' : 'Enter password'
+        "
+      />
+    </mat-form-field>
+
+    <div class="form-row">
+      <!-- Roles -->
+      <mat-form-field appearance="outline">
+        <mat-label>Role</mat-label>
+        <mat-select
+          [ngModel]="selectedRole()"
+          (ngModelChange)="onRoleChange($event)"
+          [disabled]="editingEmployeeId() !== null"
+          placeholder="Choose role"
+        >
+          @for (role of roles; track role) {
+            <mat-option [value]="role">
+              {{ role }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Categories -->
+      <mat-form-field appearance="outline">
+        <mat-label>Categories</mat-label>
+        <mat-select
+          multiple
+          [ngModel]="selectedCategories()"
+          (ngModelChange)="selectedCategories.set($event)"
+          [disabled]="!roleHasCategories()"
+          placeholder="Choose categories"
+        >
+          @for (cat of categories(); track cat.id) {
+            <mat-option [value]="cat">
+              {{ cat.name }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+
+  <!-- Buttons -->
+  <mat-card-actions>
+    @if (isEditing()) {
+      <button
+        matButton="outlined"
+        class="cancel-button"
+        [disabled]="!canCancelEmployee()"
+        (click)="cancel.emit()"
+      >
+        <mat-icon>cancel</mat-icon>
+        Cancel
+      </button>
+    }
+    <button
+      mat-flat-button
+      class="create-button"
+      [disabled]="!canCreateEmployee()"
+      (click)="save.emit()"
+    >
+      <mat-icon>{{ isEditing() ? 'save' : 'add' }}</mat-icon>
+      {{ isEditing() ? 'Save employee' : 'Add employee' }}
+    </button>
+  </mat-card-actions>
+</mat-card>

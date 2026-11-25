@@ -1,18 +1,8 @@
 import { Component, signal, inject, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  MatCard,
-  MatCardActions,
-  MatCardContent,
-  MatCardHeader,
-  MatCardSubtitle,
-  MatCardTitle,
-} from '@angular/material/card';
-import { MatOption, MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { switchMap, filter } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
@@ -22,37 +12,22 @@ import { EmployeeService } from '../../core/services/employee.service';
 import { TicketService } from '../../core/services/ticket.service';
 import { Category } from '../../core/models/category.model';
 import { Employee } from '../../core/models/employee.model';
-import {
-  Ticket,
-  TicketRequest,
-  TicketStatus,
-} from '../../core/models/ticket.model';
-import { NamesByIdsPipe } from '../../shared/pipes/names-by-ids.pipe';
+import { Ticket, TicketRequest, TicketStatus } from '../../core/models/ticket.model';
 import { ConfirmService } from '../../shared/confirm-dialog/confirm.service';
 import { httpErrorMessage } from '../../core/http-error';
-import {TicketCardComponent} from './ticket-card/ticket-card.component';
+import { TicketCardComponent } from './ticket-card/ticket-card.component';
+import { CreateTicketCardComponent } from './create-ticket-card/create-ticket-card.component';
 
 @Component({
   imports: [
-    MatButtonModule,
     MatInputModule,
     FormsModule,
     MatIconModule,
-    MatCardContent,
     MatFormField,
-    MatCard,
-    MatLabel,
-    MatCardActions,
-    MatCardTitle,
-    MatCardHeader,
-    MatCardSubtitle,
-    MatSelect,
-    MatOption,
-    MatSelectTrigger,
-    NamesByIdsPipe,
     MatChipListbox,
     MatChipOption,
     TicketCardComponent,
+    CreateTicketCardComponent,
   ],
   selector: 'app-manager',
   styleUrl: './manager.component.scss',
@@ -73,10 +48,6 @@ export class ManagerComponent {
 
   employees = signal<Employee[]>([]);
   selectedEmployees = signal<Employee[]>([]);
-  filteredEmployees = computed(() => {
-    const ids = this.selectedCategories().map((c) => c.id);
-    return this.employees().filter((e) => e.categoryIds.some((id) => ids.includes(id)));
-  });
 
   tickets = signal<Ticket[]>([]);
   editingTicketId = signal<number | null>(null);
@@ -116,19 +87,7 @@ export class ManagerComponent {
     });
   }
 
-  protected onCategoriesChange(categories: Category[]) {
-    this.selectedCategories.set(categories);
-  }
-
-  protected canCreateTicket() {
-    return (
-      this.title().toString().trim().length > 0 &&
-      this.description().toString().trim().length > 0 &&
-      this.isAllCategoriesCovered()
-    );
-  }
-
-  protected createTicket() {
+  protected saveTicket() {
     const editingId = this.editingTicketId();
     const editing = this.tickets().find((t) => t.id === editingId);
     const request: TicketRequest = {
@@ -160,28 +119,6 @@ export class ManagerComponent {
         },
       });
     }
-  }
-
-  protected categorySelected() {
-    return this.selectedCategories().length > 0;
-  }
-
-  protected onEmployeesChange(employees: Employee[]) {
-    this.selectedEmployees.set(employees);
-  }
-
-  protected employeeNames() {
-    return this.selectedEmployees()
-      .map((e) => e.fullName)
-      .join(', ');
-  }
-
-  protected isAllCategoriesCovered() {
-    let categoryIds = this.selectedCategories().map((c) => c.id);
-    let employeeCategoryIds = new Set(this.selectedEmployees().flatMap((e) => e.categoryIds));
-    if (categoryIds.length === 0) return false;
-
-    return categoryIds.every((c) => employeeCategoryIds.has(c));
   }
 
   protected editTicket(ticket: Ticket) {
@@ -228,15 +165,6 @@ export class ManagerComponent {
         this.showErrorShackBar(httpErrorMessage(error, 'update ticket', 'Ticket not found'));
       },
     });
-  }
-
-  protected canCancel() {
-    return (
-      this.title().length > 0 ||
-      this.description().length > 0 ||
-      this.selectedCategories().length > 0 ||
-      this.selectedEmployees().length > 0
-    );
   }
 
   protected clearForm() {

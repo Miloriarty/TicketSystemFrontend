@@ -26,7 +26,7 @@ export class TicketCardComponent {
 
   protected canDelete = computed(() => {
     const status = this.ticket().status;
-    return status !== TicketStatus.New && status !== TicketStatus.Completed;
+    return status !== TicketStatus.New && status !== TicketStatus.InProgress;
   })
 
   protected canReopen = computed(() => {

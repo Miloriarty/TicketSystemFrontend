@@ -1,119 +1,17 @@
 <!-- Content -->
 <main class="content">
   <!-- Create card -->
-  <mat-card class="ticket-create-card">
-    <mat-card-header>
-      <div mat-card-avatar class="card-icon">
-        <mat-icon>
-          {{ editingTicketId() === null ? 'add_task' : 'edit' }}
-        </mat-icon>
-      </div>
-      <mat-card-title>
-        {{ editingTicketId() === null ? 'Create ticket' : 'Edit ticket' }}
-      </mat-card-title>
-      <mat-card-subtitle>
-        {{ editingTicketId() === null ? 'Add ticket' : 'Edit ticket' }}
-      </mat-card-subtitle>
-    </mat-card-header>
-
-    <mat-card-content>
-      <mat-form-field appearance="outline">
-        <mat-label>Title</mat-label>
-        <input
-          matInput
-          [ngModel]="title()"
-          (ngModelChange)="title.set($event)"
-          placeholder="Enter title"
-        />
-      </mat-form-field>
-
-      <!-- Description -->
-      <mat-form-field appearance="outline">
-        <mat-label>Problem desc</mat-label>
-        <textarea
-          matInput
-          rows="3"
-          [ngModel]="description()"
-          (ngModelChange)="description.set($event)"
-          placeholder="Enter problem..."
-        ></textarea>
-      </mat-form-field>
-
-      <!--Categories-->
-      <mat-form-field appearance="outline">
-        <mat-label>Categories</mat-label>
-        <mat-select
-          multiple
-          [ngModel]="selectedCategories()"
-          (ngModelChange)="onCategoriesChange($event)"
-          placeholder="Choose category"
-        >
-          @for (cat of categories(); track cat.id) {
-            <mat-option [value]="cat">
-              {{ cat.name }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <!-- Employees -->
-      <mat-form-field appearance="outline">
-        <mat-label>Employees</mat-label>
-        <mat-select
-          multiple
-          [ngModel]="selectedEmployees()"
-          (ngModelChange)="onEmployeesChange($event)"
-          placeholder="Choose employee"
-          [disabled]="!categorySelected()"
-        >
-          <mat-select-trigger>
-            {{ employeeNames() }}
-          </mat-select-trigger>
-          @for (employee of filteredEmployees(); track employee.id) {
-            <mat-option [value]="employee">
-              <span>{{ employee.fullName }}</span>
-              <small style="margin: 12px">
-                {{ employee.categoryIds | namesByIds: categories() : 'name' }}
-              </small>
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </mat-card-content>
-
-    <!-- Button -->
-    <mat-card-actions>
-      @if (selectedCategories().length > 0 && !isAllCategoriesCovered()) {
-        <div class="validation-warning">
-          <mat-icon>warning</mat-icon>
-          <span>Not all categories covered</span>
-        </div>
-      }
-      @if (this.editingTicketId() !== null) {
-        <button
-          matButton="outlined"
-          class="cancel-button"
-          [disabled]="!canCancel()"
-          (click)="clearForm()"
-        >
-          <mat-icon>cancel</mat-icon>
-          Cancel
-        </button>
-      }
-
-      <button
-        mat-flat-button
-        class="create-button"
-        [disabled]="!canCreateTicket()"
-        (click)="createTicket()"
-      >
-        <mat-icon>
-          {{ editingTicketId() === null ? 'add' : 'save' }}
-        </mat-icon>
-        {{ editingTicketId() === null ? 'Add ticket' : 'Save ticket' }}
-      </button>
-    </mat-card-actions>
-  </mat-card>
+  <app-create-ticket-card
+    [employees]="employees()"
+    [categories]="categories()"
+    [editingTicketId]="editingTicketId()"
+    [(title)]="title"
+    [(description)]="description"
+    [(selectedCategories)]="selectedCategories"
+    [(selectedEmployees)]="selectedEmployees"
+    (save)="saveTicket()"
+    (cancel)="clearForm()"
+  />
 
   <!-- Right section -->
   <section class="tickets">

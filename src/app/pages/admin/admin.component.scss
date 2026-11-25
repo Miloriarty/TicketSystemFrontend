@@ -12,96 +12,6 @@ CONTENT
 }
 
 /* =========================
-CREATE CARD
-========================= */
-
-.employee-create-card {
-  /*height: fit-content;*/
-
-  mat-card-header {
-    padding: 24px 24px 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  mat-card-content {
-    padding: 12px 24px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  mat-card-actions {
-    padding: 16px 24px 24px;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-
-.validation-warning {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 22px;
-  border-radius: 12px;
-  background-color: transparent;
-  color: var(--mat-sys-on-error-container);
-  font-size: 13px;
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.card-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background-color: var(--mat-sys-primary-container);
-  color: var(--mat-sys-on-primary-container);
-  width: 44px;
-  height: 44px;
-  gap: 16px;
-  margin-bottom: 0;
-  border-radius: 50%;
-
-  mat-icon {
-    margin: 0;
-  }
-}
-
-/* =========================
-Material input
-========================= */
-
-.employee-create-card mat-form-field {
-  width: 100%;
-}
-
-/* =========================
-Buttons
-========================= */
-
-.create-button {
-  min-height: 44px;
-  padding: 0 22px;
-  min-width: 160px;
-  align-self: flex-end;
-}
-
-.cancel-button {
-  min-height: 44px;
-  padding: 0 22px;
-  min-width: 160px;
-  margin-right: 8px;
-  align-self: flex-end;
-}
-
-/* =========================
 Employee grid
 ========================= */
 
@@ -128,12 +38,6 @@ Bottom Employees
   color: var(--mat-sys-on-surface-variant);
 }
 
-.form-row {
-  display: flex;
-  flex-direction: row;
-  gap: 4px;
-}
-
 @media (max-width: 960px) {
   .content {
     grid-template-columns: minmax(0, 1fr);
@@ -145,44 +49,6 @@ Bottom Employees
     width: calc(100% - 32px);
     padding: 24px 0 48px;
     gap: 20px;
-  }
-
-  .employee-create-card {
-    mat-card-header {
-      padding: 16px 16px 12px;
-    }
-
-    mat-card-content {
-      padding: 8px 16px 4px;
-    }
-
-    mat-card-actions {
-      padding: 12px 16px 16px;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-  }
-
-  .employee-create-card mat-card-content {
-    gap: 4px;
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .validation-warning {
-    flex-basis: 100%;
-    padding: 0 4px 4px;
-  }
-
-  .create-button,
-  .cancel-button {
-    flex: 1 1 0;
-    min-width: 0;
-    padding: 0 12px;
-    margin-right: 0;
   }
 
   .employee-grid {

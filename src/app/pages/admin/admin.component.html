@@ -1,110 +1,17 @@
 <!-- Content -->
 <main class="content">
   <!-- Employee create card -->
-  <mat-card class="employee-create-card">
-    <mat-card-header>
-      <div mat-card-avatar class="card-icon">
-        <mat-icon fontSet="material-symbols-outlined">
-          {{ editingEmployeeId() === null ? 'person_add' : 'person_edit' }}
-        </mat-icon>
-      </div>
-      <mat-card-title style="padding-left: 0">
-        {{ editingEmployeeId() === null ? 'Add employee' : 'Edit employee' }}
-      </mat-card-title>
-    </mat-card-header>
-
-    <mat-card-content>
-      <mat-form-field appearance="outline">
-        <mat-label>Full name</mat-label>
-        <input
-          matInput
-          [ngModel]="fullName()"
-          (ngModelChange)="fullName.set($event)"
-          placeholder="Enter employee's full name"
-        />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" style="flex: 50">
-        <mat-label>Position</mat-label>
-        <input
-          matInput
-          [ngModel]="position()"
-          (ngModelChange)="position.set($event)"
-          placeholder="Enter employee's position"
-        />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" style="flex: 50">
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          [ngModel]="password()"
-          (ngModelChange)="password.set($event)"
-          placeholder="Enter password for employee "
-        />
-      </mat-form-field>
-
-      <div class="form-row">
-        <!-- Roles -->
-        <mat-form-field appearance="outline" style="flex: 50">
-          <mat-label>Role</mat-label>
-          <mat-select
-            [ngModel]="selectedRole()"
-            (ngModelChange)="onRolesChange($event)"
-            placeholder="Choose role"
-          >
-            @for (role of roles; track role) {
-              <mat-option [value]="role">
-                {{ role }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-
-        <!--Categories-->
-        <mat-form-field appearance="outline" style="flex: 50">
-          <mat-label>Categories</mat-label>
-          <mat-select
-            multiple
-            [ngModel]="selectedCategories()"
-            (ngModelChange)="onCategoriesChange($event)"
-            [disabled]="!haveCategories(selectedRole()!)"
-            placeholder="Choose categories"
-          >
-            @for (cat of categories(); track cat.id) {
-              <mat-option [value]="cat">
-                {{ cat.name }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </mat-card-content>
-
-    <!-- Button -->
-    <mat-card-actions>
-      @if (this.editingEmployeeId() !== null) {
-        <button
-          matButton="outlined"
-          class="cancel-button"
-          [disabled]="!canCancelEmployee()"
-          (click)="clearEmployeeForm(); editingEmployeeId.set(null)"
-        >
-          <mat-icon>cancel</mat-icon>
-          Cancel
-        </button>
-      }
-      <button
-        mat-flat-button
-        class="create-button"
-        [disabled]="!canCreateEmployee()"
-        (click)="createEmployee()"
-      >
-        <mat-icon>{{ editingEmployeeId() === null ? 'add' : 'save' }}</mat-icon>
-        {{ editingEmployeeId() === null ? 'Add employee' : 'Save employee' }}
-      </button>
-    </mat-card-actions>
-  </mat-card>
+  <app-employee-create-card
+    [categories]="categories()"
+    [editingEmployeeId]="editingEmployeeId()"
+    [(fullName)]="fullName"
+    [(position)]="position"
+    [(password)]="password"
+    [(selectedRole)]="selectedRole"
+    [(selectedCategories)]="selectedCategories"
+    (save)="createEmployee()"
+    (cancel)="clearEmployeeForm()"
+  />
 
   <!--  Categories Card  -->
   <app-categories-card

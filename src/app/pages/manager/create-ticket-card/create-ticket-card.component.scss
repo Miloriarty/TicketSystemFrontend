@@ -1,0 +1,124 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-create-card {
+  flex: 1;
+
+  mat-card-header {
+    padding: 24px 24px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  mat-card-content {
+    padding: 12px 24px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  mat-card-actions {
+    padding: 16px 24px 24px;
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  width: 44px;
+  height: 44px;
+  gap: 16px;
+  border-radius: 50%;
+
+  mat-icon {
+    margin: 0;
+  }
+}
+
+.employee-categories {
+  margin: 12px;
+}
+
+/* =========================
+   Validation
+   ========================= */
+
+.validation-warning {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background-color: transparent;
+  color: var(--mat-sys-on-error-container);
+  font-size: 13px;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* =========================
+   Buttons
+   ========================= */
+
+.create-button {
+  min-height: 44px;
+  padding: 0 22px;
+  min-width: 160px;
+}
+
+.cancel-button {
+  min-height: 44px;
+  padding: 0 22px;
+  min-width: 160px;
+  margin-right: 8px;
+}
+
+@media (max-width: 600px) {
+  .ticket-create-card {
+    mat-card-header {
+      padding: 16px 16px 12px;
+    }
+
+    mat-card-content {
+      padding: 8px 16px 4px;
+      gap: 4px;
+    }
+
+    mat-card-actions {
+      padding: 12px 16px 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  }
+
+  .validation-warning {
+    flex-basis: 100%;
+    padding: 0 4px 4px;
+  }
+
+  .create-button,
+  .cancel-button {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0 12px;
+    margin-right: 0;
+  }
+}

@@ -1,16 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
-import {
-  MatCard,
-  MatCardActions,
-  MatCardAvatar,
-  MatCardContent,
-  MatCardHeader,
-  MatCardTitle,
-} from '@angular/material/card';
-import { MatFormField, MatInput, MatLabel, MatPrefix } from '@angular/material/input';
+import { MatFormField, MatInput, MatPrefix } from '@angular/material/input';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
@@ -29,28 +20,22 @@ import { httpErrorMessage } from '../../core/http-error';
 import { AuthService } from '../../core/services/auth.service';
 import { EmployeeCardComponent } from './employee-card/employee-card.component';
 import { CategoriesCardComponent } from './categories-card/categories-card.component';
+import { EmployeeCreateCardComponent } from './employee-create-card/employee-create-card.component';
 
 @Component({
   imports: [
     MatIcon,
     FormsModule,
-    MatButton,
-    MatCard,
-    MatCardActions,
-    MatCardContent,
-    MatCardHeader,
-    MatCardTitle,
     MatFormField,
     MatInput,
-    MatLabel,
     MatOption,
     MatSelect,
-    MatCardAvatar,
     MatPrefix,
     MatChipListbox,
     MatChipOption,
     EmployeeCardComponent,
     CategoriesCardComponent,
+    EmployeeCreateCardComponent,
   ],
   selector: 'app-admin',
   styleUrl: './admin.component.scss',
@@ -117,25 +102,6 @@ export class AdminComponent {
     });
   }
 
-  protected canCreateEmployee(): boolean {
-    if (this.editingEmployeeId() === null) {
-      return (
-        this.fullName().trim().length > 0 &&
-        this.position().trim().length > 0 &&
-        this.selectedRole() !== null &&
-        this.password().trim().length > 0 &&
-        (!this.haveCategories(this.selectedRole()) || this.selectedCategories().length > 0)
-      );
-    } else {
-      return (
-        this.fullName().trim().length > 0 &&
-        this.position().trim().length > 0 &&
-        this.selectedRole() !== null &&
-        (!this.haveCategories(this.selectedRole()) || this.selectedCategories().length > 0)
-      );
-    }
-  }
-
   protected createEmployee(): void {
     const employee: EmployeeRequest = {
       fullName: this.fullName(),
@@ -162,22 +128,12 @@ export class AdminComponent {
         next: (employee) => {
           this.clearEmployeeForm();
           this.employees.update((list) => list.map((e) => (e.id === employee.id ? employee : e)));
-          this.editingEmployeeId.set(null);
         },
         error: (err) => {
           this.showErrorShackBar(httpErrorMessage(err, 'update employee', 'Employee not found'));
         },
       });
     }
-  }
-
-  protected onCategoriesChange(categories: Category[]) {
-    this.selectedCategories.set(categories);
-  }
-
-  protected onRolesChange(role: Role) {
-    this.selectedRole.set(role);
-    if (!this.haveCategories(role)) this.selectedCategories.set([]);
   }
 
   protected deleteCategory(cat: Category) {
@@ -220,6 +176,7 @@ export class AdminComponent {
     this.editingEmployeeId.set(employee.id);
     this.fullName.set(employee.fullName);
     this.position.set(employee.position);
+    this.password.set('');
     this.selectedCategories.set(
       this.categories().filter((c) => employee.categoryIds.includes(c.id)),
     );
@@ -255,25 +212,13 @@ export class AdminComponent {
     });
   }
 
-  protected canCancelEmployee(): boolean {
-    return (
-      this.fullName().trim().length > 0 ||
-      this.position().trim().length > 0 ||
-      this.selectedCategories().length > 0 ||
-      this.selectedRole() !== null
-    );
-  }
-
   protected clearEmployeeForm(): void {
+    this.editingEmployeeId.set(null);
     this.fullName.set('');
     this.position.set('');
     this.password.set('');
     this.selectedRole.set(null);
     this.selectedCategories.set([]);
-  }
-
-  protected haveCategories(role: Role | null) {
-    return role === 'employee';
   }
 
   protected clearCategoryForm(): void {

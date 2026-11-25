@@ -52,12 +52,12 @@ export class CategoriesCardComponent {
     this.searchCategory.set(text);
   }
 
-  protected canCreateCategory(): boolean {
+  protected canCreateCategory = computed(() => {
     return this.newCategory().trim().length > 0 && !this.isCategoryExists();
-  }
+  });
 
-  protected isCategoryExists(): boolean {
+  protected isCategoryExists = computed(() => {
     const name = this.newCategory().trim().toLowerCase();
     return this.categories().some((c) => c.name.trim().toLowerCase() === name);
-  }
+  });
 }
