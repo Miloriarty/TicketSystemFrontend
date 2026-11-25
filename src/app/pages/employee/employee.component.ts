@@ -1,47 +1,32 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { DatePipe, NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { MatCard, MatCardActions } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
-import { MatChip, MatChipListbox, MatChipOption } from '@angular/material/chips';
+import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
-import { filter } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatInput, MatPrefix } from '@angular/material/input';
 
 import { TicketService } from '../../core/services/ticket.service';
 import { CategoryService } from '../../core/services/category.service';
-import {
-  Ticket,
-  TicketRequest,
-  TicketStatus,
-  TICKET_STATUS_CLASS,
-} from '../../core/models/ticket.model';
+import { Ticket, TicketRequest, TicketStatus } from '../../core/models/ticket.model';
 import { Category } from '../../core/models/category.model';
-import { NamesByIdsPipe } from '../../shared/pipes/names-by-ids.pipe';
-import { TicketDialogComponent, TicketDialogData } from './ticket-dialog/ticket-dialog.component';
 import { httpErrorMessage } from '../../core/http-error';
 import { AuthService } from '../../core/services/auth.service';
+import { ClosedStatus, EmployeeCardComponent } from './employee-card/employee-card.component';
 
 type SortDirection = 'asc' | 'desc';
 
 @Component({
   imports: [
-    DatePipe,
     MatIcon,
-    MatCard,
-    MatChip,
-    MatCardActions,
     MatButton,
-    NgClass,
-    NamesByIdsPipe,
     MatChipOption,
     MatChipListbox,
     FormsModule,
     MatFormField,
     MatInput,
     MatPrefix,
+    EmployeeCardComponent,
   ],
   selector: 'app-employee',
   styleUrl: './employee.component.scss',
@@ -49,7 +34,6 @@ type SortDirection = 'asc' | 'desc';
 })
 export class EmployeeComponent {
   _snackBar = inject(MatSnackBar);
-  private readonly dialog = inject(MatDialog);
   authService = inject(AuthService);
 
   sortDirection = signal<SortDirection>('desc');
@@ -96,8 +80,6 @@ export class EmployeeComponent {
     });
   }
 
-  protected readonly statusClass = TICKET_STATUS_CLASS;
-
   protected changeStatus(ticket: Ticket, status: TicketStatus) {
     const request: TicketRequest = {
       title: ticket.title,
@@ -136,7 +118,7 @@ export class EmployeeComponent {
     return status === TicketStatus.Cancelled || status === TicketStatus.Completed;
   }
 
-  protected closeTicket(ticket: Ticket, status: TicketStatus.Cancelled | TicketStatus.Completed) {
+  protected closeTicket(ticket: Ticket, status: ClosedStatus) {
     this.changeStatus(ticket, status);
     this.showSnackBar(ticket, status === TicketStatus.Cancelled ? 'cancelled' : 'finished');
   }
@@ -154,28 +136,6 @@ export class EmployeeComponent {
       );
       this.changeStatus(ticket, ticket.status);
     });
-  }
-
-  protected openTicket(ticket: Ticket) {
-    const categoryNames = this.categories()
-      .filter((c) => ticket.categoryIds.includes(c.id))
-      .map((c) => c.name);
-
-    this.dialog
-      .open<TicketDialogComponent, TicketDialogData, TicketStatus>(TicketDialogComponent, {
-        data: { ticket, categoryNames },
-        width: '500px',
-        maxWidth: '95vw',
-      })
-      .afterClosed()
-      .pipe(filter(Boolean))
-      .subscribe((status) => {
-        if (status === TicketStatus.Cancelled || status === TicketStatus.Completed) {
-          this.closeTicket(ticket, status);
-        } else {
-          this.changeStatus(ticket, status);
-        }
-      });
   }
 
   protected toggleSort() {

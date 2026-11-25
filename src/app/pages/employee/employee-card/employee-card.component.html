@@ -1,0 +1,48 @@
+<mat-card class="ticket-card" (click)="openTicket()">
+  <div class="ticket-header">
+    <div class="card-icon">
+      <mat-icon>confirmation_number</mat-icon>
+    </div>
+    <div class="ticket-info">
+      <h3>{{ ticket().title }}</h3>
+      <span class="ticket-description">{{ ticket().description }}</span>
+    </div>
+    <div class="status" [ngClass]="statusClass[ticket().status]">
+      {{ ticket().status }}
+    </div>
+  </div>
+
+  <div class="ticket-meta">
+    <span>
+      <mat-icon>schedule</mat-icon>
+      {{ ticket().createdAt | date: 'dd.MM.yy' }}
+    </span>
+  </div>
+
+  @if (ticket().categoryIds.length > 0) {
+    <div class="chips">
+      @for (name of ticket().categoryIds | namesByIds: categories() : 'name'; track name) {
+        <mat-chip class="chip">{{ name }}</mat-chip>
+      }
+    </div>
+  }
+
+  <mat-card-actions class="ticket-actions" (click)="$event.stopPropagation()">
+    <button matButton="outlined" class="action-button" (click)="close(TicketStatus.Cancelled)">
+      <mat-icon>cancel</mat-icon>
+      Cancel
+    </button>
+
+    @if (ticket().status === TicketStatus.InProgress) {
+      <button mat-flat-button class="action-button" (click)="close(TicketStatus.Completed)">
+        <mat-icon>check</mat-icon>
+        Finish
+      </button>
+    } @else {
+      <button mat-flat-button class="action-button" (click)="setStatus(TicketStatus.InProgress)">
+        <mat-icon>add</mat-icon>
+        Take
+      </button>
+    }
+  </mat-card-actions>
+</mat-card>

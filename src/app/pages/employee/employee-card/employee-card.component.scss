@@ -1,0 +1,126 @@
+/* The host is the grid item: let the card stretch to the row height. */
+:host {
+  display: block;
+}
+
+.ticket-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+  cursor: pointer;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+
+  mat-icon {
+    margin: 0;
+  }
+}
+
+.ticket-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ticket-info {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+
+  h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.status {
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.ticket-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  font-size: 13px;
+  color: var(--mat-sys-on-surface-variant);
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  mat-chip {
+    --mat-chip-label-text-size: 12px;
+  }
+}
+
+.chip {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ticket-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0;
+  margin: auto 0 0;
+}
+
+.action-button {
+  min-width: 90px;
+}
+
+@media (max-width: 600px) {
+  .ticket-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .ticket-header {
+    gap: 12px;
+  }
+
+  .ticket-actions button {
+    flex: 1;
+  }
+}
